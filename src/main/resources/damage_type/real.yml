@@ -1,0 +1,42 @@
+Real:
+  name: "&f真实伤害"
+  display:
+    attack:
+      holo: |-
+        set result to number {result}
+        if check &result > 0.0 then "&f{ format &result '#.##' }" else '&7&lMISS'
+      chat: |-
+        set result to number {result}
+        set prefix to '&f{name}&5: '
+        set common to if check &result > 0.0 then "&f{ format &result '#.##' }" else '&7&lMISS'
+        join [ &prefix &common ]
+      title: "null"
+      sub-title: |-
+        set result to number {result}
+        set common to if check &result > 0.0 then "&f{ format &result '#.##' }" else '&7&lMISS'
+        join [ &common ]
+      action-bar: |-
+        set result to number {result}
+        set prefix to '&f{name}&5: '
+        set common to if check &result > 0.0 then "&f{ format &result '#.##' }" else '&7&lMISS'
+        join [ &prefix &common ]
+    defend:
+      holo: |-
+        set result to number {result}
+        set common to if check &result > 0.0 then ''&c- &f{format &result #.##}' else '&7&lMISS'
+        join [ &common ]
+      chat: |-
+        set result to number {result}
+        set prefix to '&f{name}&5: '
+        set common to if check &result > 0.0 then "&f{ format &result '#.##' }" else '&7&lMISS'
+        join [ &prefix &common ]
+      title: "null"
+      sub-title: |-
+        set result to number {result}
+        set common to if check &result > 0.0 then "&f{ format &result '#.##' }" else '&7&lMISS'
+        join [ &common ]
+      action-bar: |-
+        set result to number {result}
+        set prefix to '&f{name}&5: '
+        set common to if check &result > 0.0 then "&f{ format &result '#.##' }" else '&7&lMISS'
+        join [ &prefix &common ]

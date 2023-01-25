@@ -1,0 +1,53 @@
+prefix: '&d[&9FightSystem&d] '
+
+command-reload: '&d[&9FightSystem&d] &aReloaded!'
+command-info:
+  - '&f&m─&6&m──────────────────────────────────&6&f&m─'
+  - ' &9Command List:'
+  - '  &6/as'
+  - '    &d- &ehelp &5—— &aShow help.'
+  - '    &d- &einfo &5—— &aShow info.'
+  - '    &d- &epersonal [Type] [Sub Type] &5—— &aSet where does the info show.'
+  - '    &d- &ereport &5—— &aCheck Mirror Data.'
+  - '    &d- &eclear &5—— &aClear Mirror Data.'
+  - '    &d- &ereload &5—— &aReload.'
+  - '&f&m─&6&m──────────────────────────────────&6&f&m─'
+command-personal: '&d[&9FightSystem&d] &eYour &6{0} &eis changed to &b{1} &e!'
+
+
+fight-in: '&d[&9FightSystem&d] &eInto fighting!'
+fight-out: '&d[&9FightSystem&d] &eOut of fighting!'
+
+disable-damage-type: '&d[&9FightSystem&d] &cYou can t attack with &6{0} &c!'
+wrong-command: '&d[&9FightSystem&d] &cWrong command!'
+wrong-sender: '&d[&9FightSystem&d] &cWrong sender!'
+command-clear: '&d[&9FightSystem&d] &aMirrorData has been cleared!'
+
+annotation-mechanic-register: '&d[&9FightSystem&d] &aMechanic &6{0} &ahas been registered!'
+annotation-mechanic-unregister: '&d[&9FightSystem&d] &cMechanic &6{0} &chas been unregistered!'
+annotation-message-type-register: '&d[&9FightSystem&d] &aMessage Type &6{0} &ahas been registered!'
+annotation-message-type-unregister: '&d[&9FightSystem&d] &cMessage Type &6{0} &chas been unregistered!'
+
+fight-info: "&b&lFight Info:"
+fight-info-key: "&6Fight Key: &4{0}"
+fight-info-attacker: "&7Attacker: &c{0}"
+fight-info-defender: "&7Defender: &c{0}"
+fight-info-damage-type: " &8-> &eDamageType: &6{0}"
+fight-info-mechanic: "   &7- &5Machine: &c{0}"
+fight-info-mechanic-return: "     &5return: &6{0}"
+fight-info-usable-vars: "  &7- &dUsable variables:"
+fight-info-message: "  &7- &dMessage:"
+fight-info-result: "&7Result: &c{0}"
+
+invalid-damage-type: '&d[&9FightSystem&d] &cThe DamageType is null in &6{0}&c!'
+invalid-mechanic: '&d[&9FightSystem&d] &cThe Mechanic is null in &6{0}&c!'
+
+type-TITLE: 'Title'
+type-ACTION-BAR: 'ActionBar'
+type-CHAT: 'Chat'
+type-HOLO: 'Holo text'
+type-DISABLE: 'Swichable'
+
+attacking-message-type: 'Attacking MessageType'
+defensive-message-type: 'Defensive MessageType'
+health-regain-type: 'Health Regain MessageType'

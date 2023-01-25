@@ -1,0 +1,60 @@
+prefix: '&d[&9战斗系统&d] '
+
+command-reload: '&d[&9战斗系统&d] &a插件已重载成功!'
+command-info:
+  - '&f&m─&6&m──────────────────────────────────&6&f&m─'
+  - ' &9指令列表:'
+  - '  &6/fs'
+  - '    &d- &ehelp &5—— &a插件帮助.'
+  - '    &d- &einfo &5—— &a显示插件信息.'
+  - '    &d- &edebug &5—— &a开关调试模式.'
+  - '    &d- &epersonal [类型] [子类型] &5—— &a配置信息显示位置'
+  - '    &d- &ereport &5—— &a查看耗时数据'
+  - '    &d- &eclear &5—— &a清除耗时数据'
+  - '    &d- &ereload &5—— &a重载插件'
+  - '&f&m─&6&m──────────────────────────────────&6&f&m─'
+command-personal: '&d[&9战斗系统&d] &e你的 &6{0} &e已更改为 &b{1} &e!'
+
+fight-in: '&d[&9战斗系统&d] &e你已进入战斗状态!'
+fight-out: '&d[&9战斗系统&d] &e你已离开战斗状态!'
+
+
+disable-damage-type: '&d[&9战斗系统&d] &6{0} &c已被禁止普攻!'
+wrong-command: '&d[&9战斗系统&d] &c你是不是输错指令啦!'
+wrong-sender: '&d[&9战斗系统&d] &c控制台不能发送此指令!'
+command-clear: '&d[&9战斗系统&d] &a耗时数据已清楚!'
+
+
+annotation-mechanic-register: '&d[&9战斗系统&d] &a机制 &6{0} &a注册成功!'
+annotation-mechanic-unregister: '&d[&9战斗系统&d] &c机制 &6{0} &c注销成功!'
+annotation-message-type-register: '&d[&9战斗系统&d] &a消息类型 &6{0} &a注册成功!'
+annotation-message-type-unregister: '&d[&9战斗系统&d] &c消息类型 &6{0} &c注销成功!'
+
+
+fight-info: "&b&l战斗信息:"
+fight-info-key: "&6战斗组: &4{0}"
+fight-info-attacker: "&7攻击者: &c{0}"
+fight-info-defender: "&7防御者: &c{0}"
+fight-info-damage-type: " &8-> &e伤害类型: &6{0}"
+fight-info-mechanic: "   &7- &5机制: &c{0}"
+fight-info-mechanic-return: "     &5结果: &6{0}"
+fight-info-usable-vars: "  &7- &d可用变量:"
+fight-info-message: "  &7- &d战斗消息:"
+fight-info-result: "&7结果: &c{0}"
+
+invalid-damage-type: '&d[&9战斗系统&d] &c伤害类型不存在! &6{0} '
+invalid-mechanic: '&d[&9战斗系统&d] &c机制不存在! &6{0}'
+
+type-TITLE: '中间标题'
+type-ACTION-BAR: '动作栏'
+type-CHAT: '聊天框'
+type-HOLO: '全息文本'
+type-DISABLE: '关闭'
+
+type-true: '开启'
+type-false: '关闭'
+
+attacking-message-type: '攻击信息'
+defensive-message-type: '防御信息'
+regain-holo-type: '回血信息'
+
