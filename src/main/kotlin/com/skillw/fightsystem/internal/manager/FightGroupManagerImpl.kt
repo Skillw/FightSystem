@@ -31,7 +31,9 @@ object FightGroupManagerImpl : FightGroupManager() {
     }
 
     override fun runFight(key: String, data: FightData, message: Boolean): Double {
+
         if (!FightSystem.fightGroupManager.containsKey(key)) return -1.0
+
         val fightData = data.apply {
             AsahiManager.loadSharedNamespace(this)
             addNamespaces(*namespaceNames())
@@ -44,20 +46,27 @@ object FightGroupManagerImpl : FightGroupManager() {
             }
             calMessage = message
         }
+
         val messageData = MessageData()
         return mirrorNow("fight-$key-cal") {
+
             val pre = com.skillw.fightsystem.api.event.FightEvent.Pre(key, fightData)
             pre.call()
             if (pre.isCancelled) return@mirrorNow -0.1
+
             var eventFightData = pre.fightData
             val result = FightSystem.fightGroupManager[key]!!.run(eventFightData)
+
             val process = com.skillw.fightsystem.api.event.FightEvent.Process(key, eventFightData)
             process.call()
+            
             eventFightData = process.fightData
             val post = com.skillw.fightsystem.api.event.FightEvent.Post(key, eventFightData)
             post.call()
+
             eventFightData = post.fightData
             if (post.isCancelled) return@mirrorNow -0.1
+
             if (message) {
                 eventFightData.calMessage()
                 messageData.addAll(eventFightData.messageData)
@@ -65,6 +74,7 @@ object FightGroupManagerImpl : FightGroupManager() {
                     messageData.send(fightData.attacker as? Player?, fightData.defender as? Player?)
                 }
             }
+
             result.apply(eventFightData)
         }
     }

@@ -75,8 +75,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("ink.ptms.core:v11701:11701:universal")
     compileOnly("ink.ptms.core:v11701:11701:mapped")
+    compileOnly("ink.ptms.core:v11701:11701:universal")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }
@@ -98,7 +98,7 @@ tasks.javadoc {
 }
 
 java {
-    withJavadocJar()
+//    withJavadocJar()
     withSourcesJar()
 }
 
@@ -109,57 +109,57 @@ configure<JavaPluginConvention> {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-publishing {
-    repositories {
-        maven {
-            url = if (project.version.toString().contains("-SNAPSHOT")) {
-                uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
-            } else {
-                uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            }
-            credentials {
-                username = project.findProperty("username").toString()
-                password = project.findProperty("password").toString()
-            }
-            authentication {
-                create<BasicAuthentication>("basic")
-            }
-        }
-        mavenLocal()
-    }
-    publications {
-        create<MavenPublication>("library") {
-            from(components["java"])
-            version = project.version.toString()
-            groupId = project.group.toString()
-            pom {
-                name.set(project.name)
-                description.set("Bukkit Script Engine Plugin.")
-                url.set("https://github.com/Glom-c/Pouvoir/")
-
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://github.com/Glom-c/Asahi/blob/main/LICENSE")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("Skillw")
-                        name.set("Glom_")
-                        email.set("glom@skillw.com")
-                    }
-                }
-                scm {
-                    connection.set("...")
-                    developerConnection.set("...")
-                    url.set("...")
-                }
-            }
-        }
-    }
-}
-
-signing {
-    sign(publishing.publications.getAt("library"))
-}
+//publishing {
+//    repositories {
+//        maven {
+//            url = if (project.version.toString().contains("-SNAPSHOT")) {
+//                uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
+//            } else {
+//                uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+//            }
+//            credentials {
+//                username = project.findProperty("username").toString()
+//                password = project.findProperty("password").toString()
+//            }
+//            authentication {
+//                create<BasicAuthentication>("basic")
+//            }
+//        }
+//        mavenLocal()
+//    }
+//    publications {
+//        create<MavenPublication>("library") {
+//            from(components["java"])
+//            version = project.version.toString()
+//            groupId = project.group.toString()
+//            pom {
+//                name.set(project.name)
+//                description.set("Bukkit Fight System Plugin.")
+//                url.set("https://github.com/Glom-c/Pouvoir/")
+//
+//                licenses {
+//                    license {
+//                        name.set("MIT License")
+//                        url.set("https://github.com/Glom-c/FightSystem/blob/main/LICENSE")
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id.set("Skillw")
+//                        name.set("Glom_")
+//                        email.set("glom@skillw.com")
+//                    }
+//                }
+//                scm {
+//                    connection.set("...")
+//                    developerConnection.set("...")
+//                    url.set("...")
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//signing {
+//    sign(publishing.publications.getAt("library"))
+//}

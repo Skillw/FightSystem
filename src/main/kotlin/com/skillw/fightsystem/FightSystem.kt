@@ -30,6 +30,9 @@ object FightSystem : Plugin(), SubPouvoir {
     @Config("message.yml", migrate = true, autoReload = true)
     lateinit var message: ConfigFile
 
+    @Config("options.yml", migrate = true, autoReload = true)
+    lateinit var options: ConfigFile
+
     /** Managers */
 
     @JvmStatic

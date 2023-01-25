@@ -14,8 +14,11 @@ class FightEvent {
 
     @BukkitTrigger(name = "before entity fight")
     class Pre(val key: String, val fightData: FightData) : BukkitProxyEvent() {
+        override val allowCancelled: Boolean = true
         val attacker = fightData.attacker
         val defender = fightData.defender
+        val hasAttacker = attacker != null
+        val hasDefender = defender != null
     }
 
     /**
@@ -26,8 +29,11 @@ class FightEvent {
      */
     @BukkitTrigger(name = "during entity fight")
     class Process(val key: String, val fightData: FightData) : BukkitProxyEvent() {
+        override val allowCancelled: Boolean = true
         val defender = fightData.defender
         val attacker = fightData.attacker
+        val hasAttacker = attacker != null
+        val hasDefender = defender != null
     }
 
     /**
@@ -40,5 +46,7 @@ class FightEvent {
     class Post(val key: String, val fightData: FightData) : BukkitProxyEvent() {
         val defender = fightData.defender
         val attacker = fightData.attacker
+        val hasAttacker = attacker != null
+        val hasDefender = defender != null
     }
 }

@@ -97,7 +97,7 @@ class FightGroup constructor(
         fun deserialize(section: org.bukkit.configuration.ConfigurationSection): FightGroup? {
             val key = section.name
             val namespaces = section.getStringList("namespaces").toTypedArray()
-            val fightGroup = FightGroup(key, *namespaces)
+            val fightGroup = FightGroup(key, namespaces = namespaces)
             for (damageTypeKey in section.getKeys(false)) {
                 val damageType = com.skillw.fightsystem.FightSystem.damageTypeManager[damageTypeKey] ?: continue
                 fightGroup[damageType] =
@@ -109,6 +109,7 @@ class FightGroup constructor(
     }
 
     override fun register() {
+        AsahiManager.loadSharedNamespace(this)
         com.skillw.fightsystem.FightSystem.fightGroupManager.register(this)
     }
 }

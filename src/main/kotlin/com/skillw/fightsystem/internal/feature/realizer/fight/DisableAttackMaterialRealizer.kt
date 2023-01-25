@@ -3,6 +3,7 @@ package com.skillw.fightsystem.internal.feature.realizer.fight
 import com.skillw.attsystem.api.realizer.BaseRealizer
 import com.skillw.attsystem.api.realizer.component.sub.Awakeable
 import com.skillw.attsystem.util.StringUtils.material
+import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import org.bukkit.Material
@@ -23,9 +24,11 @@ import java.util.*
 @AutoRegister
 internal object DisableAttackMaterialRealizer : BaseRealizer("disable-attack-types"), Awakeable {
 
-    override val fileName: String = "options.yml"
+    override val file by lazy {
+        FightSystem.options.file!!
+    }
     val values: List<String>
-        get() = config.get("values", emptyList())
+        get() = config.getOrDefault("values", emptyList<String>()) as List<String>
 
     private val disableDamageTypes = LinkedList<Material>()
     override fun onEnable() {

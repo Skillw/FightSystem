@@ -6,6 +6,7 @@ import com.skillw.attsystem.api.realizer.component.sub.Awakeable
 import com.skillw.attsystem.api.realizer.component.sub.Switchable
 import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute
+import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import com.skillw.pouvoir.api.plugin.map.BaseMap
@@ -19,6 +20,8 @@ import org.bukkit.event.entity.EntityShootBowEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.metadata.FixedMetadataValue
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.common5.cbool
+import taboolib.common5.cdouble
 import taboolib.library.xseries.XMaterial
 import java.util.*
 import kotlin.math.min
@@ -30,21 +33,23 @@ private const val CHARGE_KEY = "ATTRIBUTE_SYSTEM_FORCE"
 @AutoRegister
 internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switchable, Awakeable {
 
-    override val fileName: String = "options.yml"
+    override val file by lazy {
+        FightSystem.options.file!!
+    }
     override val defaultEnable: Boolean
         get() = true
 
     private val enableCooldown: Boolean
-        get() = config.get("type", "cooldown").lowercase() == "cooldown"
+        get() = config.getOrDefault("type", "cooldown").toString().lowercase() == "cooldown"
 
     private val attackAnyTime: Boolean
-        get() = config.getBoolean("damage-any-time")
+        get() = config["damage-any-time"].cbool
     private val damageCharged
-        get() = config.getBoolean("damage-charged")
+        get() = config["damage-charged"].cbool
     private val chargeBasedCooldown: Boolean
-        get() = config.getString("charge-based").lowercase() == "cooldown"
+        get() = config.getOrDefault("charge-based", "cooldown").toString().lowercase() == "cooldown"
     private val minCharge
-        get() = config.getDouble("min-charge")
+        get() = config.getOrDefault("min-charge", 0.05).cdouble
 
     private val disableTypes = HashSet<Material>()
 
@@ -118,7 +123,10 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
 
     override fun onReload() {
         disableTypes.clear()
-        for (material in config.get("options.fight.attack-cooldown.no-cooldown-types", emptyList<String>())) {
+        for (material in config.getOrDefault(
+            "options.fight.attack-cooldown.no-cooldown-types",
+            emptyList<String>()
+        ) as List<String>) {
             val xMaterial = XMaterial.matchXMaterial(material)
             if (xMaterial.isPresent) {
                 disableTypes.add(xMaterial.get().parseMaterial() ?: continue)

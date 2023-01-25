@@ -1,5 +1,6 @@
 package com.skillw.fightsystem.internal.manager
 
+import com.skillw.attsystem.AttributeSystem.attributeManager
 import com.skillw.fightsystem.FightSystem
 import com.skillw.pouvoir.Pouvoir
 import com.skillw.pouvoir.api.manager.ConfigManager
@@ -33,6 +34,22 @@ object FSConfig : ConfigManager(FightSystem) {
             "mechanics/runner.js",
             "mechanics/shield.js",
         )
+        createIfNotExists(
+            "attributes",
+            "Fight/Physical.yml",
+            "Fight/Magic.yml",
+            "Fight/Other.yml",
+            "Mechanic/Vampire.yml",
+            "Mechanic/Mechanic.yml",
+            "Other/Other.yml",
+            "shield.yml"
+        )
+        createIfNotExists(
+            "dispatchers", "custom-trigger.yml"
+        )
+        createIfNotExists(
+            "handlers", "on-attack.yml"
+        )
         //兼容1.4.3及之前的脚本
         mapOf(
             "com.skillw.fightsystem.internal.fight" to "com.skillw.fightsystem.internal.core.fight",
@@ -47,7 +64,7 @@ object FSConfig : ConfigManager(FightSystem) {
         onReload()
         val metrics =
             taboolib.module.metrics.Metrics(
-                14465,
+                14766,
                 FightSystem.plugin.description.version,
                 Platform.BUKKIT
             )
@@ -57,13 +74,14 @@ object FSConfig : ConfigManager(FightSystem) {
         metrics.addCustomChart(SingleLineChart("mechanics") {
             FightSystem.mechanicManager.size
         })
+        attributeManager.addSubPouvoir(FightSystem)
+        Pouvoir.triggerHandlerManager.addSubPouvoir(FightSystem)
     }
 
 
     val attackFightKeyMap = BaseMap<String, String>()
     override fun subReload() {
         Pouvoir.scriptManager.addScriptDir(scripts)
-
         attackFightKeyMap.clear()
         this["config"].getConfigurationSection("options.fight.attack-fight")?.apply {
             getKeys(false).forEach { key: String ->
@@ -82,6 +100,9 @@ object FSConfig : ConfigManager(FightSystem) {
     }
 
     private val scripts = File(getDataFolder(), "scripts")
+
+    val isFightEnable
+        get() = this["message"].getBoolean("options.fight.enable", true)
     val isPersonalEnable
         get() = this["message"].getBoolean("options.personal")
 

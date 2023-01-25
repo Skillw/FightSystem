@@ -7,6 +7,7 @@ import com.skillw.attsystem.api.realizer.component.sub.Vanillable
 import com.skillw.attsystem.util.AntiCheatUtils
 import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute
+import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.pouvoir.Pouvoir
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
@@ -23,28 +24,31 @@ import taboolib.common.platform.function.submitAsync
 import taboolib.common.platform.sendTo
 import taboolib.common.util.Location
 import taboolib.common.util.sync
+import taboolib.common5.cbool
+import taboolib.common5.cdouble
 import taboolib.library.xseries.XSound
 
 @AutoRegister
 internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switchable, Vanillable, Valuable {
 
-    override val fileName: String = "options.yml"
+    override val file by lazy {
+        FightSystem.options.file!!
+    }
     override val defaultEnable: Boolean
         get() = true
-    override val defaultValue: String
-        get() = "0"
+    override val defaultValue: String = "0"
     override val defaultVanilla: Boolean
         get() = true
 
     private val isDistanceEffect
-        get() = config.get("distance-attack.effect", true)
+        get() = config.getOrDefault("distance-attack.effect", true).cbool
     private val isDistanceSound
-        get() = config.get("distance-attack.sound", true)
+        get() = config.getOrDefault("distance-attack.sound", true).cbool
 
     private val defaultDistance: Double
-        get() = config.get("vanilla-distance.default", 3.0)
+        get() = config.getOrDefault("vanilla-distance.default", 3.0).cdouble
     private val creativeDistance: Double
-        get() = config.get("vanilla-distance.creative", 4.5)
+        get() = config.getOrDefault("vanilla-distance.creative", 4.5).cdouble
 
 
     @SubscribeEvent

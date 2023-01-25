@@ -4,6 +4,7 @@ import com.skillw.attsystem.api.realizer.BaseRealizer
 import com.skillw.attsystem.api.realizer.component.sub.Awakeable
 import com.skillw.attsystem.api.realizer.component.sub.Switchable
 import com.skillw.attsystem.api.realizer.component.sub.Valuable
+import com.skillw.fightsystem.FightSystem
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -14,7 +15,9 @@ import taboolib.platform.util.attacker
 @AutoRegister
 internal object NoDamageTicksRealizer : BaseRealizer("no-damage-ticks"), Awakeable, Switchable, Valuable {
 
-    override val fileName: String = "options.yml"
+    override val file by lazy {
+        FightSystem.options.file!!
+    }
     override val defaultEnable: Boolean
         get() = true
     override val defaultValue: String
@@ -44,6 +47,6 @@ internal object NoDamageTicksRealizer : BaseRealizer("no-damage-ticks"), Awakeab
 
     override fun onReload() {
         disableWorlds.clear()
-        disableWorlds.addAll(config.get("disable-worlds", listOf("example-world")))
+        disableWorlds.addAll(config.getOrDefault("disable-worlds", listOf("example-world")) as List<String>)
     }
 }
