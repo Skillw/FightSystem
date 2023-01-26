@@ -51,7 +51,7 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
         get() = config.getOrDefault("vanilla-distance.creative", 4.5).cdouble
 
 
-    @SubscribeEvent(ignoreCancelled = true)
+    @SubscribeEvent(ignoreCancelled = false)
     fun distanceAttack(event: PlayerInteractEvent) {
         val player = event.player
         if (event.action != Action.LEFT_CLICK_AIR || player.gameMode == GameMode.SPECTATOR) return
