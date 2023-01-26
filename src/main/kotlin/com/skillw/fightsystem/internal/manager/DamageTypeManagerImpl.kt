@@ -16,7 +16,7 @@ object DamageTypeManagerImpl : DamageTypeManager() {
     }
 
     override fun onReload() {
-        this.clear()
+        clear()
         loadMultiply(
             File(FightSystem.plugin.dataFolder, "damage_type"),
             DamageType::class.java

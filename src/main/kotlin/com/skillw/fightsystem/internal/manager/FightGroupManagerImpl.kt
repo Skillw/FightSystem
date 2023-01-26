@@ -23,6 +23,7 @@ object FightGroupManagerImpl : FightGroupManager() {
     }
 
     override fun onReload() {
+        clear()
         loadMultiply(
             File(FightSystem.plugin.dataFolder, "fight_group"), FightGroup::class.java
         ).forEach {
@@ -59,7 +60,7 @@ object FightGroupManagerImpl : FightGroupManager() {
 
             val process = com.skillw.fightsystem.api.event.FightEvent.Process(key, eventFightData)
             process.call()
-            
+
             eventFightData = process.fightData
             val post = com.skillw.fightsystem.api.event.FightEvent.Post(key, eventFightData)
             post.call()
