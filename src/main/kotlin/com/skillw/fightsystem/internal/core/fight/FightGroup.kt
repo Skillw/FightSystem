@@ -1,7 +1,6 @@
 package com.skillw.fightsystem.internal.core.fight
 
-import com.skillw.asahi.api.AsahiManager
-import com.skillw.asahi.api.member.namespace.Namespace
+import com.skillw.asahi.api.member.namespace.NamespaceContainer
 import com.skillw.asahi.api.member.namespace.NamespaceHolder
 import com.skillw.fightsystem.FightSystem.debugLang
 import com.skillw.fightsystem.api.event.DamageTypeRunEvent
@@ -27,9 +26,7 @@ class FightGroup constructor(
     NamespaceHolder<FightGroup>,
     LinkedKeyMap<DamageType, MechanicDataCompound>() {
 
-    override val namespaces = HashSet<Namespace>().apply {
-        addAll(AsahiManager.getNamespaces(*namespaces))
-    }
+    override val namespaces = NamespaceContainer()
 
     /** Damage types */
     val damageTypes = this.list
@@ -103,13 +100,11 @@ class FightGroup constructor(
                 fightGroup[damageType] =
                     MechanicDataCompound.deserialize(section.getConfigurationSection(damageTypeKey)!!) ?: continue
             }
-            AsahiManager.loadSharedNamespace(fightGroup)
             return fightGroup
         }
     }
 
     override fun register() {
-        AsahiManager.loadSharedNamespace(this)
         com.skillw.fightsystem.FightSystem.fightGroupManager.register(this)
     }
 }

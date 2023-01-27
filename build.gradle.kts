@@ -63,8 +63,8 @@ taboolib {
     install("module-nms")
     install("module-nms-util")
     install("module-configuration")
-    install("module-metrics")
     install("platform-bukkit")
+    install("module-metrics")
     install("module-lang")
     classifier = null
     version = "6.0.10-71"

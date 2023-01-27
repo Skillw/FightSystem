@@ -2,9 +2,8 @@ package com.skillw.fightsystem.api.fight
 
 import com.skillw.asahi.api.AsahiAPI.analysis
 import com.skillw.asahi.api.AsahiAPI.asahi
-import com.skillw.asahi.api.AsahiManager
 import com.skillw.asahi.api.member.context.AsahiContext
-import com.skillw.asahi.api.member.namespace.Namespace
+import com.skillw.asahi.api.member.namespace.NamespaceContainer
 import com.skillw.asahi.api.member.namespace.NamespaceHolder
 import com.skillw.attsystem.api.attribute.compound.AttributeDataCompound
 import com.skillw.attsystem.api.operation.OperationElement
@@ -41,9 +40,7 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
 
     constructor(attacker: LivingEntity?, defender: LivingEntity?) : this(attacker, defender, namespaces = emptyArray())
 
-    override val namespaces = HashSet<Namespace>().apply {
-        addAll(AsahiManager.getNamespaces(*namespaces))
-    }
+    override val namespaces = NamespaceContainer()
 
     var cache = DataCache(this)
         set(value) {
@@ -127,7 +124,7 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
 
     constructor(fightData: FightData) : this(fightData.attacker, fightData.defender) {
         this.cache = fightData.cache
-        this.namespaces.addAll(fightData.namespaces)
+        this.namespaces.addNamespaces(fightData.namespaces)
         putAll(fightData)
     }
 

@@ -1,6 +1,5 @@
 package com.skillw.fightsystem.internal.manager
 
-import com.skillw.asahi.api.AsahiManager
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.api.fight.message.MessageData
@@ -36,7 +35,6 @@ object FightGroupManagerImpl : FightGroupManager() {
         if (!FightSystem.fightGroupManager.containsKey(key)) return -1.0
 
         val fightData = data.apply {
-            AsahiManager.loadSharedNamespace(this)
             addNamespaces(*namespaceNames())
             this.putIfAbsent("projectile", false)
             this["type"] = when {
