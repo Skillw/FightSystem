@@ -9,6 +9,7 @@ import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.event.FightEvent
+import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.Pouvoir
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import com.skillw.pouvoir.util.getEntityRayHit
@@ -66,8 +67,12 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
         if (event.fightData["projectile"] == false) return
         val attacker = event.fightData.attacker as? Player? ?: return
         val defender = event.fightData.defender ?: return
+        val distanceAtt = AttackDistanceRealizer.value(attacker)
+        val distance =
+            minOf(defender.location.distance(attacker.eyeLocation), defender.eyeLocation.distance(attacker.eyeLocation))
         //不满足攻击距离，则取消伤害并跳过计算
-        if (defender.location.distance(attacker.eyeLocation) > AttackDistanceRealizer.value(attacker)) {
+        if (distance > distanceAtt) {
+            FSConfig.debug { FightSystem.debug("Cancelled because distance attribute $distanceAtt < distance $distance") }
             event.isCancelled = true
             return
         }

@@ -7,7 +7,6 @@ import com.skillw.pouvoir.api.plugin.SubPouvoir
 import com.skillw.pouvoir.api.plugin.annotation.PouManager
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.function.console
-import taboolib.common.platform.function.info
 import taboolib.module.chat.colored
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.ConfigFile
@@ -81,7 +80,7 @@ object FightSystem : Plugin(), SubPouvoir {
 
     fun debug(string: String) {
         if (com.skillw.fightsystem.FightSystem.configManager.debug) {
-            info(string.colored())
+            console().sendMessage(string.colored())
         }
     }
 

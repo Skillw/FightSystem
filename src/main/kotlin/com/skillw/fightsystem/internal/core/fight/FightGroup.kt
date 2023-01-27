@@ -2,6 +2,7 @@ package com.skillw.fightsystem.internal.core.fight
 
 import com.skillw.asahi.api.member.namespace.NamespaceContainer
 import com.skillw.asahi.api.member.namespace.NamespaceHolder
+import com.skillw.fightsystem.FightSystem.debug
 import com.skillw.fightsystem.FightSystem.debugLang
 import com.skillw.fightsystem.api.event.DamageTypeRunEvent
 import com.skillw.fightsystem.api.fight.DamageType
@@ -10,7 +11,6 @@ import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.api.plugin.map.LinkedKeyMap
 import com.skillw.pouvoir.api.plugin.map.component.Registrable
 import org.bukkit.configuration.serialization.ConfigurationSerializable
-import taboolib.common.platform.function.info
 import java.util.function.Function
 
 /**
@@ -69,7 +69,7 @@ class FightGroup constructor(
                 fightData.forEach {
                     if (it.key.startsWith("type::")) return@forEach
                     if (it.value::class.java.simpleName.contains("Function", true)) return@forEach
-                    info("      type::${type.key}-${it.key} : ${it.value}")
+                    debug("      type::${type.key}-${it.key} : ${it.value}")
                     originData["type::${type.key}-${it.key}"] = it.value
                 }
             }

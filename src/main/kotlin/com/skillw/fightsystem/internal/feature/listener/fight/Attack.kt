@@ -1,10 +1,12 @@
 package com.skillw.fightsystem.internal.feature.listener.fight
 
+import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.internal.feature.realizer.fight.projectileCharged
 import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.fightsystem.internal.manager.FSConfig.arrowCache
 import com.skillw.fightsystem.internal.manager.FSConfig.attackFightKeyMap
+import com.skillw.fightsystem.internal.manager.FSConfig.debug
 import com.skillw.fightsystem.internal.manager.FSConfig.eveFightCal
 import com.skillw.fightsystem.internal.manager.FSConfig.isFightEnable
 import com.skillw.pouvoir.util.isAlive
@@ -71,6 +73,7 @@ internal object Attack {
         //原伤害
         val originDamage = event.finalDamage
 
+        debug { FightSystem.debug("Handling Damage Event...") }
 
         //处理战斗组id
         val fightKey =
@@ -80,14 +83,13 @@ internal object Attack {
                 else -> attackFightKeyMap.filterKeys { attacker.hasPermission(it) }.values.firstOrNull()
                     ?: "attack-damage"
             }
+
+        debug { FightSystem.debug("FightKey: $fightKey") }
         val cacheData = event.damager.cacheData()
-
-
         val data = if (arrowCache && cacheData != null) cacheData.also { it.defender = defender } else FightData(
             attacker,
             defender
         )
-
 
         //运行战斗组并返回结果
         val result = com.skillw.fightsystem.api.FightAPI.runFight(fightKey, data.also {
@@ -100,6 +102,7 @@ internal object Attack {
 
         //结果小于等于零，代表MISS 未命中
         if (result <= 0.0) {
+            debug { FightSystem.debug("Cancelled because Result <= 0") }
             event.isCancelled = true
             return
         }

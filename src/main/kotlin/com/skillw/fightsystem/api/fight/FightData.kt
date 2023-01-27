@@ -14,7 +14,6 @@ import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.Pouvoir
 import com.skillw.pouvoir.util.parse
 import com.skillw.pouvoir.util.script.ColorUtil.decolored
-import com.skillw.pouvoir.util.script.MessageUtil.info
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import taboolib.common.util.asList
@@ -40,7 +39,7 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
 
     constructor(attacker: LivingEntity?, defender: LivingEntity?) : this(attacker, defender, namespaces = emptyArray())
 
-    override val namespaces = NamespaceContainer()
+    override val namespaces = NamespaceContainer().apply { addNamespaces(*namespaces) }
 
     var cache = DataCache(this)
         set(value) {
@@ -67,9 +66,9 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
     }
 
     val attackerData: AttributeDataCompound
-        get() = cache.attackerData
+        get() = cache.attackerData ?: AttributeDataCompound()
     val defenderData: AttributeDataCompound
-        get() = cache.defenderData
+        get() = cache.defenderData ?: AttributeDataCompound()
 
     init {
         this.attacker = attacker
@@ -141,7 +140,7 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
         val newMap = ConcurrentHashMap<String, Any>()
         map.forEach { (key, value) ->
             if (log)
-                FSConfig.debug { info("      &e$key&5:") }
+                FSConfig.debug { FightSystem.debug("      &e$key&5:") }
             newMap[key.toString()] = handle(value ?: return@forEach, log)
         }
         return newMap
@@ -209,7 +208,7 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
         ) else Pouvoir.placeholderManager.replace(entity, "%${placeholder}%")
         if (log)
             FSConfig.debug {
-                info(
+                FightSystem.debug(
                     "       &3{${str.uncolored().decolored()}} &7-> &9${
                         value.uncolored().decolored()
                     }"
@@ -248,7 +247,7 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
                     formula = formula.replace("{$str}", replacement.toString())
                     if (log)
                         FSConfig.debug {
-                            info(
+                            FightSystem.debug(
                                 "       &3{${str.uncolored().decolored()}} &7-> &9${
                                     replacement.toString().uncolored().decolored()
                                 }"
@@ -270,7 +269,7 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
         }
 
         if (log) FSConfig.debug {
-            info(
+            FightSystem.debug(
                 "      &3${formula.uncolored().decolored()} &7-> &9${
                     value.uncolored().decolored()
                 }"

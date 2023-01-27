@@ -3,7 +3,6 @@ package com.skillw.fightsystem.internal.feature.compat.mythicmobs.legacy
 import com.skillw.fightsystem.api.FightAPI.skipNextDamageCal
 import com.skillw.fightsystem.api.fight.DataCache
 import com.skillw.fightsystem.api.fight.FightData
-import com.skillw.pouvoir.util.decodeFromString
 import io.lumine.xikage.mythicmobs.adapters.AbstractEntity
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
 import io.lumine.xikage.mythicmobs.logging.MythicLogger
@@ -28,11 +27,14 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
     override fun castAtEntity(data: SkillMetadata, targetAE: AbstractEntity): Boolean {
         val caster = data.caster.entity.bukkitEntity
         val target = targetAE.bukkitEntity
-        val cache = cache.get(data, targetAE)
+        val cacheKey = cache.get(data, targetAE)
+        val cache = if (cacheKey == "null") null else data.getMetadata(cacheKey)
+            .run { if (isPresent) get() else null } as? DataCache?
         return if (caster is LivingEntity && target is LivingEntity && !target.isDead) {
-            val cacheData = if (cache == "null") null else data.variables.getString(cache).decodeFromString<DataCache>()
             val fightData = FightData(caster, target) {
-                cacheData?.let { cache -> it.cache = cache }
+                cache?.let { cacheData ->
+                    it.cache.setData(cacheData)
+                }
                 it["power"] = data.power.toDouble()
                 config.entrySet().forEach { entry ->
                     it[entry.key] = entry.value

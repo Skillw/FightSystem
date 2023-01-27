@@ -27,44 +27,51 @@ class DataCache(data: FightData? = null) {
             field!!["attacker-name"] = attackerName
             field!!["defender-name"] = defenderName
         }
-    var attackerData: AttributeDataCompound = AttributeDataCompound()
-    var defenderData: AttributeDataCompound = AttributeDataCompound()
+    var attackerData: AttributeDataCompound? = null
+    var defenderData: AttributeDataCompound? = null
     var attackerName: String = FSConfig.defaultAttackerName
     var defenderName: String = FSConfig.defaultDefenderName
 
-    fun attacker(entity: LivingEntity?) {
-        entity ?: return
+    fun setData(other: DataCache) {
+        other.attackerData?.let { attackerData = it }
+        other.defenderData?.let { defenderData = it }
+    }
+
+    fun attacker(entity: LivingEntity?): DataCache {
+        entity ?: return this
         if (!entity.hasData())
             AttributeSystem.attributeSystemAPI.update(entity)
         attackerData = entity.getAttrData()!!.clone()
         attackerName = (entity as? Player)?.displayName ?: entity.getI18nName()
-        data ?: return
+        data ?: return this
         data!!["attacker"] = entity
         data!!["attacker-name"] = attackerName
+        return this
     }
 
-    fun defender(entity: LivingEntity?) {
-        entity ?: return
+    fun defender(entity: LivingEntity?): DataCache {
+        entity ?: return this
         if (!entity.hasData())
             AttributeSystem.attributeSystemAPI.update(entity)
         defenderData = entity.getAttrData()!!.clone()
         defenderName = (entity as? Player)?.displayName ?: entity.getI18nName()
-        data ?: return
+        data ?: return this
         data!!["defender"] = entity
         data!!["defender-name"] = defenderName
+        return this
     }
 
     fun attackerData(attKey: String, params: List<String>): String {
         val attribute = attribute(attKey)
         attribute ?: console().sendWarn("invalid-attribute", attKey)
         attribute ?: return "0.0"
-        return AttributePlaceHolder.get(attackerData, attribute, params)
+        return attackerData?.let { AttributePlaceHolder.get(it, attribute, params) } ?: "0.0"
     }
 
     fun defenderData(attKey: String, params: List<String>): String {
         val attribute = attribute(attKey)
         attribute ?: console().sendWarn("invalid-attribute", attKey)
         attribute ?: return "0.0"
-        return AttributePlaceHolder.get(defenderData, attribute, params)
+        return defenderData?.let { AttributePlaceHolder.get(it, attribute, params) } ?: "0.0"
     }
 }
