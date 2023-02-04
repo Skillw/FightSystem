@@ -32,7 +32,12 @@ internal object Attack {
     private fun Entity.cacheData(): FightData? =
         if (hasMetadata("ATTRIBUTE_SYSTEM_DATA")) getMetadata("ATTRIBUTE_SYSTEM_DATA")[0].value() as? FightData else null
 
+    fun LivingEntity.runAttack(defender: LivingEntity) {
+        
+    }
+
     @SubscribeEvent(priority = EventPriority.LOW)
+
     fun attack(event: EntityDamageByEntityEvent) {
         if (!isFightEnable) return
         //如果攻击原因不是 ENTITY_ATTACK 和 PROJECTILE 则跳过计算

@@ -8,7 +8,6 @@ import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.event.FightEvent
-import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import com.skillw.pouvoir.api.plugin.map.BaseMap
 import com.skillw.pouvoir.util.put
@@ -62,9 +61,10 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         val main = attacker.inventory.itemInMainHand
         val isCooldown = attacker.inCooldown(main)
 
+        FightSystem.debug("Attack Charge & Cooldown Checking Handling!")
         //在冷却 && 不能随时攻击 就取消
         if (!attackAnyTime && isCooldown) {
-            FSConfig.debug { FightSystem.debug("Cancelled because can't attack while cooldown time") }
+            FightSystem.debug("Cancelled because can't attack while cooldown time")
             event.isCancelled = true
             return
         }
@@ -79,7 +79,7 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         }
         event.isCancelled = (charge < minCharge).also {
             if (it)
-                FSConfig.debug { FightSystem.debug("Cancelled because charge value < minCharge $minCharge") }
+                FightSystem.debug("Cancelled because charge value < minCharge $minCharge")
         }
     }
 
@@ -91,6 +91,7 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         val attacker = event.fightData.attacker as? Player? ?: return
         val material = attacker.inventory.itemInMainHand.type
         if (disableTypes.contains(material)) return
+        FightSystem.debug("Attack Cooldown Handling!")
         attacker.cooldown(material, attacker.getAttribute(BukkitAttribute.ATTACK_SPEED)?.value ?: return)
     }
 

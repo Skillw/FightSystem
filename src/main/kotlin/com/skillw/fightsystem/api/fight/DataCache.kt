@@ -7,11 +7,10 @@ import com.skillw.attsystem.api.AttrAPI.hasData
 import com.skillw.attsystem.api.attribute.compound.AttributeDataCompound
 import com.skillw.attsystem.internal.feature.compat.pouvoir.AttributePlaceHolder
 import com.skillw.fightsystem.internal.manager.FSConfig
+import com.skillw.pouvoir.util.getDisplayName
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
 import taboolib.common.platform.function.console
 import taboolib.module.lang.sendWarn
-import taboolib.module.nms.getI18nName
 
 /**
  * @className DataCache
@@ -42,7 +41,7 @@ class DataCache(data: FightData? = null) {
         if (!entity.hasData())
             AttributeSystem.attributeSystemAPI.update(entity)
         attackerData = entity.getAttrData()!!.clone()
-        attackerName = (entity as? Player)?.displayName ?: entity.getI18nName()
+        attackerName = entity.getDisplayName()
         data ?: return this
         data!!["attacker"] = entity
         data!!["attacker-name"] = attackerName
@@ -54,7 +53,7 @@ class DataCache(data: FightData? = null) {
         if (!entity.hasData())
             AttributeSystem.attributeSystemAPI.update(entity)
         defenderData = entity.getAttrData()!!.clone()
-        defenderName = (entity as? Player)?.displayName ?: entity.getI18nName()
+        defenderName = entity.getDisplayName()
         data ?: return this
         data!!["defender"] = entity
         data!!["defender-name"] = defenderName

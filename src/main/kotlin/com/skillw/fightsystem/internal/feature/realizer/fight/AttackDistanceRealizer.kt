@@ -8,6 +8,7 @@ import com.skillw.attsystem.util.AntiCheatUtils
 import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute
 import com.skillw.fightsystem.FightSystem
+import com.skillw.fightsystem.FightSystem.debug
 import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.Pouvoir
@@ -101,6 +102,7 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
             val location = entity.eyeLocation
             ProxyParticle.SWEEP_ATTACK.sendTo(Location(player.world.name, location.x, location.y, location.z))
         }
+        debug("Distance Attack!")
         entity.damage(attackDamage.coerceAtLeast(1.0), player)
         AntiCheatUtils.recoverAntiCheat(player)
     }

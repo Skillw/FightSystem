@@ -62,8 +62,8 @@ taboolib {
     install("module-chat")
     install("module-nms")
     install("module-nms-util")
-    install("module-configuration")
     install("platform-bukkit")
+    install("module-configuration")
     install("module-metrics")
     install("module-lang")
     classifier = null
