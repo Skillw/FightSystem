@@ -45,7 +45,7 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
     private val attackAnyTime: Boolean
         get() = config["damage-any-time"].cbool
     private val damageCharged
-        get() = config["damage-charged"].cbool
+        get() = config["charged"].cbool
     private val chargeBasedCooldown: Boolean
         get() = config.getOrDefault("charge-based", "cooldown").toString().lowercase() == "cooldown"
     private val minCharge
