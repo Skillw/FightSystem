@@ -3,7 +3,6 @@ package com.skillw.fightsystem.api
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.FightSystem.fightGroupManager
 import com.skillw.fightsystem.api.fight.FightData
-import com.skillw.fightsystem.internal.feature.listener.fight.Attack
 import org.bukkit.entity.LivingEntity
 
 /**
@@ -15,11 +14,6 @@ import org.bukkit.entity.LivingEntity
  */
 
 object FightAPI {
-
-    /** 跳过下次战斗组计算 */
-    fun skipNextDamageCal() {
-        Attack.nextAttackCal = true
-    }
 
 
     /**

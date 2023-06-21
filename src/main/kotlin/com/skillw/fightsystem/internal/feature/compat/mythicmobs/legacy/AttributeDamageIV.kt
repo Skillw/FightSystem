@@ -1,6 +1,5 @@
 package com.skillw.fightsystem.internal.feature.compat.mythicmobs.legacy
 
-import com.skillw.fightsystem.api.FightAPI.skipNextDamageCal
 import com.skillw.fightsystem.api.fight.DataCache
 import com.skillw.fightsystem.api.fight.FightData
 import io.lumine.xikage.mythicmobs.adapters.AbstractEntity
@@ -41,7 +40,6 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
                 }
             }
             val damage = com.skillw.fightsystem.api.FightAPI.runFight(key.get(data, targetAE), fightData)
-            skipNextDamageCal()
             doDamage(data.caster, targetAE, damage)
             MythicLogger.debug(
                 MythicLogger.DebugLevel.MECHANIC,
