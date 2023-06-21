@@ -67,7 +67,7 @@ taboolib {
     install("module-metrics")
     install("module-lang")
     classifier = null
-    version = "6.0.10-71"
+    version = "6.0.11-13"
 }
 
 repositories {
@@ -75,8 +75,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("ink.ptms.core:v11901:11901-minimize:mapped")
     compileOnly("ink.ptms:nms-all:1.0.0")
+    compileOnly("ink.ptms.core:v11901:11901-minimize:mapped")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }
