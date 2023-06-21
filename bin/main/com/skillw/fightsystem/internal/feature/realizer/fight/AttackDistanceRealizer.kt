@@ -10,7 +10,6 @@ import com.skillw.attsystem.util.BukkitAttribute
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.FightSystem.debug
 import com.skillw.fightsystem.api.event.FightEvent
-import com.skillw.fightsystem.internal.feature.realizer.fight.AttackCooldownRealizer.pullProcess
 import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.Pouvoir
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
@@ -98,21 +97,13 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
     private fun distanceDamage(player: Player, entity: LivingEntity) {
         AntiCheatUtils.bypassAntiCheat(player)
         val attackDamage = player.getAttribute(BukkitAttribute.ATTACK_DAMAGE)?.value ?: 0.0
-        val force = when {
-            //如果无视攻击速度，可以随时攻击，并开启近战蓄力
-            AttackCooldownRealizer.chargeBasedCooldown -> {
-                player.pullProcess(player.inventory.itemInMainHand.type)
-            }
-
-            else -> 1.0
-        }
         if (isDistanceSound) XSound.ENTITY_PLAYER_ATTACK_SWEEP.play(entity, 1.0f, 1.0f)
         if (isDistanceEffect) {
             val location = entity.eyeLocation
             ProxyParticle.SWEEP_ATTACK.sendTo(Location(player.world.name, location.x, location.y, location.z))
         }
         debug("Distance Attack!")
-        entity.damage(attackDamage.coerceAtLeast(1.0) * force, player)
+        entity.damage(attackDamage.coerceAtLeast(1.0), player)
         AntiCheatUtils.recoverAntiCheat(player)
     }
 

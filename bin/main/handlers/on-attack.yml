@@ -1,0 +1,22 @@
+on-attack:
+  triggers: [ after entity fight ]
+  namespaces: [ bukkit, fightsystem ]
+  condition: "condition @event hasAttacker; and @event hasDefender"
+  context:
+    attacker: "@event attacker"
+    defender: "@event defender"
+    attackerData: "attr data of &attacker"
+    defenderData: "attr data of &defender"
+    data: "@event fightData"
+  functions:
+    main: |-
+      set magicDamage to &attackerData.法术伤害.value
+      if check &magicDamage <= 0 then exit
+      fight_data of &data damage type Magic; put 'my_additional_damage' + &magicDamage 
+      potion add SPEED { duration = 15s } to &attacker
+      potion take SPEED { duration = 14s } to &attacker
+      particle REDSTONE at @defender eyeLocation; { 
+        'range' = 100
+        count = 1000
+        'data' = particleData dust [ color [ 255 255 235 ] in 1.0 ]
+      }

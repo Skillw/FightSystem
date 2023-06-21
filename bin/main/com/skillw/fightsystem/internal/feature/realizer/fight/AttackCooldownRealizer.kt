@@ -19,7 +19,6 @@ import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityShootBowEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.metadata.FixedMetadataValue
-import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common5.cbool
 import taboolib.common5.cdouble
@@ -47,7 +46,7 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         get() = config["damage-any-time"].cbool
     private val damageCharged
         get() = config["charged"].cbool
-    internal val chargeBasedCooldown: Boolean
+    private val chargeBasedCooldown: Boolean
         get() = config.getOrDefault("charge-based", "cooldown").toString().lowercase() == "cooldown"
     private val minCharge
         get() = config.getOrDefault("min-charge", 0.05).cdouble
@@ -84,7 +83,7 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         }
     }
 
-    @SubscribeEvent(EventPriority.HIGHEST)
+    @SubscribeEvent
     fun cooldown(event: FightEvent.Post) {
         if (!enableCooldown) return
         if (event.key != "attack-damage") return
@@ -104,9 +103,7 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
     private fun Player.damageCharged(main: ItemStack, event: EntityDamageByEntityEvent): Double? {
         if (!damageCharged) return null
         return if (chargeBasedCooldown)
-            pullProcess(main.type).also {
-                cooldown(main.type, getAttribute(BukkitAttribute.ATTACK_SPEED)?.value ?: return@also)
-            }
+            pullProcess(main.type)
         else
             getAttribute(BukkitAttribute.ATTACK_DAMAGE)?.value?.let { damage ->
                 event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE) / damage
@@ -161,7 +158,7 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         val start = System.currentTimeMillis()
     }
 
-    internal fun Player.pullProcess(material: Material): Double {
+    private fun Player.pullProcess(material: Material): Double {
         val key = uniqueId
         if (!cooldownData.containsKey(key) || !cooldownData[key]!!.containsKey(material)) return 1.0
         val (total, start) = cooldownData[key]?.get(material)?.run { total to start } ?: return 1.0
