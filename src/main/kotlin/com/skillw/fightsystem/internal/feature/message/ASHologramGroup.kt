@@ -42,7 +42,8 @@ class ASHologramGroup(
             .content(texts.colored().toMutableList())
             .stay(stay)
             .animation(time, location.clone().add(endLocation))
-            .viewers(*players).build()
+            .viewers(*players)
+            .build()
     }
 
     override fun plus(message: Message, type: Message.Type): Message {

@@ -18,13 +18,13 @@ class ASTitle(
     }
 
     private fun appendTitle(title: StringBuilder, type: Message.Type): ASTitle {
-        if (title.toString() != "null")
+        if (!this.title.toString().contains("null") && !title.toString().contains("null"))
             this.title.append(separator(type)).append(title)
         return this
     }
 
     private fun appendSubtitle(subTitle: StringBuilder, type: Message.Type): ASTitle {
-        if (subTitle.toString() != "null")
+        if (!this.subTitle.toString().contains("null") && !subTitle.toString().contains("null"))
             this.subTitle.append(separator(type)).append(subTitle)
         return this
     }
