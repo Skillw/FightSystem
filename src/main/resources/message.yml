@@ -41,7 +41,7 @@ fight-message:
   title:
     attack:
       title: "{message}"
-      sub-title: "{mess]age}"
+      sub-title: "{message}"
       separator: "&5|"
     defend:
       title: "{message}"
