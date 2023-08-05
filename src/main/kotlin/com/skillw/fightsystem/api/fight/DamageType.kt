@@ -26,7 +26,7 @@ class DamageType(override val key: String, val name: String, messages: Map<Strin
     }
 
     override fun serialize(): MutableMap<String, Any> {
-        return mutableMapOf("display" to this.map)
+        return mutableMapOf("display" to this)
     }
 
     /**

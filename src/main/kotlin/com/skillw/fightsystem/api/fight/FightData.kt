@@ -6,7 +6,7 @@ import com.skillw.asahi.api.member.context.AsahiContext
 import com.skillw.asahi.api.member.namespace.NamespaceContainer
 import com.skillw.asahi.api.member.namespace.NamespaceHolder
 import com.skillw.attsystem.api.attribute.compound.AttributeDataCompound
-import com.skillw.attsystem.api.operation.OperationElement
+import com.skillw.attsystem.api.read.operation.OperationElement
 import com.skillw.attsystem.internal.feature.compat.pouvoir.AttributePlaceHolder
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.fight.message.MessageData

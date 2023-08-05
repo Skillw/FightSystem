@@ -42,12 +42,12 @@ abstract class PersonalManager : KeyMap<UUID, PersonalData>(), Manager {
 
     companion object {
         internal fun Player.pushData() {
-            com.skillw.fightsystem.FightSystem.personalManager.pushData(this)
+            FightSystem.personalManager.pushData(this)
         }
 
         internal fun Player.pullData(): PersonalData? =
-            com.skillw.fightsystem.FightSystem.personalManager.pullData(this)
+            FightSystem.personalManager.pullData(this)
 
-        internal fun Player.hasData(): Boolean = com.skillw.fightsystem.FightSystem.personalManager.hasData(this)
+        internal fun Player.hasData(): Boolean = FightSystem.personalManager.hasData(this)
     }
 }

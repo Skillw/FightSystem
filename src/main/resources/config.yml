@@ -3,8 +3,8 @@ options:
   #生命值缩放
   fight:
     enable: true
-    #原版弓弩伤害是否会按攻击者射箭时的属性计算 而非射中时的属性
-    arrow-cache-data: true
+    #原版抛射物伤害是否会按攻击者射箭时的属性计算 而非射中时的属性
+    projectile-cache-data: true
     #是否进行非玩家实体间的战斗计算
     eve-fight-cal: true
     vanilla-armor: true

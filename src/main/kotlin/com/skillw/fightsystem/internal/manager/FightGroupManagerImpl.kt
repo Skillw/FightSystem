@@ -1,6 +1,7 @@
 package com.skillw.fightsystem.internal.manager
 
 import com.skillw.fightsystem.FightSystem
+import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.api.fight.message.MessageData
 import com.skillw.fightsystem.api.manager.FightGroupManager
@@ -49,18 +50,18 @@ object FightGroupManagerImpl : FightGroupManager() {
         val messageData = MessageData()
         return mirrorNow("fight-$key-cal") {
 
-            val pre = com.skillw.fightsystem.api.event.FightEvent.Pre(key, fightData)
-            pre.call()
-            if (pre.isCancelled) return@mirrorNow -0.1
+            val before = FightEvent.Pre(key, fightData)
+            before.call()
+            if (before.isCancelled) return@mirrorNow -0.1
 
-            var eventFightData = pre.fightData
+            var eventFightData = before.fightData
             val result = FightSystem.fightGroupManager[key]!!.run(eventFightData)
 
-            val process = com.skillw.fightsystem.api.event.FightEvent.Process(key, eventFightData)
+            val process = FightEvent.Process(key, eventFightData)
             process.call()
 
             eventFightData = process.fightData
-            val post = com.skillw.fightsystem.api.event.FightEvent.Post(key, eventFightData)
+            val post = FightEvent.Post(key, eventFightData)
             post.call()
 
             eventFightData = post.fightData

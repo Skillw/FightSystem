@@ -24,8 +24,8 @@ class PersonalData(override val key: UUID) : Registrable<UUID> {
 
     companion object {
         @JvmStatic
-        fun fromJson(json: String, uuid: UUID): PersonalData? {
-            val array = json.split(";")
+        fun fromStr(str: String, uuid: UUID): PersonalData? {
+            val array = str.split(";")
             if (array.isEmpty() || array.size < 3) return null
             val personalData = PersonalData(uuid)
             personalData.attacking = array[0]
@@ -40,6 +40,6 @@ class PersonalData(override val key: UUID) : Registrable<UUID> {
     }
 
     override fun register() {
-        com.skillw.fightsystem.FightSystem.personalManager.register(this)
+        FightSystem.personalManager.register(this)
     }
 }

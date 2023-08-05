@@ -1,16 +1,15 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
 import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.sub.Awakeable
-import com.skillw.attsystem.api.realizer.component.sub.Switchable
-import com.skillw.attsystem.api.realizer.component.sub.Valuable
+import com.skillw.attsystem.api.realizer.component.Awakeable
+import com.skillw.attsystem.api.realizer.component.Switchable
+import com.skillw.attsystem.api.realizer.component.Valuable
 import com.skillw.fightsystem.FightSystem
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.submit
-import taboolib.platform.util.attacker
 
 @AutoRegister
 internal object NoDamageTicksRealizer : BaseRealizer("no-damage-ticks"), Awakeable, Switchable, Valuable {
@@ -36,7 +35,6 @@ internal object NoDamageTicksRealizer : BaseRealizer("no-damage-ticks"), Awakeab
 
     @SubscribeEvent
     fun damage(event: EntityDamageByEntityEvent) {
-        event.attacker?.noDamageTicks()
         (event.entity as? LivingEntity)?.noDamageTicks()
     }
 

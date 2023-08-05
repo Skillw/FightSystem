@@ -1,9 +1,9 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
 import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.sub.Switchable
-import com.skillw.attsystem.api.realizer.component.sub.Valuable
-import com.skillw.attsystem.api.realizer.component.sub.Vanillable
+import com.skillw.attsystem.api.realizer.component.Switchable
+import com.skillw.attsystem.api.realizer.component.Valuable
+import com.skillw.attsystem.api.realizer.component.Vanillable
 import com.skillw.attsystem.util.AntiCheatUtils
 import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute
@@ -31,6 +31,7 @@ import taboolib.common.util.sync
 import taboolib.common5.cbool
 import taboolib.common5.cdouble
 import taboolib.library.xseries.XSound
+import taboolib.platform.util.getMeta
 
 @AutoRegister
 internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switchable, Vanillable, Valuable {
@@ -67,10 +68,11 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
     @SubscribeEvent
     fun cancelIfTooDistant(event: FightEvent.Pre) {
         if (event.key != "attack-damage") return
-        if (event.fightData["projectile"] == false) return
+        if (event.fightData["projectile"].cbool) return
         val attacker = event.fightData.attacker as? Player? ?: return
         val defender = event.fightData.defender ?: return
-        val distanceAtt = AttackDistanceRealizer.value(attacker)
+        if (attacker.getMeta("doing-skill-damage").firstOrNull()?.asBoolean() == true) return
+        val distanceAtt = value(attacker)
         val distance =
             minOf(defender.location.distance(attacker.eyeLocation), defender.eyeLocation.distance(attacker.eyeLocation))
         //不满足攻击距离，则取消伤害并跳过计算

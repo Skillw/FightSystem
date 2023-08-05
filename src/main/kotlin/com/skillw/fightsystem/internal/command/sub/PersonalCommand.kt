@@ -36,7 +36,7 @@ object PersonalCommand {
                 }
                 execute<Player> { sender, context, argument ->
                     if (!FSConfig.isPersonalEnable) return@execute
-                    val data = com.skillw.fightsystem.FightSystem.personalManager[sender.uniqueId]!!
+                    val data = FightSystem.personalManager[sender.uniqueId]!!
                     val type = context.argument(-1)
                     var typeMessage: String
                     when (type) {

@@ -1,6 +1,5 @@
 package com.skillw.fightsystem.internal.manager
 
-import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.manager.PersonalManager
 import com.skillw.fightsystem.internal.feature.personal.PersonalData
 import com.skillw.pouvoir.api.script.ScriptTool
@@ -46,7 +45,7 @@ object PersonalManagerImpl : PersonalManager() {
     override fun pullData(player: Player): PersonalData? {
         val name = player.name
         return if (enable)
-            PersonalData.fromJson(PouvoirContainer.container[name, "personal-data"] ?: return null, player.uniqueId)
+            PersonalData.fromStr(PouvoirContainer.container[name, "personal-data"] ?: return null, player.uniqueId)
         else PersonalData(player.uniqueId)
     }
 

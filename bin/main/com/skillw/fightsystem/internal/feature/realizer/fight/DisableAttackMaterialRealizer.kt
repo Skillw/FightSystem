@@ -1,7 +1,7 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
 import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.sub.Awakeable
+import com.skillw.attsystem.api.realizer.component.Awakeable
 import com.skillw.attsystem.util.StringUtils.material
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.event.FightEvent

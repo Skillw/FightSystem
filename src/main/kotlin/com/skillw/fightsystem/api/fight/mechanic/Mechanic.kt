@@ -45,8 +45,9 @@ abstract class Mechanic(override val key: String) :
         context: Map<String, Any>,
         damageType: com.skillw.fightsystem.api.fight.DamageType,
     ): Any? {
-        val pre = com.skillw.fightsystem.api.event.MechanicRunEvent.Pre(this, fightData, context, damageType, null)
-        if (pre.isCancelled) return null
+        val before =
+            com.skillw.fightsystem.api.event.MechanicRunEvent.Pre(this, fightData, context, damageType, null)
+        if (before.isCancelled) return null
         val result = exec(fightData, context, damageType)
         val post =
             com.skillw.fightsystem.api.event.MechanicRunEvent.Post(this, fightData, context, damageType, result)

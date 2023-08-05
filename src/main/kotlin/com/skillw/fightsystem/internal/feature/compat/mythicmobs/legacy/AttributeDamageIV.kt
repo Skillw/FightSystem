@@ -10,6 +10,8 @@ import io.lumine.xikage.mythicmobs.skills.SkillMetadata
 import io.lumine.xikage.mythicmobs.skills.mechanics.DamageMechanic
 import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderString
 import org.bukkit.entity.LivingEntity
+import taboolib.common.platform.function.isPrimaryThread
+import taboolib.common.util.sync
 
 /**
  * @className AttributeDamageIV
@@ -40,7 +42,8 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
                 }
             }
             val damage = com.skillw.fightsystem.api.FightAPI.runFight(key.get(data, targetAE), fightData)
-            doDamage(data.caster, targetAE, damage)
+            if (!isPrimaryThread) sync { doDamage(data.caster, targetAE, damage) }
+            else doDamage(data.caster, targetAE, damage)
             MythicLogger.debug(
                 MythicLogger.DebugLevel.MECHANIC,
                 "+ AttributeDamageMechanic fired for {0} with {1} power",

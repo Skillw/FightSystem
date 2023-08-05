@@ -1,24 +1,21 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
-import com.skillw.attsystem.AttributeSystem
 import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.sub.Awakeable
-import com.skillw.attsystem.api.realizer.component.sub.Switchable
+import com.skillw.attsystem.api.realizer.component.Awakeable
+import com.skillw.attsystem.api.realizer.component.Switchable
 import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.event.FightEvent
+import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.projectileCharged
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import com.skillw.pouvoir.api.plugin.map.BaseMap
 import com.skillw.pouvoir.util.put
 import org.bukkit.Material
-import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.entity.EntityShootBowEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.metadata.FixedMetadataValue
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common5.cbool
@@ -28,8 +25,6 @@ import java.util.*
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-
-private const val CHARGE_KEY = "ATTRIBUTE_SYSTEM_FORCE"
 
 @AutoRegister
 internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switchable, Awakeable {
@@ -53,6 +48,8 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         get() = config.getOrDefault("min-charge", 0.05).cdouble
 
     private val disableTypes = HashSet<Material>()
+
+    const val CHARGE_KEY = "ATTRIBUTE_SYSTEM_FORCE"
 
     @SubscribeEvent
     fun damageCharged(event: FightEvent.Pre) {
@@ -94,11 +91,6 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         if (disableTypes.contains(material)) return
         FightSystem.debug("Attack Cooldown Handling!")
         attacker.cooldown(material, attacker.getAttribute(BukkitAttribute.ATTACK_SPEED)?.value ?: return)
-    }
-
-    @SubscribeEvent
-    fun chargeAddition(event: EntityShootBowEvent) {
-        event.projectile.setMetadata(CHARGE_KEY, FixedMetadataValue(AttributeSystem.plugin, event.force))
     }
 
     private fun Player.damageCharged(main: ItemStack, event: EntityDamageByEntityEvent): Double? {
@@ -183,6 +175,3 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
     }
 
 }
-
-fun Entity.projectileCharged(): Double? =
-    if (hasMetadata(CHARGE_KEY)) getMetadata(CHARGE_KEY)[0].asDouble() else null

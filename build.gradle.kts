@@ -2,15 +2,15 @@ plugins {
     java
     `maven-publish`
     signing
-    id("io.izzel.taboolib") version "1.55"
+    id("io.izzel.taboolib") version "1.56"
     id("org.jetbrains.kotlin.jvm") version "1.7.20"
     id("org.jetbrains.dokka") version "1.7.20"
 }
 
 tasks.dokkaJavadoc.configure {
     outputDirectory.set(File("C:\\Users\\Administrator\\Desktop\\Doc\\fightsystem"))
-    suppressObviousFunctions.set(false)
     suppressInheritedMembers.set(true)
+    suppressObviousFunctions.set(false)
 }
 
 tasks.javadoc {
@@ -62,12 +62,12 @@ taboolib {
     install("module-chat")
     install("module-nms")
     install("module-nms-util")
-    install("platform-bukkit")
     install("module-configuration")
+    install("platform-bukkit")
     install("module-metrics")
     install("module-lang")
     classifier = null
-    version = "6.0.11-13"
+    version = "6.0.11-31"
 }
 
 repositories {
@@ -83,6 +83,9 @@ dependencies {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+}
+tasks.withType<Jar> {
+    destinationDir = file("E:/Minecraft/Server/1.12.2 paper/plugins")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -102,7 +105,9 @@ java {
     withSourcesJar()
 }
 
-
+tasks.withType<Jar> {
+    destinationDir = file("E:/Minecraft/Server/1.12.2 paper/plugins")
+}
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8

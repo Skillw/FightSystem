@@ -47,10 +47,10 @@ class FightGroup constructor(
             val type = damageTypes[index]
             debugLang("fight-info-damage-type", type.name)
             var fightData = FightData(originData)
-            val pre = DamageTypeRunEvent.Pre(type, fightData, false)
-            pre.call()
-            fightData = pre.fightData
-            if (!(this[type]!!.run(fightData) || pre.enable)) continue
+            val before = DamageTypeRunEvent.Pre(type, fightData, false)
+            before.call()
+            fightData = before.fightData
+            if (!(this[type]!!.run(fightData) || before.enable)) continue
             val post = DamageTypeRunEvent.Post(type, fightData)
             post.call()
             fightData = post.fightData

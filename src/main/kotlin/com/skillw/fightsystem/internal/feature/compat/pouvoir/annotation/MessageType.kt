@@ -36,12 +36,12 @@ internal object MessageType : ScriptAnnotation("MessageType", fileAnnotation = t
             override val key: String = key
 
             override fun build(
-                damageType: com.skillw.fightsystem.api.fight.DamageType,
+                damageType: DamageType,
                 fightData: FightData,
                 first: Boolean,
                 type: Message.Type,
             ): Message {
-                return messageCache.map.getOrPut(key) {
+                return messageCache.computeIfAbsent(key) {
                     object : Message {
                         override val fightData: FightData = fightData
 
@@ -63,8 +63,8 @@ internal object MessageType : ScriptAnnotation("MessageType", fileAnnotation = t
         FSConfig.debug { console().sendLang("annotation-message-type-register", key) }
         script.onDeleted("MessageType-$key") {
             FSConfig.debug { console().sendLang("annotation-message-type-unregister", key) }
-            com.skillw.fightsystem.FightSystem.messageBuilderManager.attack.remove(key)
-            com.skillw.fightsystem.FightSystem.messageBuilderManager.defend.remove(key)
+            FightSystem.messageBuilderManager.attack.remove(key)
+            FightSystem.messageBuilderManager.defend.remove(key)
         }
     }
 }
