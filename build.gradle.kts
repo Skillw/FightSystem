@@ -8,7 +8,7 @@ plugins {
 }
 
 tasks.dokkaJavadoc.configure {
-    outputDirectory.set(File("C:\\Users\\Administrator\\Desktop\\Doc\\fightsystem"))
+    outputDirectory.set(File("E:\\code\\git\\Javadoc\\fightsystem"))
     suppressInheritedMembers.set(true)
     suppressObviousFunctions.set(false)
 }
@@ -84,9 +84,9 @@ dependencies {
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
-tasks.withType<Jar> {
-    destinationDir = file("E:/Minecraft/Server/1.12.2 paper/plugins")
-}
+//tasks.withType<Jar> {
+//    destinationDir = file("E:/Minecraft/Server/1.12.2 paper/plugins")
+//}
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
@@ -105,9 +105,9 @@ java {
     withSourcesJar()
 }
 
-tasks.withType<Jar> {
-    destinationDir = file("E:/Minecraft/Server/1.12.2 paper/plugins")
-}
+//tasks.withType<Jar> {
+//    destinationDir = file("E:/Minecraft/Server/1.12.2 paper/plugins")
+//}
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
