@@ -9,10 +9,12 @@ import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.FightSystem.debug
+import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.fightsystem.internal.feature.realizer.fight.AttackCooldownRealizer.chargeBasedCooldown
 import com.skillw.fightsystem.internal.feature.realizer.fight.AttackCooldownRealizer.pullProcess
 import com.skillw.fightsystem.internal.manager.FSConfig
+import com.skillw.fightsystem.util.syncRun
 import com.skillw.pouvoir.Pouvoir
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import com.skillw.pouvoir.util.getEntityRayHit
@@ -23,15 +25,12 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import taboolib.common.platform.ProxyParticle
 import taboolib.common.platform.event.SubscribeEvent
-import taboolib.common.platform.function.isPrimaryThread
 import taboolib.common.platform.function.submitAsync
 import taboolib.common.platform.sendTo
 import taboolib.common.util.Location
-import taboolib.common.util.sync
 import taboolib.common5.cbool
 import taboolib.common5.cdouble
 import taboolib.library.xseries.XSound
-import taboolib.platform.util.getMeta
 
 @AutoRegister
 internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switchable, Vanillable, Valuable {
@@ -71,7 +70,7 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
         if (event.fightData["projectile"].cbool) return
         val attacker = event.fightData.attacker as? Player? ?: return
         val defender = event.fightData.defender ?: return
-        if (attacker.getMeta("doing-skill-damage").firstOrNull()?.asBoolean() == true) return
+        if (FightAPI.filters.any { it(attacker, defender) }) return
         val distanceAtt = value(attacker)
         val distance =
             minOf(defender.location.distance(attacker.eyeLocation), defender.eyeLocation.distance(attacker.eyeLocation))
@@ -119,7 +118,7 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
         val attackDistance = AttackDistanceRealizer.value(player)
         val entity = player.getEntityRayHit(attackDistance) as? LivingEntity? ?: return
         if (entity.location.distance(player.eyeLocation) <= player.defaultAttackDistance) return
-        if (isPrimaryThread) distanceDamage(player, entity) else sync { distanceDamage(player, entity) }
+        syncRun { distanceDamage(player, entity) }
     }
 
 }

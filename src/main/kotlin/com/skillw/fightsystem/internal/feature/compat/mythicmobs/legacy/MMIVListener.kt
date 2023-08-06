@@ -1,10 +1,22 @@
 package com.skillw.fightsystem.internal.feature.compat.mythicmobs.legacy
 
+import com.skillw.fightsystem.api.FightAPI
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent
+import taboolib.common.LifeCycle
+import taboolib.common.platform.Awake
 import taboolib.common.platform.Ghost
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.platform.util.hasMeta
 
 internal object MMIVListener {
+
+    @Awake(LifeCycle.ENABLE)
+    fun ignore() {
+        FightAPI.addIgnoreAttack { attacker, _ ->
+            attacker.hasMeta("doing-skill-damage")
+        }
+    }
+
     @Ghost
     @SubscribeEvent
     fun onMythicMechanicLoad(event: MythicMechanicLoadEvent) {

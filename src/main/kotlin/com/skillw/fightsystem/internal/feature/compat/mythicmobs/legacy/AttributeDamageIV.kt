@@ -2,6 +2,7 @@ package com.skillw.fightsystem.internal.feature.compat.mythicmobs.legacy
 
 import com.skillw.fightsystem.api.fight.DataCache
 import com.skillw.fightsystem.api.fight.FightData
+import com.skillw.fightsystem.util.syncRun
 import io.lumine.xikage.mythicmobs.adapters.AbstractEntity
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
 import io.lumine.xikage.mythicmobs.logging.MythicLogger
@@ -10,8 +11,6 @@ import io.lumine.xikage.mythicmobs.skills.SkillMetadata
 import io.lumine.xikage.mythicmobs.skills.mechanics.DamageMechanic
 import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderString
 import org.bukkit.entity.LivingEntity
-import taboolib.common.platform.function.isPrimaryThread
-import taboolib.common.util.sync
 
 /**
  * @className AttributeDamageIV
@@ -41,9 +40,9 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
                     it[entry.key] = entry.value
                 }
             }
-            val damage = com.skillw.fightsystem.api.FightAPI.runFight(key.get(data, targetAE), fightData)
-            if (!isPrimaryThread) sync { doDamage(data.caster, targetAE, damage) }
-            else doDamage(data.caster, targetAE, damage)
+            val damage =
+                com.skillw.fightsystem.api.FightAPI.runFight(key.get(data, targetAE), fightData, damage = false)
+            syncRun { doDamage(data.caster, targetAE, damage) }
             MythicLogger.debug(
                 MythicLogger.DebugLevel.MECHANIC,
                 "+ AttributeDamageMechanic fired for {0} with {1} power",

@@ -15,6 +15,12 @@ import org.bukkit.entity.LivingEntity
 
 object FightAPI {
 
+    internal val filters = HashSet<(LivingEntity, LivingEntity) -> Boolean>()
+
+    fun addIgnoreAttack(filter: (LivingEntity, LivingEntity) -> Boolean) {
+        filters += filter
+    }
+
 
     /**
      * Entity attack cal
@@ -23,8 +29,8 @@ object FightAPI {
      * @param data
      * @return
      */
-    fun runFight(key: String, data: FightData, message: Boolean = true): Double {
-        return fightGroupManager.runFight(key, data, message)
+    fun runFight(key: String, data: FightData, message: Boolean = true, damage: Boolean = true): Double {
+        return fightGroupManager.runFight(key, data, message, damage)
     }
 
     /**

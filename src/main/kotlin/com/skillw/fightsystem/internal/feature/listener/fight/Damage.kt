@@ -23,7 +23,7 @@ internal object Damage {
         val data = FightData(attacker, defender) {
             it["origin"] = event.damage; it["event"] = event
         }
-        val result = com.skillw.fightsystem.api.FightAPI.runFight(key, data)
+        val result = com.skillw.fightsystem.api.FightAPI.runFight(key, data, damage = false)
         if (result > 0.0) {
             if (!FSConfig.isVanillaArmor && attacker?.type != EntityType.ARMOR_STAND) {
                 event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0)

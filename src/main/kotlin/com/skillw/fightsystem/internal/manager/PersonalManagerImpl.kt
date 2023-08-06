@@ -23,17 +23,19 @@ object PersonalManagerImpl : PersonalManager() {
     }
 
     override fun get(key: UUID): PersonalData {
-        if (!this.containsKey(key)) {
+        if (super.get(key) == null) {
             this[key] = PersonalData(key)
         }
-        if (!enable) {
-            if (super.get(key)!!.default) {
-                return super.get(key)!!
-            } else if (this.containsKey(key)) {
-                super.get(key)!!.default()
-            }
-        }
-        return super.get(key)!!
+        return if (!enable) {
+            super.get(key)?.run {
+                if (default) {
+                    this
+                } else {
+                    default()
+                    this
+                }
+            }!!
+        } else super.get(key)!!
     }
 
     override fun pushData(player: Player) {

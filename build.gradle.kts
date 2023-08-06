@@ -32,7 +32,6 @@ task("versionAddAPI") {
     project.version = "$origin-api"
 }
 
-
 task("releaseName") {
     println(project.name + "-" + project.version)
 }

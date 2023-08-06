@@ -1,6 +1,7 @@
 package com.skillw.fightsystem.internal.feature.listener.fight
 
 import com.skillw.fightsystem.FightSystem
+import com.skillw.fightsystem.api.FightAPI.filters
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.projectileCache
 import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.projectileCharged
@@ -11,7 +12,6 @@ import com.skillw.fightsystem.internal.manager.FSConfig.eveFightCal
 import com.skillw.fightsystem.internal.manager.FSConfig.isFightEnable
 import com.skillw.fightsystem.internal.manager.FSConfig.projectileCache
 import com.skillw.pouvoir.util.isAlive
-import com.sucy.skill.api.skills.Skill
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -20,12 +20,8 @@ import org.bukkit.event.entity.EntityDamageEvent
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.platform.util.attacker
-import taboolib.platform.util.getMeta
 
 internal object Attack {
-    private val isSkillAPIDamage
-        get() = FSConfig.skillAPI && Skill.isSkillDamage()
-
 
     @SubscribeEvent(priority = EventPriority.LOW)
     fun attack(event: EntityDamageByEntityEvent) {
@@ -45,19 +41,13 @@ internal object Attack {
         //是否是EVE (非玩家 打 非玩家)                       如果关闭EVE计算则跳过计算
         if (attacker !is Player && defender !is Player && !eveFightCal) return
 
-        if (attacker.getMeta("doing-skill-damage").firstOrNull()?.asBoolean() == true) {
-            return
-        }
-
         //事件取消则跳过计算
         if (event.isCancelled) return
-
-        //是 SkillAPI 的伤害则跳过计算
-        if (isSkillAPIDamage) return
 
         //如果不是原版弓/弩攻击 则跳过计算
         if (isProjectile && event.damager.projectileCharged() == null) return
 
+        if (filters.any { it(attacker, defender) }) return
         //处理原版护甲
         if (!FSConfig.isVanillaArmor) {
             event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0)
@@ -89,7 +79,7 @@ internal object Attack {
             it["origin"] = originDamage
             it["event"] = event
             it["projectile"] = isProjectile.toString()
-        })
+        }, damage = false)
 
 
         //结果小于等于零，代表MISS 未命中

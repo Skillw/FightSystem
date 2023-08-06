@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Damageable
 import org.bukkit.entity.LivingEntity
 
-class AttDamage() : DamageAction() {
+class AttDamage : DamageAction() {
 
     private var fightKey: String? = null
 
@@ -23,7 +23,7 @@ class AttDamage() : DamageAction() {
         if (entity != null && entity is Damageable && !entity.isDead() && entity is LivingEntity && fightKey != null) {
             val mage = context.mage
             elementalDamage =
-                com.skillw.fightsystem.api.FightAPI.runFight(fightKey!!, FightData(mage.livingEntity!!, entity), true)
+                FightAPI.runFight(fightKey!!, FightData(mage.livingEntity!!, entity), true, damage = false)
             return super.perform(context)
         }
         return SpellResult.NO_TARGET

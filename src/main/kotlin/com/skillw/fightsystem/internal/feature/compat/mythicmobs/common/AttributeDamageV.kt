@@ -3,6 +3,7 @@ package com.skillw.fightsystem.internal.feature.compat.mythicmobs.common
 import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.fight.DataCache
 import com.skillw.fightsystem.api.fight.FightData
+import com.skillw.fightsystem.util.syncRun
 import io.lumine.mythic.api.adapters.AbstractEntity
 import io.lumine.mythic.api.config.MythicLineConfig
 import io.lumine.mythic.api.skills.SkillMetadata
@@ -10,8 +11,6 @@ import io.lumine.mythic.api.skills.SkillResult
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString
 import io.lumine.mythic.core.logging.MythicLogger
 import org.bukkit.entity.LivingEntity
-import taboolib.common.platform.function.isPrimaryThread
-import taboolib.common.util.sync
 
 /**
  * @className AttributeDamageV
@@ -42,9 +41,8 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
                     it[entry.key] = entry.value
                 }
             }
-            val damage = FightAPI.runFight(key.get(data, targetAE), fightData)
-            if (!isPrimaryThread) sync { doDamage(data, targetAE, damage) }
-            else doDamage(data, targetAE, damage)
+            val damage = FightAPI.runFight(key.get(data, targetAE), fightData, damage = false)
+            syncRun { doDamage(data, targetAE, damage) }
             MythicLogger.debug(
                 MythicLogger.DebugLevel.MECHANIC,
                 "+ AttributeDamageMechanic fired for {0} with {1} power",

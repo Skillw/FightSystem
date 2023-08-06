@@ -152,7 +152,7 @@ object FSConfig : ConfigManager(FightSystem) {
 
     @Awake(LifeCycle.ACTIVE)
     fun initSystem() {
-        submit {
+        submit(delay = 20) {
             val world = Bukkit.getWorlds().first()
             val entityA = world.spawnEntity(Location(world, 0.0, 255.0, 0.0), EntityType.ZOMBIE) as Zombie
             val entityB = world.spawnEntity(Location(world, 0.0, 255.0, 0.0), EntityType.ZOMBIE) as Zombie
