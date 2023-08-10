@@ -24,12 +24,12 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
-      - name: Decode
-        env:
-          KEY_RING_FILE: ${{secrets.SIGNING_SECRET_KEY_RING_FILE}}
-        run: |
-          echo "$KEY_RING_FILE" > ~/.gradle/secring.pgp.base64
-          base64 -d ~/.gradle/secring.pgp.base64 > ~/.gradle/secring.pgp
+      - name: Decode secret
+        uses: davidSchuppa/base64Secret-toFile-action@v1
+        with:
+          secret: ${{ secrets.SIGNING_SECRET_KEY_RING_FILE }}
+          filename: ~/.gradle/secring.pgp.base64
+          destination-path: ~/.gradle/secring.pgp
       # 发布到仓库
       - name: publish
         id: publish_1
