@@ -27,8 +27,11 @@ jobs:
       - name: Decode
         run: |
           echo "${{ secrets.SIGNING_SECRET_KEY_RING_FILE }}" > ~/.gradle/secring.pgp.base64
+      - name: lsfl
+        run: |
           ls -lR ~/.gradle/
-          base64 -d ~/.gradle/secring.pgp.base64 > ~/.gradle/secring.pgp
+      - name: a
+        run: base64 -d ~/.gradle/secring.pgp.base64 > ~/.gradle/secring.pgp
       # 发布到仓库
       - name: publish
         id: publish_1
