@@ -11,6 +11,7 @@ import com.skillw.pouvoir.util.getDisplayName
 import org.bukkit.entity.LivingEntity
 import taboolib.common.platform.function.console
 import taboolib.module.lang.sendWarn
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @className DataCache
@@ -30,6 +31,7 @@ class DataCache(data: FightData? = null) {
     var defenderData: AttributeDataCompound? = null
     var attackerName: String = FSConfig.defaultAttackerName
     var defenderName: String = FSConfig.defaultDefenderName
+    val variables = ConcurrentHashMap<String, Any>()
 
     fun setData(other: DataCache) {
         other.attackerData?.let { attackerData = it }
@@ -72,5 +74,10 @@ class DataCache(data: FightData? = null) {
         attribute ?: console().sendWarn("invalid-attribute", attKey)
         attribute ?: return "0.0"
         return defenderData?.let { AttributePlaceHolder.get(it, attribute, params) } ?: "0.0"
+    }
+    
+    fun variables(vars: Map<String, Any>): DataCache {
+        variables.putAll(vars)
+        return this
     }
 }

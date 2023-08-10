@@ -3,13 +3,14 @@ package com.skillw.fightsystem.internal.feature.realizer.fight
 import com.skillw.attsystem.api.realizer.BaseRealizer
 import com.skillw.attsystem.api.realizer.component.Awakeable
 import com.skillw.attsystem.api.realizer.component.Switchable
-import com.skillw.attsystem.util.AttributeUtils.getAttribute
-import com.skillw.attsystem.util.BukkitAttribute
 import com.skillw.fightsystem.FightSystem
+import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.event.FightEvent
-import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.projectileCharged
+import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.charged
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import com.skillw.pouvoir.api.plugin.map.BaseMap
+import com.skillw.pouvoir.util.attribute.BukkitAttribute
+import com.skillw.pouvoir.util.attribute.getAttribute
 import com.skillw.pouvoir.util.put
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -55,6 +56,10 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
     fun damageCharged(event: FightEvent.Pre) {
         if (event.key != "attack-damage") return
         val attacker = event.fightData.attacker as? Player? ?: return
+        val defender = event.fightData.defender ?: return
+
+        if (FightAPI.filters.any { it(attacker, defender) }) return
+
 
         val main = attacker.inventory.itemInMainHand
         val isCooldown = attacker.inCooldown(main)
@@ -67,10 +72,10 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
             return
         }
 
-        val originEvent = event.fightData["event"] as EntityDamageByEntityEvent
+        val originEvent = event.fightData["event"] as? EntityDamageByEntityEvent ?: return
         //计算蓄力程度
         //  这个函数是获取 弓/弩 的蓄力程度，若返回null则代表不是抛射物攻击，进而进行近战时的蓄力计算
-        val charge = originEvent.damager.projectileCharged() ?: attacker.damageCharged(main, originEvent) ?: 1.0
+        val charge = originEvent.damager.charged() ?: attacker.damageCharged(main, originEvent) ?: 1.0
         event.fightData.let {
             it["force"] = charge
             it["charge"] = charge
@@ -87,6 +92,8 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         if (event.key != "attack-damage") return
         if (event.fightData["projectile"] == true) return
         val attacker = event.fightData.attacker as? Player? ?: return
+        val defender = event.fightData.defender ?: return
+        if (FightAPI.filters.any { it(attacker, defender) }) return
         val material = attacker.inventory.itemInMainHand.type
         if (disableTypes.contains(material)) return
         FightSystem.debug("Attack Cooldown Handling!")

@@ -9,7 +9,6 @@ import com.skillw.pouvoir.util.toMap
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import taboolib.common.platform.function.console
 import taboolib.module.lang.sendLang
-import java.util.*
 
 /**
  * Mechanic data
@@ -19,17 +18,17 @@ import java.util.*
  * @property enable 是否启用(字符串类型，会被解析)
  */
 class MechanicDataCompound private constructor(
-    override val key: com.skillw.fightsystem.api.fight.DamageType,
+    override val key: DamageType,
     val enable: String,
-) : Keyable<com.skillw.fightsystem.api.fight.DamageType>,
+) : Keyable<DamageType>,
     ConfigurationSerializable {
-    val process = LinkedList<MechanicData>()
+    val process = ArrayList<MechanicData>()
 
     companion object {
 
         @JvmStatic
         fun deserialize(section: org.bukkit.configuration.ConfigurationSection): MechanicDataCompound? {
-            val damageType = com.skillw.fightsystem.FightSystem.damageTypeManager[section.name]
+            val damageType = FightSystem.damageTypeManager[section.name]
             damageType ?: kotlin.run {
                 console().sendLang("invalid-damage-type", section.currentPath.toString())
                 return null
@@ -40,7 +39,7 @@ class MechanicDataCompound private constructor(
                 for (context in mechanics) {
                     context as? MutableMap<String, Any>? ?: continue
                     val key = context["mechanic"].toString()
-                    val machine = com.skillw.fightsystem.FightSystem.mechanicManager[key]
+                    val machine = FightSystem.mechanicManager[key]
                     if (machine == null) {
                         console().sendLang("invalid-mechanic", "${section.currentPath}.$key")
                         continue
@@ -51,7 +50,7 @@ class MechanicDataCompound private constructor(
             }
             for (key in section.getKeys(false)) {
                 if (key == "enable") continue
-                val machine = com.skillw.fightsystem.FightSystem.mechanicManager[key]
+                val machine = FightSystem.mechanicManager[key]
                 if (machine == null) {
                     console().sendLang("invalid-mechanic", "${section.currentPath}.$key")
                     continue

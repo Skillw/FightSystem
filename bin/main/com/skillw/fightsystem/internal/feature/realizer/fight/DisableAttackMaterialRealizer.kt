@@ -30,7 +30,7 @@ internal object DisableAttackMaterialRealizer : BaseRealizer("disable-attack-typ
     val values: List<String>
         get() = config.getOrDefault("values", emptyList<String>()) as List<String>
 
-    private val disableDamageTypes = LinkedList<Material>()
+    private val disableDamageTypes = ArrayList<Material>()
     override fun onEnable() {
         onReload()
     }

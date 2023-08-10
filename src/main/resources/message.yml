@@ -5,7 +5,7 @@ options:
     # CHAT 聊天框文本
     # HOLO 全息文本
     # DISABLE 关闭
-    attack: holo
+    attack: TITLE
     # ACTION_BAR ActionBar文本
     # CHAT 聊天框文本
     # DISABLE 关闭

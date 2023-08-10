@@ -2,15 +2,21 @@ package com.skillw.fightsystem.internal.feature.compat.mythicmobs.legacy
 
 import com.skillw.fightsystem.api.fight.DataCache
 import com.skillw.fightsystem.api.fight.FightData
-import com.skillw.fightsystem.util.syncRun
 import io.lumine.xikage.mythicmobs.adapters.AbstractEntity
+import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
 import io.lumine.xikage.mythicmobs.logging.MythicLogger
+import io.lumine.xikage.mythicmobs.mobs.GenericCaster
 import io.lumine.xikage.mythicmobs.skills.ITargetedEntitySkill
 import io.lumine.xikage.mythicmobs.skills.SkillMetadata
 import io.lumine.xikage.mythicmobs.skills.mechanics.DamageMechanic
 import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderString
+import org.bukkit.Bukkit
 import org.bukkit.entity.LivingEntity
+import taboolib.common.platform.function.submit
+import taboolib.platform.util.getMetaFirstOrNull
+import taboolib.platform.util.removeMeta
+import taboolib.platform.util.setMeta
 
 /**
  * @className AttributeDamageIV
@@ -23,26 +29,38 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
     val key: PlaceholderString = PlaceholderString.of(mlc.getString(arrayOf("key", "k"), "null"))
     val cache: PlaceholderString =
         PlaceholderString.of(config.getString(arrayOf("cache", "c"), "null"))
+    val attacker: PlaceholderString =
+        PlaceholderString.of(config.getString(arrayOf("attacker", "a"), "null"))
 
     override fun castAtEntity(data: SkillMetadata, targetAE: AbstractEntity): Boolean {
         val caster = data.caster.entity.bukkitEntity
         val target = targetAE.bukkitEntity
         val cacheKey = cache.get(data, targetAE)
-        val cache = if (cacheKey == "null") null else data.getMetadata(cacheKey)
-            .run { if (isPresent) get() else null } as? DataCache?
-        return if (caster is LivingEntity && target is LivingEntity && !target.isDead) {
-            val fightData = FightData(caster, target) {
+        val attackerName = attacker.get(data, targetAE)
+        val params = HashMap<String, Any>().apply {
+            config.entrySet().forEach { (key, value) ->
+                put(key, PlaceholderString.of(value).get(data, targetAE))
+            }
+        }
+        val cache = if (cacheKey == "null") null else (caster.getMetaFirstOrNull(cacheKey)?.value()
+            ?: target.getMetaFirstOrNull(cacheKey)?.value()) as? DataCache?
+        val attacker =
+            if (attackerName == "null") caster else Bukkit.getPlayer(attackerName) ?: return false
+        val origin = data.caster
+        data.caster = GenericCaster(BukkitAdapter.adapt(attacker))
+        return if (attacker is LivingEntity && target is LivingEntity && !target.isDead) {
+            val fightData = FightData(attacker, target) {
                 cache?.let { cacheData ->
                     it.cache.setData(cacheData)
                 }
                 it["power"] = data.power.toDouble()
-                config.entrySet().forEach { entry ->
-                    it[entry.key] = entry.value
-                }
+                it.putAll(params)
             }
+            target.setMeta("skill-damage", true)
             val damage =
                 com.skillw.fightsystem.api.FightAPI.runFight(key.get(data, targetAE), fightData, damage = false)
-            syncRun { doDamage(data.caster, targetAE, damage) }
+            target.removeMeta("skill-damage")
+            submit { doDamage(data.caster, targetAE, damage) }
             MythicLogger.debug(
                 MythicLogger.DebugLevel.MECHANIC,
                 "+ AttributeDamageMechanic fired for {0} with {1} power",
@@ -51,6 +69,8 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
             true
         } else {
             false
+        }.also {
+            data.caster = origin
         }
     }
 

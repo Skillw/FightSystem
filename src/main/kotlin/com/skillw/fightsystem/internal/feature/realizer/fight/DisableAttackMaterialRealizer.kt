@@ -13,7 +13,6 @@ import taboolib.common.platform.event.SubscribeEvent
 import taboolib.library.xseries.XMaterial
 import taboolib.module.nms.getName
 import taboolib.platform.util.sendLang
-import java.util.*
 
 /**
  * @className BaseAttributeRealizer
@@ -30,7 +29,7 @@ internal object DisableAttackMaterialRealizer : BaseRealizer("disable-attack-typ
     val values: List<String>
         get() = config.getOrDefault("values", emptyList<String>()) as List<String>
 
-    private val disableDamageTypes = LinkedList<Material>()
+    private val disableDamageTypes = HashSet<Material>()
     override fun onEnable() {
         onReload()
     }

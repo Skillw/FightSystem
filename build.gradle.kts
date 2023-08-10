@@ -1,3 +1,5 @@
+import java.net.URL
+
 plugins {
     java
     `maven-publish`
@@ -5,12 +7,28 @@ plugins {
     id("io.izzel.taboolib") version "1.56"
     id("org.jetbrains.kotlin.jvm") version "1.7.20"
     id("org.jetbrains.dokka") version "1.7.20"
+    id("io.codearte.nexus-staging") version "0.30.0"
 }
 
 tasks.dokkaJavadoc.configure {
-    outputDirectory.set(File("E:\\code\\git\\Javadoc\\fightsystem"))
     suppressInheritedMembers.set(true)
     suppressObviousFunctions.set(false)
+    dokkaSourceSets {
+        configureEach {
+            externalDocumentationLink {
+                url.set(URL("https://doc.skillw.com/pouvoir/"))
+            }
+            externalDocumentationLink {
+                url.set(URL("https://doc.skillw.com/attsystem/"))
+            }
+            externalDocumentationLink {
+                url.set(URL("https://docs.oracle.com/javase/8/docs/api/"))
+            }
+            externalDocumentationLink {
+                url.set(URL("https://doc.skillw.com/bukkit/"))
+            }
+        }
+    }
 }
 
 tasks.javadoc {
@@ -19,27 +37,14 @@ tasks.javadoc {
     }
 }
 
-val api: String? by project
 val order: String? by project
 
-task("versionModify") {
-    project.version = project.version.toString() + (order?.let { "-$it" } ?: "")
-}
-
-task("versionAddAPI") {
-    if (api == null) return@task
-    val origin = project.version.toString()
-    project.version = "$origin-api"
-}
-
-task("releaseName") {
+task("info") {
     println(project.name + "-" + project.version)
-}
-
-task("version") {
     println(project.version.toString())
 }
 taboolib {
+    project.version = project.version.toString() + (order?.let { "-$it" } ?: "")
     if (project.version.toString().contains("-api")) {
         options("skip-kotlin-relocate", "keep-kotlin-module")
     }
@@ -49,7 +54,7 @@ taboolib {
         }
         dependencies {
             name("Pouvoir")
-            name("AttributeSystem")
+            name("FightSystem")
             name("MythicMobs").optional(true)
             name("SkillAPI").optional(true)
             name("Magic").optional(true)
@@ -74,6 +79,9 @@ repositories {
 }
 
 dependencies {
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.7.20")
+//    compileOnly("me.deecaad:mechanicscore:2.4.9")
+//    compileOnly("me.deecaad:weaponmechanics:2.6.1")
     compileOnly("ink.ptms:nms-all:1.0.0")
     compileOnly("ink.ptms.core:v11901:11901-minimize:mapped")
     compileOnly(kotlin("stdlib"))
@@ -83,9 +91,6 @@ dependencies {
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
-//tasks.withType<Jar> {
-//    destinationDir = file("E:/Minecraft/Server/1.12.2 paper/plugins")
-//}
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
@@ -99,71 +104,93 @@ tasks.javadoc {
     }
 }
 
-java {
-//    withJavadocJar()
-    withSourcesJar()
+tasks.register<Jar>("buildAPIJar") {
+    dependsOn(tasks.compileJava, tasks.compileKotlin)
+    from(tasks.compileJava, tasks.compileKotlin)
+    includeEmptyDirs = false
+    include { it.isDirectory or it.name.endsWith(".class") or it.name.endsWith(".kotlin_module") }
+    archiveClassifier.set("api")
 }
 
-//tasks.withType<Jar> {
-//    destinationDir = file("E:/Minecraft/Server/1.12.2 paper/plugins")
-//}
+tasks.register<Jar>("buildJavadocJar") {
+    dependsOn(tasks.dokkaJavadoc)
+    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
+    archiveClassifier.set("javadoc")
+}
+
+tasks.register<Jar>("buildSourcesJar") {
+    dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+    archiveClassifier.set("sources")
+    from(sourceSets["main"].allSource)
+}
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-//publishing {
-//    repositories {
-//        maven {
-//            url = if (project.version.toString().contains("-SNAPSHOT")) {
-//                uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
-//            } else {
-//                uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-//            }
-//            credentials {
-//                username = project.findProperty("username").toString()
-//                password = project.findProperty("password").toString()
-//            }
-//            authentication {
-//                create<BasicAuthentication>("basic")
-//            }
-//        }
-//        mavenLocal()
-//    }
-//    publications {
-//        create<MavenPublication>("library") {
-//            from(components["java"])
-//            version = project.version.toString()
-//            groupId = project.group.toString()
-//            pom {
-//                name.set(project.name)
-//                description.set("Bukkit Fight System Plugin.")
-//                url.set("https://github.com/Glom-c/Pouvoir/")
-//
-//                licenses {
-//                    license {
-//                        name.set("MIT License")
-//                        url.set("https://github.com/Glom-c/FightSystem/blob/main/LICENSE")
-//                    }
-//                }
-//                developers {
-//                    developer {
-//                        id.set("Skillw")
-//                        name.set("Glom_")
-//                        email.set("glom@skillw.com")
-//                    }
-//                }
-//                scm {
-//                    connection.set("...")
-//                    developerConnection.set("...")
-//                    url.set("...")
-//                }
-//            }
-//        }
-//    }
-//}
-//
-//signing {
-//    sign(publishing.publications.getAt("library"))
-//}
+
+publishing {
+    repositories {
+        maven {
+            url = if (project.version.toString().contains("-SNAPSHOT")) {
+                uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
+            } else {
+                uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            }
+            credentials {
+                username = project.findProperty("username").toString()
+                password = project.findProperty("password").toString()
+            }
+            authentication {
+                create<BasicAuthentication>("basic")
+
+            }
+        }
+        mavenLocal()
+    }
+    publications {
+        create<MavenPublication>("library") {
+            artifact(tasks["buildAPIJar"]) { classifier = classifier?.replace("-api", "") }
+            artifact(tasks["buildJavadocJar"])
+            artifact(tasks["buildSourcesJar"])
+            version = project.version.toString()
+            groupId = project.group.toString()
+            pom {
+                name.set(project.name)
+                description.set("Bukkit Fight Engine Plugin.")
+                url.set("https://github.com/Glom-c/FightSystem/")
+
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://github.com/Glom-c/FightSystem/blob/main/LICENSE")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("Skillw")
+                        name.set("Glom_")
+                        email.set("glom@skillw.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git:https://github.com/Glom-c/FightSystem.git")
+                    developerConnection.set("scm:git:ssh:https://github.com/Glom-c/FightSystem.git")
+                    url.set("https://github.com/Glom-c/FightSystem.git")
+                }
+            }
+        }
+    }
+}
+
+nexusStaging {
+    serverUrl = "https://s01.oss.sonatype.org/service/local/"
+    username = project.findProperty("username").toString()
+    password = project.findProperty("password").toString()
+    packageGroup = "com.skillw"
+}
+
+signing {
+    sign(publishing.publications.getAt("library"))
+}

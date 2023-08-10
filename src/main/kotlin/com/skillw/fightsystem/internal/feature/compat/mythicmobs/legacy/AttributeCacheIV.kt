@@ -9,6 +9,8 @@ import io.lumine.xikage.mythicmobs.skills.SkillMetadata
 import io.lumine.xikage.mythicmobs.skills.mechanics.DamageMechanic
 import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderString
 import org.bukkit.entity.LivingEntity
+import taboolib.platform.util.getMeta
+import taboolib.platform.util.setMeta
 
 /**
  * @className AttributeDamageIV
@@ -27,23 +29,32 @@ internal class AttributeCacheIV(line: String?, private val mlc: MythicLineConfig
         val target = targetAE.bukkitEntity
         val key = key.get(data, targetAE)
         val type = type.get(data, targetAE)
+
+        val params = HashMap<String, Any>().apply {
+            config.entrySet().forEach { (key, value) ->
+                if (key == "key" || key == "type") return@forEach
+                put(key, PlaceholderString.of(value).get(data, targetAE))
+            }
+        }
+
         if (target is LivingEntity && !target.isDead) {
             when (type) {
                 "attacker", "a", "attack" -> {
-                    if (data.getMetadata(key).isPresent) {
-                        val cache = data.getMetadata(key).get() as DataCache
-                        data.setMetadata(key, cache.attacker(target))
+                    val meta = target.getMeta(key)
+                    if (meta.isNotEmpty()) {
+                        val cache = meta.first().value() as DataCache
+                        target.setMeta(key, cache.attacker(target).variables(params))
                     } else
-                        data.setMetadata(key, DataCache().attacker(target))
-
+                        target.setMeta(key, DataCache().attacker(target).variables(params))
                 }
 
                 "defender", "d", "defend" -> {
-                    if (data.getMetadata(key).isPresent) {
-                        val cache = data.getMetadata(key).get() as DataCache
-                        data.setMetadata(key, cache.defender(target))
+                    val meta = target.getMeta(key)
+                    if (meta.isNotEmpty()) {
+                        val cache = meta.first().value() as DataCache
+                        target.setMeta(key, cache.defender(target).variables(params))
                     } else
-                        data.setMetadata(key, DataCache().defender(target))
+                        target.setMeta(key, DataCache().defender(target).variables(params))
                 }
             }
 

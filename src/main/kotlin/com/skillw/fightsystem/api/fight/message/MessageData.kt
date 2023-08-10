@@ -2,7 +2,6 @@ package com.skillw.fightsystem.api.fight.message
 
 import com.skillw.fightsystem.api.fight.message.Message.Companion.send
 import org.bukkit.entity.Player
-import java.util.*
 
 /**
  * @className MessageData
@@ -12,10 +11,10 @@ import java.util.*
  */
 class MessageData {
     /** Attack messages */
-    val attackMessages = LinkedList<Message>()
+    val attackMessages = ArrayList<Message>()
 
     /** Defend messages */
-    val defendMessages = LinkedList<Message>()
+    val defendMessages = ArrayList<Message>()
 
     /**
      * Send

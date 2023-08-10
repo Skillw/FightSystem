@@ -12,8 +12,8 @@ internal object MMIVListener {
 
     @Awake(LifeCycle.ENABLE)
     fun ignore() {
-        FightAPI.addIgnoreAttack { attacker, _ ->
-            attacker.hasMeta("doing-skill-damage")
+        FightAPI.addIgnoreAttack { _, defender ->
+            defender.hasMeta("skill-damage")
         }
     }
 

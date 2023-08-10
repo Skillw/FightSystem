@@ -43,8 +43,10 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
 
     var cache = DataCache(this)
         set(value) {
+            field.variables.keys.forEach(this::remove)
             field = value
             value.data = this
+            putAll(value.variables)
         }
     var attacker: LivingEntity? = null
         set(value) {
@@ -285,7 +287,7 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
      * @return 解析后的字符串集
      */
     fun handleList(strings: Collection<String>, log: Boolean = true): List<String> {
-        val list = LinkedList<String>()
+        val list = ArrayList<String>()
         strings.forEach {
             list.add(handleStr(it, log))
         }

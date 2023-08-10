@@ -51,3 +51,10 @@ disable-attack-types:
   values:
     - "BOW"
     - "CROSSBOW"
+compat-crack-shot:
+  projectile-cache: true
+  #默认的战斗组 默认无，即FS不参与计算
+  default: none
+  fight-groups:
+    Bazooka: "attack-damage"
+    Carbine: "attack-damage"

@@ -11,8 +11,8 @@ import taboolib.platform.util.hasMeta
 internal object MMVListener {
     @Awake(LifeCycle.ENABLE)
     fun ignore() {
-        FightAPI.addIgnoreAttack { attacker, _ ->
-            attacker.hasMeta("doing-skill-damage")
+        FightAPI.addIgnoreAttack { _, defender ->
+            defender.hasMeta("skill-damage")
         }
     }
 

@@ -1,5 +1,6 @@
 package com.skillw.fightsystem.internal.command
 
+import com.skillw.attsystem.AttributeSystem
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.internal.command.sub.MirrorCommand
 import com.skillw.fightsystem.internal.command.sub.PersonalCommand
@@ -67,12 +68,12 @@ object FSCommand {
     val debug = subCommand {
         execute<ProxyCommandSender> { sender, _, _ ->
             sender.soundSuccess()
-            if (!isDebug) {
+            isDebug = if (!isDebug) {
                 sender.sendMessage("&aDebug on!".colored())
-                isDebug = true
+                true
             } else {
                 sender.sendMessage("&aDebug off!".colored())
-                isDebug = false
+                false
             }
         }
     }
@@ -81,6 +82,7 @@ object FSCommand {
     val reload = subCommand {
         execute<ProxyCommandSender> { sender, _, _ ->
             sender.soundSuccess()
+            AttributeSystem.reload()
             FightSystem.reload()
             sender.sendLang("command-reload")
         }

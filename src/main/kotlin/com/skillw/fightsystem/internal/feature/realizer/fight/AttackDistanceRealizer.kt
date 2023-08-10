@@ -4,9 +4,6 @@ import com.skillw.attsystem.api.realizer.BaseRealizer
 import com.skillw.attsystem.api.realizer.component.Switchable
 import com.skillw.attsystem.api.realizer.component.Valuable
 import com.skillw.attsystem.api.realizer.component.Vanillable
-import com.skillw.attsystem.util.AntiCheatUtils
-import com.skillw.attsystem.util.AttributeUtils.getAttribute
-import com.skillw.attsystem.util.BukkitAttribute
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.FightSystem.debug
 import com.skillw.fightsystem.api.FightAPI
@@ -16,7 +13,10 @@ import com.skillw.fightsystem.internal.feature.realizer.fight.AttackCooldownReal
 import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.fightsystem.util.syncRun
 import com.skillw.pouvoir.Pouvoir
+import com.skillw.pouvoir.Pouvoir.antiCheatManager
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
+import com.skillw.pouvoir.util.attribute.BukkitAttribute
+import com.skillw.pouvoir.util.attribute.getAttribute
 import com.skillw.pouvoir.util.getEntityRayHit
 import org.bukkit.GameMode
 import org.bukkit.entity.LivingEntity
@@ -98,7 +98,7 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
     }
 
     private fun distanceDamage(player: Player, entity: LivingEntity) {
-        AntiCheatUtils.bypassAntiCheat(player)
+        antiCheatManager.bypass(player)
         val attackDamage = player.getAttribute(BukkitAttribute.ATTACK_DAMAGE)?.value ?: 0.0
         val force = if (!chargeBasedCooldown) player.pullProcess(player.inventory.itemInMainHand.type) else 1.0
         if (isDistanceSound) XSound.ENTITY_PLAYER_ATTACK_SWEEP.play(entity, 1.0f, 1.0f)
@@ -108,7 +108,7 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
         }
         debug("Distance Attack!")
         entity.damage(attackDamage.coerceAtLeast(1.0) * force, player)
-        AntiCheatUtils.recoverAntiCheat(player)
+        antiCheatManager.recover(player)
     }
 
     private val Player.defaultAttackDistance: Double

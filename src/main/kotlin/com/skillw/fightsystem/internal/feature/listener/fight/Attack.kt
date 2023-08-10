@@ -3,14 +3,13 @@ package com.skillw.fightsystem.internal.feature.listener.fight
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.FightAPI.filters
 import com.skillw.fightsystem.api.fight.FightData
-import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.projectileCache
-import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.projectileCharged
+import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.cache
+import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.charged
 import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.fightsystem.internal.manager.FSConfig.attackFightKeyMap
 import com.skillw.fightsystem.internal.manager.FSConfig.debug
 import com.skillw.fightsystem.internal.manager.FSConfig.eveFightCal
 import com.skillw.fightsystem.internal.manager.FSConfig.isFightEnable
-import com.skillw.fightsystem.internal.manager.FSConfig.projectileCache
 import com.skillw.pouvoir.util.isAlive
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.LivingEntity
@@ -45,7 +44,7 @@ internal object Attack {
         if (event.isCancelled) return
 
         //如果不是原版弓/弩攻击 则跳过计算
-        if (isProjectile && event.damager.projectileCharged() == null) return
+        if (isProjectile && event.damager.charged() == null) return
 
         if (filters.any { it(attacker, defender) }) return
         //处理原版护甲
@@ -67,11 +66,11 @@ internal object Attack {
             }
 
         debug { FightSystem.debug("FightKey: $fightKey") }
-        val cacheData = event.damager.projectileCache()
-        val data = if (projectileCache && cacheData != null) cacheData.also { it.defender = defender } else FightData(
-            attacker,
-            defender
-        )
+        val cacheData = event.damager.cache()
+        val data = FightData(attacker, defender).also {
+            if (FSConfig.projectileCache && cacheData != null)
+                it.cache.setData(cacheData)
+        }
 
         //运行战斗组并返回结果
         val result = com.skillw.fightsystem.api.FightAPI.runFight(fightKey, data.also {

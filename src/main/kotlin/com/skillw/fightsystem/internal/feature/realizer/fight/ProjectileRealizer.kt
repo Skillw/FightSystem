@@ -5,7 +5,7 @@ import com.skillw.attsystem.api.realizer.BaseRealizer
 import com.skillw.attsystem.api.realizer.component.Awakeable
 import com.skillw.attsystem.api.realizer.component.Switchable
 import com.skillw.fightsystem.FightSystem
-import com.skillw.fightsystem.api.fight.FightData
+import com.skillw.fightsystem.api.fight.DataCache
 import com.skillw.fightsystem.internal.feature.realizer.fight.AttackCooldownRealizer.CHARGE_KEY
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import org.bukkit.entity.Entity
@@ -15,6 +15,9 @@ import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.metadata.FixedMetadataValue
 import taboolib.common.platform.Ghost
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.platform.util.getMeta
+import taboolib.platform.util.hasMeta
+import taboolib.platform.util.setMeta
 
 @AutoRegister
 internal object ProjectileRealizer : BaseRealizer("projectile"), Awakeable, Switchable {
@@ -32,8 +35,8 @@ internal object ProjectileRealizer : BaseRealizer("projectile"), Awakeable, Swit
     fun projectileLaunch(event: ProjectileLaunchEvent) {
         val projectile = event.entity
         val shooter = (projectile.shooter as? LivingEntity?) ?: return
-        val cacheData = FightData(shooter, null)
-        projectile.setMetadata(CACHE_KEY, FixedMetadataValue(AttributeSystem.plugin, cacheData))
+        val cacheData = DataCache().attacker(shooter)
+        projectile.cache(cacheData)
     }
 
 
@@ -46,9 +49,13 @@ internal object ProjectileRealizer : BaseRealizer("projectile"), Awakeable, Swit
         projectile.setMetadata(CHARGE_KEY, FixedMetadataValue(AttributeSystem.plugin, velocity))
     }
 
-    fun Entity.projectileCache(): FightData? =
-        if (hasMetadata(CACHE_KEY)) getMetadata(CACHE_KEY)[0] as? FightData? else null
+    fun Entity.cache(data: DataCache) {
+        setMeta(CACHE_KEY, data)
+    }
 
-    fun Entity.projectileCharged(): Double? =
-        if (hasMetadata(CHARGE_KEY)) getMetadata(CHARGE_KEY)[0].asDouble() else null
+    fun Entity.cache(): DataCache? =
+        getMeta(CACHE_KEY).firstOrNull()?.value() as? DataCache?
+
+    fun Entity.charged(): Double? =
+        if (hasMeta(CHARGE_KEY)) getMeta(CHARGE_KEY)[0].asDouble() else null
 }

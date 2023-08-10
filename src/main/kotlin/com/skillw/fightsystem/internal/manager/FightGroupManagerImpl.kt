@@ -47,7 +47,10 @@ object FightGroupManagerImpl : FightGroupManager() {
 
         val fightData = data.apply {
             addNamespaces(*namespaceNames())
-            this.putIfAbsent("projectile", false)
+            putIfAbsent("projectile", false)
+            putIfAbsent("origin", 0.0)
+            putIfAbsent("force", 1.0)
+            putIfAbsent("charge", 1.0)
             this["type"] = when {
                 attacker is Player && defender is Player -> "PVP"
                 attacker is Player && defender !is Player -> "PVE"
