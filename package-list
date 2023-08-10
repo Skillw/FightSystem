@@ -1,0 +1,37 @@
+$dokka.format:javadoc-v1
+$dokka.linkExtension:html
+$dokka.location:com.skillw.fightsystem.api.event/DamageTypeRunEvent.Post///PointingToDeclaration/com/skillw/fightsystem/api/event/DamageTypeRunEvent.Post.html
+$dokka.location:com.skillw.fightsystem.api.event/DamageTypeRunEvent.Pre///PointingToDeclaration/com/skillw/fightsystem/api/event/DamageTypeRunEvent.Pre.html
+$dokka.location:com.skillw.fightsystem.api.event/EntityFightStatusEvent.In///PointingToDeclaration/com/skillw/fightsystem/api/event/EntityFightStatusEvent.In.html
+$dokka.location:com.skillw.fightsystem.api.event/EntityFightStatusEvent.Out///PointingToDeclaration/com/skillw/fightsystem/api/event/EntityFightStatusEvent.Out.html
+$dokka.location:com.skillw.fightsystem.api.event/FightEvent.Post///PointingToDeclaration/com/skillw/fightsystem/api/event/FightEvent.Post.html
+$dokka.location:com.skillw.fightsystem.api.event/FightEvent.Pre///PointingToDeclaration/com/skillw/fightsystem/api/event/FightEvent.Pre.html
+$dokka.location:com.skillw.fightsystem.api.event/FightEvent.Process///PointingToDeclaration/com/skillw/fightsystem/api/event/FightEvent.Process.html
+$dokka.location:com.skillw.fightsystem.api.event/MechanicRunEvent.Post///PointingToDeclaration/com/skillw/fightsystem/api/event/MechanicRunEvent.Post.html
+$dokka.location:com.skillw.fightsystem.api.event/MechanicRunEvent.Pre///PointingToDeclaration/com/skillw/fightsystem/api/event/MechanicRunEvent.Pre.html
+$dokka.location:com.skillw.fightsystem.api.fight.message/Message.Companion///PointingToDeclaration/com/skillw/fightsystem/api/fight/message/Message.Companion.html
+$dokka.location:com.skillw.fightsystem.api.fight.message/Message.Type///PointingToDeclaration/com/skillw/fightsystem/api/fight/message/Message.Type.html
+$dokka.location:com.skillw.fightsystem.api.fight/DamageType.Companion///PointingToDeclaration/com/skillw/fightsystem/api/fight/DamageType.Companion.html
+$dokka.location:com.skillw.fightsystem.api.manager/PersonalManager.Companion///PointingToDeclaration/com/skillw/fightsystem/api/manager/PersonalManager.Companion.html
+$dokka.location:com.skillw.fightsystem.internal.core.fight/FightGroup.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/core/fight/FightGroup.Companion.html
+$dokka.location:com.skillw.fightsystem.internal.core.fight/MechanicDataCompound.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/core/fight/MechanicDataCompound.Companion.html
+$dokka.location:com.skillw.fightsystem.internal.feature.personal/PersonalData.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/feature/personal/PersonalData.Companion.html
+com.skillw.fightsystem
+com.skillw.fightsystem.api
+com.skillw.fightsystem.api.event
+com.skillw.fightsystem.api.fight
+com.skillw.fightsystem.api.fight.mechanic
+com.skillw.fightsystem.api.fight.message
+com.skillw.fightsystem.api.manager
+com.skillw.fightsystem.internal.command
+com.skillw.fightsystem.internal.command.sub
+com.skillw.fightsystem.internal.core.asahi.infix
+com.skillw.fightsystem.internal.core.fight
+com.skillw.fightsystem.internal.feature.compat.magic
+com.skillw.fightsystem.internal.feature.compat.skapi
+com.skillw.fightsystem.internal.feature.message
+com.skillw.fightsystem.internal.feature.message.builder
+com.skillw.fightsystem.internal.feature.personal
+com.skillw.fightsystem.internal.manager
+com.skillw.fightsystem.util
+
