@@ -45,16 +45,13 @@ task("info") {
 }
 taboolib {
     project.version = project.version.toString() + (order?.let { "-$it" } ?: "")
-    if (project.version.toString().contains("-api")) {
-        options("skip-kotlin-relocate", "keep-kotlin-module")
-    }
     description {
         contributors {
             name("Glom_")
         }
         dependencies {
             name("Pouvoir")
-            name("FightSystem")
+            name("AttributeSystem")
             name("MythicMobs").optional(true)
             name("SkillAPI").optional(true)
             name("Magic").optional(true)

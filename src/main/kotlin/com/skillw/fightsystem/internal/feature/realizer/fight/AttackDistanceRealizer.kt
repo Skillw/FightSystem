@@ -11,6 +11,7 @@ import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.fightsystem.internal.feature.realizer.fight.AttackCooldownRealizer.chargeBasedCooldown
 import com.skillw.fightsystem.internal.feature.realizer.fight.AttackCooldownRealizer.pullProcess
 import com.skillw.fightsystem.internal.manager.FSConfig
+import com.skillw.fightsystem.util.asyncTaskRun
 import com.skillw.fightsystem.util.syncRun
 import com.skillw.pouvoir.Pouvoir
 import com.skillw.pouvoir.Pouvoir.antiCheatManager
@@ -25,7 +26,6 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import taboolib.common.platform.ProxyParticle
 import taboolib.common.platform.event.SubscribeEvent
-import taboolib.common.platform.function.submitAsync
 import taboolib.common.platform.sendTo
 import taboolib.common.util.Location
 import taboolib.common5.cbool
@@ -61,7 +61,7 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
         if (event.action != Action.LEFT_CLICK_AIR || player.gameMode == GameMode.SPECTATOR) return
         if (Pouvoir.sync)
             distanceAttack(player)
-        else submitAsync { distanceAttack(player) }
+        else asyncTaskRun { distanceAttack(player) }
     }
 
     @SubscribeEvent

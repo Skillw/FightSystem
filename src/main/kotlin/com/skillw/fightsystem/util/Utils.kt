@@ -1,6 +1,8 @@
 package com.skillw.fightsystem.util
 
 import taboolib.common.platform.function.isPrimaryThread
+import taboolib.common.platform.function.submit
+import taboolib.common.platform.function.submitAsync
 import taboolib.common.util.sync
 
 /**
@@ -12,3 +14,10 @@ import taboolib.common.util.sync
 
 
 fun <T> syncRun(run: () -> T): T = if (!isPrimaryThread) sync { run() } else run()
+fun syncTaskRun(run: () -> Unit) {
+    if (!isPrimaryThread) submit { run() } else run()
+}
+
+fun asyncTaskRun(run: () -> Unit) {
+    if (isPrimaryThread) submitAsync { run() } else run()
+}

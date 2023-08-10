@@ -7,6 +7,7 @@ import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.charged
+import com.skillw.fightsystem.util.syncTaskRun
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import com.skillw.pouvoir.api.plugin.map.BaseMap
 import com.skillw.pouvoir.util.attribute.BukkitAttribute
@@ -178,7 +179,9 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
         if (attackSpeed <= 0.0) return
         val seconds = 1 / attackSpeed
         cooldownData.put(uniqueId, material, CooldownTime(seconds))
-        setCooldown(material, (seconds * 20).roundToInt())
+        syncTaskRun {
+            setCooldown(material, (seconds * 20).roundToInt())
+        }
     }
 
 }

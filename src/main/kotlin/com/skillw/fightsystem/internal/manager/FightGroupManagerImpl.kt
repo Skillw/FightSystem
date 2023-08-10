@@ -6,10 +6,10 @@ import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.api.fight.message.MessageData
 import com.skillw.fightsystem.api.manager.FightGroupManager
 import com.skillw.fightsystem.internal.core.fight.FightGroup
+import com.skillw.fightsystem.util.asyncTaskRun
 import com.skillw.fightsystem.util.syncRun
 import com.skillw.pouvoir.util.loadMultiply
 import org.bukkit.entity.Player
-import taboolib.common.platform.function.submitAsync
 import taboolib.common5.mirrorNow
 import taboolib.platform.util.removeMeta
 import taboolib.platform.util.setMeta
@@ -82,7 +82,7 @@ object FightGroupManagerImpl : FightGroupManager() {
         if (message) {
             eventFightData.calMessage()
             messageData.addAll(eventFightData.messageData)
-            submitAsync {
+            asyncTaskRun {
                 messageData.send(fightData.attacker as? Player?, fightData.defender as? Player?)
             }
         }
