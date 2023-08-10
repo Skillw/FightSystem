@@ -41,6 +41,7 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
     private var preventImmunity = config.getBoolean(arrayOf("preventimmunity", "pi"), false)
     private var preventKnockback = config.getBoolean(arrayOf("preventknockback", "pkb", "pk"), false)
     private var ignoresEnchantments = config.getBoolean(arrayOf("ignoreenchantments", "ignoreenchants", "ie"), false)
+    
     private var element: PlaceholderString? =
         PlaceholderString.of(config.getString(arrayOf("element", "e", "damagetype", "type"), null))
     private var cause: PlaceholderString =
