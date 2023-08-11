@@ -16,6 +16,7 @@ $dokka.location:com.skillw.fightsystem.api.manager/PersonalManager.Companion///P
 $dokka.location:com.skillw.fightsystem.internal.core.fight/FightGroup.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/core/fight/FightGroup.Companion.html
 $dokka.location:com.skillw.fightsystem.internal.core.fight/MechanicDataCompound.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/core/fight/MechanicDataCompound.Companion.html
 $dokka.location:com.skillw.fightsystem.internal.feature.personal/PersonalData.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/feature/personal/PersonalData.Companion.html
+$dokka.location:com.skillw.fightsystem.util.nms/NMS.Companion///PointingToDeclaration/com/skillw/fightsystem/util/nms/NMS.Companion.html
 com.skillw.fightsystem
 com.skillw.fightsystem.api
 com.skillw.fightsystem.api.event
@@ -34,4 +35,5 @@ com.skillw.fightsystem.internal.feature.message.builder
 com.skillw.fightsystem.internal.feature.personal
 com.skillw.fightsystem.internal.manager
 com.skillw.fightsystem.util
+com.skillw.fightsystem.util.nms
 
