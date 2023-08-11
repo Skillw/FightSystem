@@ -71,6 +71,7 @@ taboolib {
     version = "6.0.11-31"
 }
 
+
 repositories {
     mavenCentral()
 }
@@ -86,6 +87,7 @@ dependencies {
 }
 
 tasks.withType<JavaCompile> {
+//    destinationDir = file("E:\\Minecraft\\Server\\1.20.1 paper\\plugins")
     options.encoding = "UTF-8"
 }
 

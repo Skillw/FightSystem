@@ -42,12 +42,12 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
                 put(key, PlaceholderString.of(value).get(data, targetAE))
             }
         }
-        val cache = if (cacheKey == "null") null else (caster.getMetaFirstOrNull(cacheKey)?.value()
-            ?: target.getMetaFirstOrNull(cacheKey)?.value()) as? DataCache?
         val attacker =
             if (attackerName == "null") caster else Bukkit.getPlayer(attackerName) ?: return false
         val origin = data.caster
         data.caster = GenericCaster(BukkitAdapter.adapt(attacker))
+        val cache = if (cacheKey == "null") null else attacker.getMetaFirstOrNull(cacheKey)
+            ?.value() as? DataCache?
         return if (attacker is LivingEntity && target is LivingEntity && !target.isDead) {
             val fightData = FightData(attacker, target) {
                 cache?.let { cacheData ->

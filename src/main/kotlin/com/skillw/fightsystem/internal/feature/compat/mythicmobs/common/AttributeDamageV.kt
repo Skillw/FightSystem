@@ -41,7 +41,7 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
     private var preventImmunity = config.getBoolean(arrayOf("preventimmunity", "pi"), false)
     private var preventKnockback = config.getBoolean(arrayOf("preventknockback", "pkb", "pk"), false)
     private var ignoresEnchantments = config.getBoolean(arrayOf("ignoreenchantments", "ignoreenchants", "ie"), false)
-    
+
     private var element: PlaceholderString? =
         PlaceholderString.of(config.getString(arrayOf("element", "e", "damagetype", "type"), null))
     private var cause: PlaceholderString =
@@ -57,13 +57,12 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
                 put(key, PlaceholderString.of(value).get(data, targetAE))
             }
         }
-        val cache = if (cacheKey == "null") null else (caster.getMetaFirstOrNull(cacheKey)?.value()
-            ?: target.getMetaFirstOrNull(cacheKey)?.value()) as? DataCache?
         val attacker =
             if (attackerName == "null") caster else Bukkit.getPlayer(attackerName) ?: return SkillResult.INVALID_TARGET
         val originCaster = data.caster
         data.caster = GenericCaster(BukkitAdapter.adapt(attacker))
-
+        val cache = if (cacheKey == "null") null else attacker.getMetaFirstOrNull(cacheKey)
+            ?.value() as? DataCache?
         if (attacker is LivingEntity && target is LivingEntity && !target.isDead) {
             val fightData = FightData(attacker, target) {
                 cache?.let { cacheData ->

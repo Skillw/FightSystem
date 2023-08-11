@@ -58,3 +58,6 @@ compat-crack-shot:
   fight-groups:
     Bazooka: "attack-damage"
     Carbine: "attack-damage"
+limit-damage-particle:
+  enable: true
+  max: 10
