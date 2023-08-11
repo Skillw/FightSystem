@@ -158,6 +158,11 @@ publishing {
                 description.set("Bukkit Fight Engine Plugin.")
                 url.set("https://github.com/Glom-c/FightSystem/")
 
+                dependencies {
+                    compileOnly("com.skillw.pouvoir:Pouvoir:1.6.4-8")
+                    compileOnly("com.skillw.attributesystem:AttributeSystem:2.1.0-beta-2")
+                }
+
                 licenses {
                     license {
                         name.set("MIT License")
