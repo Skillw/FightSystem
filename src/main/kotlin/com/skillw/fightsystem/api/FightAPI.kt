@@ -17,6 +17,13 @@ object FightAPI {
 
     internal val filters = HashSet<(LivingEntity, LivingEntity) -> Boolean>()
 
+    /**
+     * 添加伤害事件过滤器
+     *
+     * 符合过滤条件则FightSystem跳过计算
+     *
+     * @param filter Function2<LivingEntity, LivingEntity, Boolean>
+     */
     fun addIgnoreAttack(filter: (LivingEntity, LivingEntity) -> Boolean) {
         filters += filter
     }

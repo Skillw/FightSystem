@@ -1,9 +1,5 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
-import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.Switchable
-import com.skillw.attsystem.api.realizer.component.Valuable
-import com.skillw.attsystem.api.realizer.component.Vanillable
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.FightSystem.debug
 import com.skillw.fightsystem.api.FightAPI
@@ -15,6 +11,11 @@ import com.skillw.fightsystem.util.asyncTaskRun
 import com.skillw.fightsystem.util.syncRun
 import com.skillw.pouvoir.Pouvoir
 import com.skillw.pouvoir.Pouvoir.antiCheatManager
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizerManager
+import com.skillw.pouvoir.api.feature.realizer.component.Switchable
+import com.skillw.pouvoir.api.feature.realizer.component.Valuable
+import com.skillw.pouvoir.api.feature.realizer.component.Vanillable
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import com.skillw.pouvoir.util.attribute.BukkitAttribute
 import com.skillw.pouvoir.util.attribute.getAttribute
@@ -38,6 +39,9 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
     override val file by lazy {
         FightSystem.options.file!!
     }
+    override val manager: BaseRealizerManager
+        get() = FightSystem.realizerManager
+
     override val defaultEnable: Boolean
         get() = true
     override val defaultValue: String = "0"
@@ -80,21 +84,6 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
             event.isCancelled = true
             return
         }
-    }
-
-    init {
-        defaultConfig.putAll(
-            linkedMapOf(
-                "vanilla-distance" to linkedMapOf(
-                    "default" to 3,
-                    "creative" to 4.5
-                ),
-                "distance-attack" to linkedMapOf(
-                    "effect" to true,
-                    "sound" to true
-                )
-            )
-        )
     }
 
     private fun distanceDamage(player: Player, entity: LivingEntity) {

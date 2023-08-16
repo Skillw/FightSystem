@@ -5,10 +5,10 @@ import com.skillw.asahi.api.annotation.AsahiPrefix
 import com.skillw.asahi.api.prefixParser
 import com.skillw.asahi.api.quest
 import com.skillw.asahi.api.quester
-import com.skillw.attsystem.AttributeSystem.operationManager
-import com.skillw.attsystem.api.read.operation.NumberOperation
 import com.skillw.fightsystem.FightSystem.damageTypeManager
 import com.skillw.fightsystem.api.fight.FightData
+import com.skillw.pouvoir.Pouvoir.operationManager
+import com.skillw.pouvoir.api.feature.operation.NumberOperation
 
 @AsahiPrefix(["fight_data"], "fightsystem")
 private fun fightData() = prefixParser {

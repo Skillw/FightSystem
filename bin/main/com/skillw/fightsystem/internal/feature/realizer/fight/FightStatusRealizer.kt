@@ -1,8 +1,8 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
-import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.Switchable
-import com.skillw.attsystem.api.realizer.component.Valuable
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
+import com.skillw.pouvoir.api.feature.realizer.component.Switchable
+import com.skillw.pouvoir.api.feature.realizer.component.Valuable
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.FightAPI.intoFighting
 import com.skillw.fightsystem.api.event.FightEvent

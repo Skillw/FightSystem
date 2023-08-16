@@ -38,13 +38,22 @@ tasks.javadoc {
 }
 
 val order: String? by project
-
+val api: String? by project
+task("api-add") {
+    var version = project.version.toString() + (order?.let { "-$it" } ?: "")
+    if (api != null && api == "common")
+        version = "$version-api"
+    project.version = version
+}
 task("info") {
     println(project.name + "-" + project.version)
     println(project.version.toString())
 }
 taboolib {
-    project.version = project.version.toString() + (order?.let { "-$it" } ?: "")
+    if (api != null) {
+        println("api!")
+        taboolib.options("skip-kotlin-relocate", "keep-kotlin-module")
+    }
     description {
         contributors {
             name("Glom_")
@@ -103,13 +112,7 @@ tasks.javadoc {
     }
 }
 
-tasks.register<Jar>("buildAPIJar") {
-    dependsOn(tasks.compileJava, tasks.compileKotlin)
-    from(tasks.compileJava, tasks.compileKotlin)
-    includeEmptyDirs = false
-    include { it.isDirectory or it.name.endsWith(".class") or it.name.endsWith(".kotlin_module") }
-    archiveClassifier.set("api")
-}
+
 
 tasks.register<Jar>("buildJavadocJar") {
     dependsOn(tasks.dokkaJavadoc)
@@ -150,7 +153,7 @@ publishing {
     }
     publications {
         create<MavenPublication>("library") {
-            artifact(tasks["buildAPIJar"]) { classifier = classifier?.replace("-api", "") }
+            from(components["java"])
             artifact(tasks["buildJavadocJar"])
             artifact(tasks["buildSourcesJar"])
             version = project.version.toString()

@@ -1,6 +1,5 @@
 package com.skillw.fightsystem.internal.command
 
-import com.skillw.attsystem.AttributeSystem
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.internal.command.sub.MirrorCommand
 import com.skillw.fightsystem.internal.command.sub.PersonalCommand
@@ -82,7 +81,6 @@ object FSCommand {
     val reload = subCommand {
         execute<ProxyCommandSender> { sender, _, _ ->
             sender.soundSuccess()
-            AttributeSystem.reload()
             FightSystem.reload()
             sender.sendLang("command-reload")
         }

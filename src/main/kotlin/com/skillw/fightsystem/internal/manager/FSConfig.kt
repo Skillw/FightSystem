@@ -20,12 +20,10 @@ import taboolib.common.platform.function.submit
 import taboolib.common5.Mirror
 import taboolib.module.metrics.charts.SingleLineChart
 import java.io.File
-import java.util.regex.Pattern
 
 object FSConfig : ConfigManager(FightSystem) {
     override val priority = 0
 
-    var lineConditionPattern: Pattern = Pattern.compile("options.condition.line-condition.format")
     val defaultRegainHolo: Boolean
         get() = this["message"].getBoolean("options.default.health-regain-holo")
 
@@ -41,6 +39,8 @@ object FSConfig : ConfigManager(FightSystem) {
             "mechanics/mythicskill.js",
             "mechanics/runner.js",
             "mechanics/shield.js",
+            "conditions/fighting.js",
+            "listeners/arrow.js"
         )
         createIfNotExists(
             "attributes",
@@ -97,15 +97,13 @@ object FSConfig : ConfigManager(FightSystem) {
                 attackFightKeyMap[key] = getString(key) ?: return@forEach
             }
         }
+        completeYaml("config.yml")
+        completeYaml("message.yml")
     }
 
     val skillAPI by lazy {
         Bukkit.getPluginManager().isPluginEnabled("SkillAPI") || Bukkit.getPluginManager()
             .isPluginEnabled("ProSkillAPI")
-    }
-
-    val mythicMobs by lazy {
-        Bukkit.getPluginManager().isPluginEnabled("MythicMobs")
     }
 
     private val scripts = File(getDataFolder(), "scripts")
@@ -141,6 +139,12 @@ object FSConfig : ConfigManager(FightSystem) {
 
     val projectileCache
         get() = this["config"].getBoolean("options.fight.projectile-cache-data", true)
+
+    val mmDamageCal
+        get() = this["config"].getBoolean("options.fight.mm-damage-cal", false)
+
+    val skapiDamageCal
+        get() = this["config"].getBoolean("options.fight.skill-api-damage-cal", false)
 
     @JvmStatic
     fun debug(debug: () -> Unit) {

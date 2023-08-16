@@ -17,7 +17,7 @@ internal object SkillAPIListener {
     @Awake(LifeCycle.ENABLE)
     fun ignore() {
         FightAPI.addIgnoreAttack { _, _ ->
-            FSConfig.skillAPI && Skill.isSkillDamage()
+            !FSConfig.skapiDamageCal && FSConfig.skillAPI && Skill.isSkillDamage()
         }
     }
 

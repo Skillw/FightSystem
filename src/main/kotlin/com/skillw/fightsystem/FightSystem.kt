@@ -62,6 +62,11 @@ object FightSystem : Plugin(), SubPouvoir {
     @JvmStatic
     @PouManager
     lateinit var fightStatusManager: FightStatusManager
+
+    @JvmStatic
+    @PouManager
+    lateinit var realizerManager: RealizerManager
+
     override fun onLoad() {
         load()
     }

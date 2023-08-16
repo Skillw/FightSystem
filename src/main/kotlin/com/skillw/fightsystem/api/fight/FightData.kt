@@ -6,12 +6,12 @@ import com.skillw.asahi.api.member.context.AsahiContext
 import com.skillw.asahi.api.member.namespace.NamespaceContainer
 import com.skillw.asahi.api.member.namespace.NamespaceHolder
 import com.skillw.attsystem.api.attribute.compound.AttributeDataCompound
-import com.skillw.attsystem.api.read.operation.OperationElement
 import com.skillw.attsystem.internal.feature.compat.pouvoir.AttributePlaceHolder
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.fight.message.MessageData
 import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.Pouvoir
+import com.skillw.pouvoir.api.feature.operation.OperationElement
 import com.skillw.pouvoir.util.parse
 import com.skillw.pouvoir.util.script.ColorUtil.decolored
 import org.bukkit.entity.LivingEntity

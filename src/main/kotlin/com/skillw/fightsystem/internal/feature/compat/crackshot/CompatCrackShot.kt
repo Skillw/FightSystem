@@ -2,13 +2,15 @@ package com.skillw.fightsystem.internal.feature.compat.crackshot
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent
 import com.shampaggon.crackshot.events.WeaponShootEvent
-import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.Awakeable
 import com.skillw.fightsystem.FightSystem
+import com.skillw.fightsystem.FightSystem.realizerManager
 import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.fight.DataCache
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.cache
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizerManager
+import com.skillw.pouvoir.api.feature.realizer.component.Awakeable
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import org.bukkit.entity.LivingEntity
 import taboolib.common.LifeCycle
@@ -32,6 +34,8 @@ internal object CompatCrackShot : BaseRealizer("compat-crack-shot"), Awakeable {
 
     override val file: File
         get() = FightSystem.options.file!!
+    override val manager: BaseRealizerManager
+        get() = realizerManager
 
     val cache: Boolean
         get() = config["projectile-cache"].cbool
@@ -39,6 +43,10 @@ internal object CompatCrackShot : BaseRealizer("compat-crack-shot"), Awakeable {
     val fightGroups: HashMap<String, String> = HashMap()
     val default: String?
         get() = fightGroups["default"]
+
+    init {
+        ignorePaths.add("compat-crack-shot.fight-groups")
+    }
 
     override fun onEnable() {
         onReload()

@@ -1,10 +1,11 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
-import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.Awakeable
 import com.skillw.attsystem.util.StringUtils.material
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.event.FightEvent
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizerManager
+import com.skillw.pouvoir.api.feature.realizer.component.Awakeable
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -26,6 +27,9 @@ internal object DisableAttackMaterialRealizer : BaseRealizer("disable-attack-typ
     override val file by lazy {
         FightSystem.options.file!!
     }
+
+    override val manager: BaseRealizerManager
+        get() = FightSystem.realizerManager
     val values: List<String>
         get() = config.getOrDefault("values", emptyList<String>()) as List<String>
 
@@ -59,10 +63,5 @@ internal object DisableAttackMaterialRealizer : BaseRealizer("disable-attack-typ
             }
         }
     }
-
-    init {
-        defaultConfig["values"] = listOf("BOW", "CROSSBOW")
-    }
-
 
 }

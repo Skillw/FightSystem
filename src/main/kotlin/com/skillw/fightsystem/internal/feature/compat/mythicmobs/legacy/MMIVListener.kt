@@ -1,6 +1,7 @@
 package com.skillw.fightsystem.internal.feature.compat.mythicmobs.legacy
 
 import com.skillw.fightsystem.api.FightAPI
+import com.skillw.fightsystem.internal.manager.FSConfig
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -13,7 +14,7 @@ internal object MMIVListener {
     @Awake(LifeCycle.ENABLE)
     fun ignore() {
         FightAPI.addIgnoreAttack { _, defender ->
-            defender.hasMeta("skill-damage")
+            !FSConfig.mmDamageCal && defender.hasMeta("skill-damage")
         }
     }
 

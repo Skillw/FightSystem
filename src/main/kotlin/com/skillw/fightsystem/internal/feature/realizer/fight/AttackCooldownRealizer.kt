@@ -1,13 +1,14 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
-import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.Awakeable
-import com.skillw.attsystem.api.realizer.component.Switchable
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.charged
 import com.skillw.fightsystem.util.syncTaskRun
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizerManager
+import com.skillw.pouvoir.api.feature.realizer.component.Awakeable
+import com.skillw.pouvoir.api.feature.realizer.component.Switchable
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import com.skillw.pouvoir.api.plugin.map.BaseMap
 import com.skillw.pouvoir.util.attribute.BukkitAttribute
@@ -36,6 +37,8 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
     }
     override val defaultEnable: Boolean
         get() = true
+    override val manager: BaseRealizerManager
+        get() = FightSystem.realizerManager
 
     private val enableCooldown: Boolean
         get() = config.getOrDefault("type", "cooldown").toString().lowercase() == "cooldown"
@@ -111,19 +114,6 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
             getAttribute(BukkitAttribute.ATTACK_DAMAGE)?.value?.let { damage ->
                 event.getOriginalDamage(EntityDamageEvent.DamageModifier.BASE) / damage
             }
-    }
-
-    init {
-        defaultConfig.putAll(
-            linkedMapOf(
-                "type" to "cooldown",
-                "damage-any-time" to true,
-                "damage-charged" to true,
-                "charge-based" to "vanilla",
-                "min-charge" to 0.05,
-                "no-cooldown-types" to listOf("BOW", "CROSSBOW")
-            )
-        )
     }
 
     override fun onEnable() {

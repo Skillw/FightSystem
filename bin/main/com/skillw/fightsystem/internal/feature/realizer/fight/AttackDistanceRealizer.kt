@@ -1,9 +1,9 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
-import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.Switchable
-import com.skillw.attsystem.api.realizer.component.Valuable
-import com.skillw.attsystem.api.realizer.component.Vanillable
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
+import com.skillw.pouvoir.api.feature.realizer.component.Switchable
+import com.skillw.pouvoir.api.feature.realizer.component.Valuable
+import com.skillw.pouvoir.api.feature.realizer.component.Vanillable
 import com.skillw.attsystem.util.AntiCheatUtils
 import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute

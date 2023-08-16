@@ -13,3 +13,7 @@ options:
     #      as.class.a: class-a-attack
     # as.class.b: class-b-attack
     attack-fight: { }
+    #是否计算 MM 的 damage 机制的伤害
+    mm-damage-cal: false
+    #是否计算 SkillAPI 的 damage 机制的伤害
+    skill-api-damage-cal: false

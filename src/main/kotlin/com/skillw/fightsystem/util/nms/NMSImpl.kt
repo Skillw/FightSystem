@@ -3,7 +3,6 @@ package com.skillw.fightsystem.util.nms
 import net.minecraft.server.v1_12_R1.EnumParticle
 import net.minecraft.server.v1_16_R3.ParticleParam
 import taboolib.common.util.unsafeLazy
-import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.Packet
 import kotlin.math.min
@@ -40,8 +39,7 @@ class NMSImpl : NMS() {
             val count = packet.read<Int>("i") ?: 2
             packet.write("i", min(max, count))
         } else a@{ packet, max ->
-            packet as net.minecraft.server.v1_16_R2.PacketPlayOutWorldParticles
-            val type = packet.getProperty<ParticleParam>("j")
+            val type = packet.read<ParticleParam>("j")
             if (type?.a() != "minecraft:damage_indicator") return@a
             val count = packet.read<Int>("h") ?: 2
             packet.write("h", min(max, count))

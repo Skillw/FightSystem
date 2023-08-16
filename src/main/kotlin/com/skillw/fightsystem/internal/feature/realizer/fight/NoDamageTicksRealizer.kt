@@ -1,10 +1,11 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
-import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.Awakeable
-import com.skillw.attsystem.api.realizer.component.Switchable
-import com.skillw.attsystem.api.realizer.component.Valuable
 import com.skillw.fightsystem.FightSystem
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizerManager
+import com.skillw.pouvoir.api.feature.realizer.component.Awakeable
+import com.skillw.pouvoir.api.feature.realizer.component.Switchable
+import com.skillw.pouvoir.api.feature.realizer.component.Valuable
 import com.skillw.pouvoir.api.plugin.annotation.AutoRegister
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -17,6 +18,9 @@ internal object NoDamageTicksRealizer : BaseRealizer("no-damage-ticks"), Awakeab
     override val file by lazy {
         FightSystem.options.file!!
     }
+
+    override val manager: BaseRealizerManager
+        get() = FightSystem.realizerManager
     override val defaultEnable: Boolean
         get() = true
     override val defaultValue: String

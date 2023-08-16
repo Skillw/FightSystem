@@ -1,6 +1,5 @@
 package com.skillw.fightsystem.internal.feature.compat.pouvoir.annotation
 
-import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.fight.DamageType
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.api.fight.mechanic.Mechanic
@@ -29,7 +28,7 @@ internal object Mechanic : ScriptAnnotation("Mechanic") {
             override fun exec(
                 fightData: FightData,
                 context: Map<String, Any>,
-                damageType: com.skillw.fightsystem.api.fight.DamageType,
+                damageType: DamageType,
             ): Any? {
                 return Pouvoir.scriptManager.invoke(
                     script,

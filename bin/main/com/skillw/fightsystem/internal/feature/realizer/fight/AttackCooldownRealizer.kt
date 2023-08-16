@@ -1,9 +1,9 @@
 package com.skillw.fightsystem.internal.feature.realizer.fight
 
 import com.skillw.attsystem.AttributeSystem
-import com.skillw.attsystem.api.realizer.BaseRealizer
-import com.skillw.attsystem.api.realizer.component.Awakeable
-import com.skillw.attsystem.api.realizer.component.Switchable
+import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
+import com.skillw.pouvoir.api.feature.realizer.component.Awakeable
+import com.skillw.pouvoir.api.feature.realizer.component.Switchable
 import com.skillw.attsystem.util.AttributeUtils.getAttribute
 import com.skillw.attsystem.util.BukkitAttribute
 import com.skillw.fightsystem.FightSystem
