@@ -30,10 +30,12 @@ object FightAPI {
 
 
     /**
-     * Entity attack cal
+     * 运行战斗组
      *
-     * @param key
-     * @param data
+     * @param key 战斗组id
+     * @param data 战斗数据
+     * @param message 是否计算战斗消息并发送给玩具
+     * @param damage 是否计算完伤害后造成伤害
      * @return
      */
     fun runFight(key: String, data: FightData, message: Boolean = true, damage: Boolean = true): Double {

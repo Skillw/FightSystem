@@ -1,6 +1,7 @@
 package com.skillw.fightsystem.internal.manager
 
 import com.skillw.fightsystem.FightSystem
+import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.api.fight.message.MessageData
@@ -10,7 +11,10 @@ import com.skillw.fightsystem.util.asyncTaskRun
 import com.skillw.fightsystem.util.syncRun
 import com.skillw.pouvoir.util.loadMultiply
 import org.bukkit.entity.Player
+import taboolib.common.LifeCycle
+import taboolib.common.platform.Awake
 import taboolib.common5.mirrorNow
+import taboolib.platform.util.getMeta
 import taboolib.platform.util.removeMeta
 import taboolib.platform.util.setMeta
 import java.io.File
@@ -34,10 +38,18 @@ object FightGroupManagerImpl : FightGroupManager() {
         }
     }
 
+    @Awake(LifeCycle.ENABLE)
+    private fun addIgnore() {
+        FightAPI.addIgnoreAttack { _, defender ->
+            defender.getMeta("doing-skill-damage").firstOrNull()?.asBoolean() == true
+        }
+
+    }
+
     private fun FightData.doingDamage(result: Double): Double {
-        attacker?.setMeta("doing-skill-damage", true)
+        defender?.setMeta("skill-damage", true)
         defender?.damage(result, attacker)
-        attacker?.removeMeta("doing-skill-damage")
+        defender?.removeMeta("skill-damage")
         return result
     }
 

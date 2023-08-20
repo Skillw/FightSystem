@@ -77,7 +77,7 @@ taboolib {
     install("module-metrics")
     install("module-lang")
     classifier = null
-    version = "6.0.11-31"
+    version = "6.0.12-14"
 }
 
 
