@@ -11,7 +11,7 @@ import com.skillw.pouvoir.Pouvoir.operationManager
 import com.skillw.pouvoir.api.feature.operation.NumberOperation
 
 @AsahiPrefix(["fight_data"], "fightsystem")
-private fun fightData() = prefixParser {
+private fun fightData() = prefixParser<Any?> {
     val dataGetter = if (expect("of")) quest<FightData>() else quester { selector() }
     when (val type = next()) {
         "damage" -> {
