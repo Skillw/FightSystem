@@ -6,13 +6,13 @@ plugins {
     signing
     id("io.izzel.taboolib") version "1.56"
     id("org.jetbrains.kotlin.jvm") version "1.5.31"
-    id("org.jetbrains.dokka") version "1.5.31"
     id("io.codearte.nexus-staging") version "0.30.0"
+    id("org.jetbrains.dokka") version "1.5.31"
 }
 
 tasks.dokkaJavadoc.configure {
-    suppressInheritedMembers.set(true)
     suppressObviousFunctions.set(false)
+    suppressInheritedMembers.set(true)
     dokkaSourceSets {
         configureEach {
             externalDocumentationLink {
@@ -77,7 +77,7 @@ taboolib {
     install("module-metrics")
     install("module-lang")
     classifier = null
-    version = "6.0.12-35"
+    version = "6.0.12-40"
 }
 
 
