@@ -37,11 +37,15 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
         PlaceholderString.of(config.getString(arrayOf("cache", "c"), "null"))
     val attacker: PlaceholderString =
         PlaceholderString.of(config.getString(arrayOf("attacker", "a"), "null"))
-    private var ignoresArmor = config.getBoolean(arrayOf("ignorearmor", "ia", "i"), false)
-    private var preventImmunity = config.getBoolean(arrayOf("preventimmunity", "pi"), false)
-    private var preventKnockback = config.getBoolean(arrayOf("preventknockback", "pkb", "pk"), false)
-    private var ignoresEnchantments = config.getBoolean(arrayOf("ignoreenchantments", "ignoreenchants", "ie"), false)
-
+    private var ignoresArmor = config.getBoolean(arrayOf("ignorearmor", "ia", "i"), false) // 无视互加
+    private var preventImmunity = config.getBoolean(arrayOf("preventimmunity", "pi"), false) // 无视 无敌帧
+    private var preventKnockback = config.getBoolean(arrayOf("preventknockback", "pkb", "pk"), false) // 不击退
+    private var ignoresEnchantments = config.getBoolean(arrayOf("ignoreenchantments", "ignoreenchants", "ie"), false) // 无视保护附魔
+    private var noAnger = config.getBoolean(arrayOf("noAnger", "na"), false) // 无仇恨
+    private var ignoreInvulnerability = config.getBoolean(arrayOf("ignoreinvulnerability", "ignoreInvul", "ii"), false) // 无视无敌
+    private var ignoreShield = config.getBoolean(arrayOf("ignoreshield", "is"), false) // 无视盾牌
+    private var damagesHelmet = config.getBoolean(arrayOf("damageshelmet", "dh"), false) // 是否损害头盔耐久
+    private var tags = config.getString(arrayOf("tags", "tag"), null).toString().split(",").map { it.replace(" ","").uppercase() }// 标签
     private var element: PlaceholderString? =
         PlaceholderString.of(config.getString(arrayOf("element", "e", "damagetype", "type"), null))
     private var cause: PlaceholderString =
@@ -88,10 +92,18 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
         val damage = FightAPI.runFight(key.get(data, target), fightData, damage = false)
         target?.bukkitEntity?.removeMeta("skill-damage")
         val meta = DamageMetadata(
-            caster, damage,
+            caster, damage, HashMap(),
             element?.get(data, target), ignoresArmor, preventImmunity, preventKnockback, ignoresEnchantments,
             EntityDamageEvent.DamageCause.valueOf(cause.get(data, target))
         )
+        meta.putBoolean("no_anger", noAnger)
+        meta.putBoolean("ignore_shield", ignoreShield)
+        meta.putBoolean("ignore_invulnerability", ignoreInvulnerability)
+        meta.putBoolean("damages_helmet", damagesHelmet)
+        if (element != null) {
+            meta.putTag(element?.get(data, target))
+        }
+        tags.forEach(meta::putTag)
         syncTaskRun {
             SkillAdapter.get().doDamage(meta, target)
         }
