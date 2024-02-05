@@ -29,6 +29,7 @@ com.skillw.fightsystem.internal.command.sub
 com.skillw.fightsystem.internal.core.asahi.infix
 com.skillw.fightsystem.internal.core.fight
 com.skillw.fightsystem.internal.feature.compat.magic
+com.skillw.fightsystem.internal.feature.compat.pvpmanager
 com.skillw.fightsystem.internal.feature.compat.skapi
 com.skillw.fightsystem.internal.feature.message
 com.skillw.fightsystem.internal.feature.message.builder
