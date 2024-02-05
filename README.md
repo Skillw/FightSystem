@@ -11,6 +11,8 @@
 | 兼容版本 | 1.12.2+                                  |
 | 软依赖  | PlaceholderAPI Mythicmobs SkillAPI Magic |
 
+![GitHub Release](https://img.shields.io/github/v/release/Skillw/FightSystem)
+
 ## 介绍
 
 **FightSystem** 是基于 **TabooLib VI** **Pouvoir** **AttributeSystem** 编写的一款战斗系统插件  
