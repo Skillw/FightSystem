@@ -75,21 +75,20 @@ object FightGroupManagerImpl : FightGroupManager() {
 
         val before = FightEvent.Pre(key, fightData)
         before.call()
-        if (before.isCancelled) return -0.1
-
         var eventFightData = before.fightData
+        if (before.isCancelled || eventFightData.event?.isCancelled == true) return -0.1
         val result = mirrorNow("fight-$key-cal") {
             FightSystem.fightGroupManager[key]!!.run(eventFightData)
         }
         val process = FightEvent.Process(key, eventFightData)
         process.call()
+        if (process.isCancelled || eventFightData.event?.isCancelled == true) return -0.1
 
         eventFightData = process.fightData
         val post = FightEvent.Post(key, eventFightData)
         post.call()
-
         eventFightData = post.fightData
-        if (post.isCancelled) return -0.1
+        if (post.isCancelled || eventFightData.event?.isCancelled == true) return -0.1
 
         if (message) {
             eventFightData.calMessage()

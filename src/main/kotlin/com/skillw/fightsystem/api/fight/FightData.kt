@@ -16,6 +16,7 @@ import com.skillw.pouvoir.util.parse
 import com.skillw.pouvoir.util.script.ColorUtil.decolored
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.event.Cancellable
 import taboolib.common.util.asList
 import taboolib.common5.Coerce
 import taboolib.module.chat.uncolored
@@ -76,6 +77,15 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
         this.attacker = attacker
         this.defender = defender
     }
+
+    var event: Cancellable? = null
+        set(value) {
+            field = value
+            this["event"] = value!!
+        }
+        get() {
+            return field ?: this["event"] as? Cancellable?
+        }
 
     /** MessageType data */
     val messageData = MessageData()

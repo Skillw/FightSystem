@@ -119,7 +119,6 @@ object FSConfig : ConfigManager(FightSystem) {
     val defaultDefendMessageType: String
         get() = (this["message"].getString("options.default.defend") ?: "CHAT").uppercase()
 
-
     val isVanillaArmor: Boolean
         get() = this["config"].getBoolean("options.fight.vanilla-armor")
 

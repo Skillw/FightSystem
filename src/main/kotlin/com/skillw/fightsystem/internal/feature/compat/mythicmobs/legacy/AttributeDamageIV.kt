@@ -2,10 +2,13 @@ package com.skillw.fightsystem.internal.feature.compat.mythicmobs.legacy
 
 import com.skillw.fightsystem.api.fight.DataCache
 import com.skillw.fightsystem.api.fight.FightData
+import com.skillw.pouvoir.util.livingEntity
+import io.lumine.xikage.mythicmobs.MythicMobs
 import io.lumine.xikage.mythicmobs.adapters.AbstractEntity
 import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
 import io.lumine.xikage.mythicmobs.logging.MythicLogger
+import io.lumine.xikage.mythicmobs.mobs.ActiveMob
 import io.lumine.xikage.mythicmobs.mobs.GenericCaster
 import io.lumine.xikage.mythicmobs.skills.ITargetedEntitySkill
 import io.lumine.xikage.mythicmobs.skills.SkillMetadata
@@ -13,7 +16,9 @@ import io.lumine.xikage.mythicmobs.skills.mechanics.DamageMechanic
 import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderString
 import org.bukkit.Bukkit
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import taboolib.common.platform.function.submit
+import taboolib.common5.cbool
 import taboolib.platform.util.getMetaFirstOrNull
 import taboolib.platform.util.removeMeta
 import taboolib.platform.util.setMeta
@@ -45,11 +50,18 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
         val attacker =
             if (attackerName == "null") caster else Bukkit.getPlayer(attackerName) ?: return false
         val origin = data.caster
-        data.caster = GenericCaster(BukkitAdapter.adapt(attacker))
+        data.caster = if (attacker !is Player) MythicMobs.inst().mobManager.getMythicMobInstance(
+            attacker as? LivingEntity ?: return false
+        )
+        else GenericCaster(BukkitAdapter.adapt(attacker))
         val cache = if (cacheKey == "null") null else attacker.getMetaFirstOrNull(cacheKey)
             ?.value() as? DataCache?
-        return if (attacker is LivingEntity && target is LivingEntity && !target.isDead) {
-            val fightData = FightData(attacker, target) {
+        return if (target is LivingEntity && !target.isDead) {
+            val ownerEntity = (data.caster as? ActiveMob?)?.owner?.orElse(null)?.livingEntity()
+            val owner = ownerEntity?.let { BukkitAdapter.adapt(it) } ?: data.caster.entity
+            val ownerDamage = data.caster.entity.getMetadata("ownerDamage").orElse(false).cbool
+            val finalAttacker = if (ownerDamage) owner else data.caster.entity
+            val fightData = FightData(finalAttacker.bukkitEntity as LivingEntity, target) {
                 cache?.let { cacheData ->
                     it.cache.setData(cacheData)
                 }
@@ -60,7 +72,8 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
             val damage =
                 com.skillw.fightsystem.api.FightAPI.runFight(key.get(data, targetAE), fightData, damage = false)
             target.removeMeta("skill-damage")
-            submit { doDamage(data.caster, targetAE, damage) }
+
+            submit { doDamage(GenericCaster(finalAttacker), targetAE, damage) }
             MythicLogger.debug(
                 MythicLogger.DebugLevel.MECHANIC,
                 "+ AttributeDamageMechanic fired for {0} with {1} power",
