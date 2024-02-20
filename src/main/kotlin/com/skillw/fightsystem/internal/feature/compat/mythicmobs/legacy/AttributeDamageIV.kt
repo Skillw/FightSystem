@@ -73,7 +73,7 @@ internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfi
                 com.skillw.fightsystem.api.FightAPI.runFight(key.get(data, targetAE), fightData, damage = false)
             target.removeMeta("skill-damage")
 
-            submit { doDamage(GenericCaster(finalAttacker), targetAE, damage) }
+            submit { doDamage(if (ownerDamage) GenericCaster(owner) else data.caster, targetAE, damage) }
             MythicLogger.debug(
                 MythicLogger.DebugLevel.MECHANIC,
                 "+ AttributeDamageMechanic fired for {0} with {1} power",

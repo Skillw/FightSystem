@@ -8,12 +8,11 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
-import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.platform.util.attacker
 
 internal object Damage {
-    @SubscribeEvent(EventPriority.HIGHEST)
+    @SubscribeEvent
     fun damageEntity(event: EntityDamageEvent) {
         val attacker: LivingEntity? = if (event is EntityDamageByEntityEvent) event.attacker else null
         val defender = event.entity as? LivingEntity? ?: return

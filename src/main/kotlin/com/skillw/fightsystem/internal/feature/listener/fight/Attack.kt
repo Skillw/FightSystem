@@ -22,7 +22,7 @@ import taboolib.platform.util.attacker
 
 internal object Attack {
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent(priority = EventPriority.LOW)
     fun attack(event: EntityDamageByEntityEvent) {
         if (!isFightEnable) return
         //如果攻击原因不是 ENTITY_ATTACK 和 PROJECTILE 则跳过计算
