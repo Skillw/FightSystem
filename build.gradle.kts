@@ -84,9 +84,8 @@ taboolib {
 repositories {
     mavenCentral()
     maven(url = "https://mvn.lumine.io/repository/maven-public/")
-
+    maven("https://repo.tabooproject.org/repository/releases")
 }
-
 dependencies {
     dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.7.20")
 //    compileOnly("me.deecaad:mechanicscore:2.4.9")
