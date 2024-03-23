@@ -22,6 +22,7 @@ internal object Damage {
         if (!com.skillw.fightsystem.FightSystem.fightGroupManager.containsKey(key)) return
         val data = FightData(attacker, defender) {
             it["origin"] = event.damage; it["event"] = event
+            it["fightData"] = it
         }
         val result = com.skillw.fightsystem.api.FightAPI.runFight(key, data, damage = false)
         if (result > 0.0) {

@@ -46,7 +46,9 @@ internal object Attack {
         //如果不是原版弓/弩攻击 则跳过计算
         if (isProjectile && event.damager.charged() == null) return
 
-        if (filters.any { it(attacker, defender) }) return
+        if (filters.any {
+            it(attacker, defender)
+        }) return
         //处理原版护甲
         if (!FSConfig.isVanillaArmor) {
             event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0)
@@ -78,6 +80,7 @@ internal object Attack {
             it["origin"] = originDamage
             it["event"] = event
             it["projectile"] = isProjectile.toString()
+            it["fightData"] = it
         }, damage = false)
 
 
