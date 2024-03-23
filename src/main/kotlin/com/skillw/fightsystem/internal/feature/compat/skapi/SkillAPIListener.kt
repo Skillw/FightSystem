@@ -35,6 +35,7 @@ internal object SkillAPIListener {
         val data = FightData(attacker, defender) {
             it["origin"] = originDamage
             it["event"] = event
+            it["fightData"] = it
         }
         val result = FightAPI.runFight(triggerKey, data, damage = false)
         event.damage = if (result == -1.0) originDamage else result
