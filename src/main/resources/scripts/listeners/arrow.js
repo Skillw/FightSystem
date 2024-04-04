@@ -1,4 +1,4 @@
-MinecraftVersion = static("MinecraftVersion").INSTANCE;
+MinecraftVersion = static("Version");
 
 function conf() {
     return {
