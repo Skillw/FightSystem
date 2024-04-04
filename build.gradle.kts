@@ -1,13 +1,14 @@
+import io.izzel.taboolib.gradle.*
 import java.net.URL
 
 plugins {
     java
     `maven-publish`
     signing
-    id("io.izzel.taboolib") version "1.56"
-    id("org.jetbrains.kotlin.jvm") version "1.5.31"
+    id("io.izzel.taboolib") version "2.0.11"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
+    id("org.jetbrains.dokka") version "1.9.20"
     id("io.codearte.nexus-staging") version "0.30.0"
-    id("org.jetbrains.dokka") version "1.5.31"
 }
 
 tasks.dokkaJavadoc.configure {
@@ -50,10 +51,6 @@ task("info") {
     println(project.version.toString())
 }
 taboolib {
-    if (api != null) {
-        println("api!")
-        taboolib.options("skip-kotlin-relocate", "keep-kotlin-module")
-    }
     description {
         contributors {
             name("Glom_")
@@ -66,18 +63,19 @@ taboolib {
             name("Magic").optional(true)
         }
     }
-
-    install("common")
-    install("common-5")
-    install("module-chat")
-    install("module-nms")
-    install("module-nms-util")
-    install("module-configuration")
-    install("platform-bukkit")
-    install("module-metrics")
-    install("module-lang")
+    env {
+        install(BUKKIT_ALL, UNIVERSAL, BUKKIT)
+        install(CHAT, NMS, NMS_UTIL, NAVIGATION, METRICS, LANG, CONFIGURATION)
+    }
     classifier = null
-    version = "6.0.12-69"
+    version {
+        if(project.gradle.startParameter.taskNames.getOrNull(0) == "taboolibBuildApi" || api != null){
+            println("api!")
+            isSkipKotlinRelocate =true
+            isSkipKotlin = true
+        }
+        taboolib = "6.1.1-beta17"
+    }
 }
 
 
@@ -164,11 +162,6 @@ publishing {
                 name.set(project.name)
                 description.set("Bukkit Fight Engine Plugin.")
                 url.set("https://github.com/Glom-c/FightSystem/")
-
-                dependencies {
-                    compileOnly("com.skillw.pouvoir:Pouvoir:1.6.4-8")
-                    compileOnly("com.skillw.attributesystem:AttributeSystem:2.1.0-beta-2")
-                }
 
                 licenses {
                     license {

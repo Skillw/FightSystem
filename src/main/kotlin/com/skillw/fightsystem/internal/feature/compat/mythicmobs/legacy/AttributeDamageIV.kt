@@ -29,7 +29,7 @@ import taboolib.platform.util.setMeta
  * @author Glom
  * @date 2022/7/11 17:14 Copyright 2022 user. All rights reserved.
  */
-internal class AttributeDamageIV(line: String?, private val mlc: MythicLineConfig) :
+internal class AttributeDamageIV(line: String?, mlc: MythicLineConfig) :
     DamageMechanic(line, mlc), ITargetedEntitySkill {
     val key: PlaceholderString = PlaceholderString.of(mlc.getString(arrayOf("key", "k"), "null"))
     val cache: PlaceholderString =

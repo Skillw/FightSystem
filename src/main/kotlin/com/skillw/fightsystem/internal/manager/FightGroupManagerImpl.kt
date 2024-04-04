@@ -9,11 +9,11 @@ import com.skillw.fightsystem.api.manager.FightGroupManager
 import com.skillw.fightsystem.internal.core.fight.FightGroup
 import com.skillw.fightsystem.util.asyncTaskRun
 import com.skillw.fightsystem.util.syncRun
+import com.skillw.pouvoir.util.legacy.mirrorNow
 import com.skillw.pouvoir.util.loadMultiply
 import org.bukkit.entity.Player
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
-import taboolib.common5.mirrorNow
 import taboolib.platform.util.getMeta
 import taboolib.platform.util.removeMeta
 import taboolib.platform.util.setMeta
