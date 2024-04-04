@@ -11,12 +11,11 @@ $dokka.location:com.skillw.fightsystem.api.event/MechanicRunEvent.Post///Pointin
 $dokka.location:com.skillw.fightsystem.api.event/MechanicRunEvent.Pre///PointingToDeclaration/com/skillw/fightsystem/api/event/MechanicRunEvent.Pre.html
 $dokka.location:com.skillw.fightsystem.api.fight.message/Message.Companion///PointingToDeclaration/com/skillw/fightsystem/api/fight/message/Message.Companion.html
 $dokka.location:com.skillw.fightsystem.api.fight.message/Message.Type///PointingToDeclaration/com/skillw/fightsystem/api/fight/message/Message.Type.html
-$dokka.location:com.skillw.fightsystem.api.fight/DamageType.Companion///PointingToDeclaration/com/skillw/fightsystem/api/fight/DamageType.Companion.html
-$dokka.location:com.skillw.fightsystem.api.manager/PersonalManager.Companion///PointingToDeclaration/com/skillw/fightsystem/api/manager/PersonalManager.Companion.html
-$dokka.location:com.skillw.fightsystem.internal.core.fight/FightGroup.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/core/fight/FightGroup.Companion.html
-$dokka.location:com.skillw.fightsystem.internal.core.fight/MechanicDataCompound.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/core/fight/MechanicDataCompound.Companion.html
-$dokka.location:com.skillw.fightsystem.internal.feature.personal/PersonalData.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/feature/personal/PersonalData.Companion.html
 $dokka.location:com.skillw.fightsystem.util.nms/NMS.Companion///PointingToDeclaration/com/skillw/fightsystem/util/nms/NMS.Companion.html
+$dokka.location:com.skillw.pouvoir.util.legacy/Mirror.MirrorCollect///PointingToDeclaration/com/skillw/pouvoir/util/legacy/Mirror.MirrorCollect.html
+$dokka.location:com.skillw.pouvoir.util.legacy/Mirror.MirrorData///PointingToDeclaration/com/skillw/pouvoir/util/legacy/Mirror.MirrorData.html
+$dokka.location:com.skillw.pouvoir.util.legacy/Mirror.MirrorFuture///PointingToDeclaration/com/skillw/pouvoir/util/legacy/Mirror.MirrorFuture.html
+$dokka.location:com.skillw.pouvoir.util.legacy/Mirror.MirrorSettings///PointingToDeclaration/com/skillw/pouvoir/util/legacy/Mirror.MirrorSettings.html
 com.skillw.fightsystem
 com.skillw.fightsystem.api
 com.skillw.fightsystem.api.event
@@ -29,6 +28,8 @@ com.skillw.fightsystem.internal.command.sub
 com.skillw.fightsystem.internal.core.asahi.infix
 com.skillw.fightsystem.internal.core.fight
 com.skillw.fightsystem.internal.feature.compat.magic
+com.skillw.fightsystem.internal.feature.compat.mythicmobs.common
+com.skillw.fightsystem.internal.feature.compat.mythicmobs.legacy
 com.skillw.fightsystem.internal.feature.compat.pvpmanager
 com.skillw.fightsystem.internal.feature.compat.skapi
 com.skillw.fightsystem.internal.feature.message
@@ -36,5 +37,7 @@ com.skillw.fightsystem.internal.feature.message.builder
 com.skillw.fightsystem.internal.feature.personal
 com.skillw.fightsystem.internal.manager
 com.skillw.fightsystem.util
+com.skillw.fightsystem.util.legacy
 com.skillw.fightsystem.util.nms
+com.skillw.pouvoir.util.legacy
 
