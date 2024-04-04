@@ -92,10 +92,10 @@ object FSConfig : ConfigManager(FightSystem) {
     override fun subReload() {
         Pouvoir.scriptManager.addScriptDir(scripts)
         attackFightKeyMap.clear()
-        this["config"].getConfigurationSection("options.fight.attack-fight")?.apply {
-            getKeys(false).forEach { key: String ->
-                attackFightKeyMap[key] = getString(key) ?: return@forEach
-            }
+        val a = this["config"].getStringList("options.fight.attack-fight")?.onEach {
+            val array = it.split("::")
+            if (array.size != 2) return@onEach
+            attackFightKeyMap[array[0]] = array[1]
         }
         completeYaml("config.yml")
         completeYaml("message.yml")
@@ -144,6 +144,7 @@ object FSConfig : ConfigManager(FightSystem) {
 
     val skapiDamageCal
         get() = this["config"].getBoolean("options.fight.skill-api-damage-cal", false)
+
 
     @JvmStatic
     fun debug(debug: () -> Unit) {

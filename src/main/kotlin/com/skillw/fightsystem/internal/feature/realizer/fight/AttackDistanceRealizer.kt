@@ -49,14 +49,14 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
         get() = true
 
     private val isDistanceEffect
-        get() = config.getOrDefault("distance-attack.effect", true).cbool
+        get() = config.getOrDefault("effect", true).cbool
     private val isDistanceSound
-        get() = config.getOrDefault("distance-attack.sound", true).cbool
+        get() = config.getOrDefault("sound", true).cbool
 
     private val defaultDistance: Double
-        get() = config.getOrDefault("vanilla-distance.default", 3.0).cdouble
+        get() = config.getOrDefault("default", 3.0).cdouble
     private val creativeDistance: Double
-        get() = config.getOrDefault("vanilla-distance.creative", 4.5).cdouble
+        get() = config.getOrDefault("creative", 4.5).cdouble
 
 
     @SubscribeEvent(ignoreCancelled = false)

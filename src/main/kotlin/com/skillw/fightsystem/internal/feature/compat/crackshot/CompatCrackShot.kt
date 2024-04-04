@@ -45,7 +45,7 @@ internal object CompatCrackShot : BaseRealizer("compat-crack-shot"), Awakeable {
         get() = fightGroups["default"]
 
     init {
-        ignorePaths.add("compat-crack-shot.fight-groups")
+        ignorePaths.add("fight-groups")
     }
 
     override fun onEnable() {
