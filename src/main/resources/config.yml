@@ -10,9 +10,9 @@ options:
     vanilla-armor: true
     #若没有这些权限，则攻击时运行默认的 attack 战斗组
     #当攻击者拥有这个权限时，攻击时将运行 class-a-attack 战斗组
-    #      as.class.a: class-a-attack
-    # as.class.b: class-b-attack
-    attack-fight: { }
+    #权限::战斗组
+    attack-fight:
+      - as.class.b::class-a-attack
     #是否计算 MM 的 damage 机制的伤害
     mm-damage-cal: false
     #是否计算 SkillAPI 的 damage 机制的伤害

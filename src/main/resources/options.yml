@@ -1,63 +1,47 @@
-attack-cooldown:
-  #攻击冷却的时间与玩家原版攻击速度属性匹配
-  enable: true
-  #cooldown 物品冷却
-  #vanilla 原版攻击速度机制
-  type: cooldown
-  #任何时间都能攻击(冷却不结束，就不能攻击)
-  #伤害会被蓄力机制影响
-  damage-any-time: true
-  #蓄力机制 (已度过冷却时间/总时间)
-  charged: true
-  #cooldown 基于物品冷却
-  #vanilla 基于原版伤害
-  charge-based: vanilla
-  #最小蓄力值 若蓄力开启 且 蓄力值小于此值则伤害取消
-  min-charge: 0.05
-  #不冷却的材质
-  no-cooldown-types:
-    - "BOW"
-    - "CROSSBOW"
-attack-distance:
-  #攻击距离 单位为格
-  enable: true
-  #默认攻击距离
-  #这里填原版的数值 建议不要改动
-  #如果有偏差会导致 “二次伤害” 的触发
-  vanilla-distance:
-    default: 3
-    creative: 4.5
-  distance-attack:
-    #距离攻击的特效
-    effect: true
-    #距离攻击的声音
-    sound: true
-  value: "%as_att:AttackDistance%"
-#无伤间隔/ 无敌帧
-#一个玩家打一次怪物 会有n tick 不能再伤害怪物
 no-damage-ticks:
-  enable: true
   disable-worlds:
-    - "example_world"
-  #tick
+    - example_world
+  enable: true
   value: 5
 fight-status:
   enable: true
-  #战斗状态持续时间
-  #tick
   value: 100
-#禁止直接普攻的材质
+limit-damage-particle:
+  max: 10
+  enable: true
 disable-attack-types:
   values:
-    - "BOW"
-    - "CROSSBOW"
+    - BOW
+    - CROSSBOW
 compat-crack-shot:
+  default: none
+  Bazooka: attack-damage
+  Carbine: attack-damage
   projectile-cache: true
-  fight-groups:
-    #默认的战斗组 默认无，即FS不参与计算
-    default: none
-    Bazooka: "attack-damage"
-    Carbine: "attack-damage"
-limit-damage-particle:
+attack-distance:
+  effect: true
+  sound: true
+  default: 3
+  creative: 4.5
   enable: true
-  max: 10
+  value: '%as_att:AttackDistance%'
+attack-cooldown:
+  # 不冷却的材质
+  no-cooldown-types:
+    - BOW
+    - CROSSBOW
+  # 攻击冷却的时间与玩家原版攻击速度属性匹配
+  enable: true
+  # 最小蓄力值 若蓄力开启 且 蓄力值小于此值则伤害取消
+  min-charge: 0.05
+  # 任何时间都能攻击(冷却不结束，就不能攻击)
+  # 伤害会被蓄力机制影响
+  damage-any-time: true
+  # cooldown 物品冷却
+  # vanilla 原版攻击速度机制
+  type: cooldown
+  # 蓄力机制 (已度过冷却时间/总时间)
+  charged: true
+  # cooldown 基于物品冷却
+  # vanilla 基于原版伤害
+  charge-based: vanilla
