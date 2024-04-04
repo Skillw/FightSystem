@@ -6,6 +6,7 @@ import com.skillw.pouvoir.Pouvoir
 import com.skillw.pouvoir.Pouvoir.triggerHandlerManager
 import com.skillw.pouvoir.api.manager.ConfigManager
 import com.skillw.pouvoir.api.plugin.map.BaseMap
+import com.skillw.pouvoir.util.legacy.Mirror
 import com.skillw.pouvoir.util.static
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -17,7 +18,6 @@ import taboolib.common.platform.Awake
 import taboolib.common.platform.Platform
 import taboolib.common.platform.function.getDataFolder
 import taboolib.common.platform.function.submit
-import taboolib.common5.Mirror
 import taboolib.module.metrics.charts.SingleLineChart
 import java.io.File
 

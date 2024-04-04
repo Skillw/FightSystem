@@ -93,7 +93,7 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
         target?.bukkitEntity?.removeMeta("skill-damage")
         val meta = DamageMetadata(
             caster, damage, HashMap(),
-            element?.get(data, target), ignoresArmor, preventImmunity, preventKnockback, ignoresEnchantments,
+            element?.get(data, target), 1.0,ignoresArmor, preventImmunity, preventKnockback, ignoresEnchantments,
             EntityDamageEvent.DamageCause.valueOf(cause.get(data, target))
         )
         meta.putBoolean("no_anger", noAnger)

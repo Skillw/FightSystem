@@ -1,9 +1,9 @@
 package com.skillw.fightsystem.internal.command.sub
 
 import com.skillw.fightsystem.internal.command.FSCommand.soundSuccess
+import com.skillw.pouvoir.util.legacy.Mirror
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.subCommand
-import taboolib.common5.Mirror
 import taboolib.module.lang.sendLang
 
 object MirrorCommand {
