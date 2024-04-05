@@ -45,7 +45,7 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
     private var ignoreInvulnerability = config.getBoolean(arrayOf("ignoreinvulnerability", "ignoreInvul", "ii"), false) // 无视无敌
     private var ignoreShield = config.getBoolean(arrayOf("ignoreshield", "is"), false) // 无视盾牌
     private var damagesHelmet = config.getBoolean(arrayOf("damageshelmet", "dh"), false) // 是否损害头盔耐久
-    private var tags = config.getString(arrayOf("tags", "tag"), null).toString().split(",").map { it.replace(" ","").uppercase() }// 标签
+    private var tags = config.getString(arrayOf("tags", "tag"), null)?.toString()?.split(",")?.map { it.replace(" ","").uppercase() }// 标签
     private var element: PlaceholderString? =
         PlaceholderString.of(config.getString(arrayOf("element", "e", "damagetype", "type"), null))
     private var cause: PlaceholderString =
@@ -103,7 +103,7 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
         if (element != null) {
             meta.putTag(element?.get(data, target))
         }
-        tags.forEach(meta::putTag)
+        tags?.forEach(meta::putTag)
         syncTaskRun {
             SkillAdapter.get().doDamage(meta, target)
         }

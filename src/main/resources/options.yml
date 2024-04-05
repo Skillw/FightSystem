@@ -26,22 +26,12 @@ attack-distance:
   enable: true
   value: '%as_att:AttackDistance%'
 attack-cooldown:
-  # 不冷却的材质
   no-cooldown-types:
     - BOW
     - CROSSBOW
-  # 攻击冷却的时间与玩家原版攻击速度属性匹配
   enable: true
-  # 最小蓄力值 若蓄力开启 且 蓄力值小于此值则伤害取消
   min-charge: 0.05
-  # 任何时间都能攻击(冷却不结束，就不能攻击)
-  # 伤害会被蓄力机制影响
   damage-any-time: true
-  # cooldown 物品冷却
-  # vanilla 原版攻击速度机制
   type: cooldown
-  # 蓄力机制 (已度过冷却时间/总时间)
   charged: true
-  # cooldown 基于物品冷却
-  # vanilla 基于原版伤害
   charge-based: vanilla
