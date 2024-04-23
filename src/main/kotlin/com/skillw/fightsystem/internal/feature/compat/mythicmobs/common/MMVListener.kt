@@ -9,8 +9,7 @@ import taboolib.common.platform.Ghost
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.platform.util.hasMeta
 
-internal object
-MMVListener {
+internal object MMVListener {
     @Awake(LifeCycle.ENABLE)
     fun ignore() {
         FightAPI.addIgnoreAttack { _, defender ->

@@ -86,7 +86,5 @@ internal class AttributeDamageIV(line: String?, mlc: MythicLineConfig) :
             data.caster = origin
         }
     }
-
-
 }
 

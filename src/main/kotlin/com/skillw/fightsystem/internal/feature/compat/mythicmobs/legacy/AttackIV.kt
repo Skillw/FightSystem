@@ -8,7 +8,6 @@ import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.util.isAlive
 import io.lumine.xikage.mythicmobs.MythicMobs
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob
-import io.lumine.xikage.mythicmobs.mobs.MythicMob
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -38,8 +37,13 @@ object AttackIV {
         if (!isMythMobIV) return
         FightAPI.addIgnoreAttack { zxy, _ ->
             if(!zxy.isMythicMob()) return@addIgnoreAttack false
-            MythicMobs.inst().apiHelper.getMythicMobInstance(zxy).type.config.getStringList("fightGroup") ?: return@addIgnoreAttack false
-            return@addIgnoreAttack true
+            return@addIgnoreAttack MythicMobs.
+            inst().
+            apiHelper.
+            getMythicMobInstance(zxy).
+            type.
+            config.
+            getStringList("fightGroup").isNotEmpty()
         }
     }
 
@@ -64,6 +68,7 @@ object AttackIV {
         }
         val entity = event.entity as LivingEntity
         val ids = mob.type.config.getStringList("fightGroup")
+        if (ids.isEmpty()) return
         val isProjectile = event.cause == EntityDamageEvent.DamageCause.PROJECTILE
         val origin = event.finalDamage
         val cacheData = event.damager.cache()

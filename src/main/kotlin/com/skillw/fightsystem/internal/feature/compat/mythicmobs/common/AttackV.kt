@@ -5,10 +5,8 @@ import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.cache
 import com.skillw.fightsystem.internal.manager.FSConfig
-import com.skillw.fightsystem.internal.manager.FSConfig.debug
 import com.skillw.pouvoir.util.isAlive
 import io.lumine.mythic.bukkit.MythicBukkit
-import org.bukkit.Bukkit
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -38,8 +36,7 @@ object AttackV {
         FightAPI.addIgnoreAttack { zxy, _ ->
             if(!zxy.isMythicMob()) return@addIgnoreAttack false
             val mob = MythicBukkit.inst().apiHelper.getMythicMobInstance(zxy)
-            mob.type.config.getStringList("fightGroup") ?: return@addIgnoreAttack false
-            return@addIgnoreAttack true
+            return@addIgnoreAttack mob.type.config.getStringList("fightGroup").isNotEmpty()
         }
     }
 
@@ -59,7 +56,10 @@ object AttackV {
         if (!event.attacker!!.isAlive() || !event.entity.isAlive() || event.entity is ArmorStand) return
 
         val mob = MythicBukkit.inst().apiHelper.getMythicMobInstance(event.attacker)
-        val groups = mob.type.config.getStringList("fightGroup") ?: return
+        val groups = run {
+            if(mob.type.config.getStringList("fightGroup").isEmpty()) return
+            return@run mob.type.config.getStringList("fightGroup")
+        }
         val entity = event.entity as LivingEntity
         if (!FSConfig.isVanillaArmor) {
             event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0)

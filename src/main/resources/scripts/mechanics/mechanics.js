@@ -10,8 +10,8 @@ function flame(data, context, damageType) {
     }
     const attacker = data.attacker;
     const defender = data.defender;
-    const damage = Coerce.toDouble(data.handle(context.get("damage")));
-    const duration = Coerce.toDouble(data.handle(context.get("duration")));
+    const damage = toDouble(data.handle(context.get("damage")));
+    const duration = toDouble(data.handle(context.get("duration")));
     task(function (task) {
         defender.setFireTicks(duration);
     });
@@ -49,8 +49,8 @@ function frozen(data, context, damageType) {
     }
     const attacker = data.attacker;
     const defender = data.defender;
-    const value = Coerce.toDouble(data.handle(context.get("value")));
-    const duration = Coerce.toDouble(data.handle(context.get("duration")));
+    const value = toDouble(data.handle(context.get("value")));
+    const duration = toDouble(data.handle(context.get("duration")));
 
     AttrAPI.addAttribute(
         defender,
@@ -97,7 +97,7 @@ function thunder(data, context, damageType) {
     }
     const attacker = data.attacker;
     const defender = data.defender;
-    const damage = Coerce.toDouble(data.handle(context.get("damage")));
+    const damage = toDouble(data.handle(context.get("damage")));
     task(function (task) {
         defender.world.strikeLightningEffect(defender.location);
     });
@@ -122,7 +122,7 @@ function rebound(data, context, damageType) {
     }
     const attacker = data.attacker;
     const defender = data.defender;
-    const multiplier = Coerce.toDouble(data.handle(context.get("multiplier")));
+    const multiplier = toDouble(data.handle(context.get("multiplier")));
     const damage = data.calResult() * multiplier;
     if (damage <= 0) return 0;
     task(function (task) {
@@ -151,13 +151,13 @@ function potion(data, context, damageType) {
     }
     const attacker = data.attacker;
     const defender = data.defender;
-    const type = Coerce.toDouble(data.handle(context.get("type")));
+    const type = toDouble(data.handle(context.get("type")));
     if (Data.containsKey(attacker.uniqueId + type)) return -1;
     const potionType = PotionEffectType.getByName(type);
     if (potionType == null) return -2;
-    const level = Coerce.toDouble(data.handle(context.get("level")));
-    const duration = Coerce.toDouble(data.handle(context.get("duration")));
-    const cooldown = Coerce.toDouble(data.handle(context.get("cooldown")));
+    const level = toDouble(data.handle(context.get("level")));
+    const duration = toDouble(data.handle(context.get("duration")));
+    const cooldown = toDouble(data.handle(context.get("cooldown")));
     task(function (task) {
         Data.put(attacker.uniqueId + type, true);
         defender.addPotionEffect(new PotionEffect(potionType, duration, level));
@@ -169,4 +169,17 @@ function potion(data, context, damageType) {
         }
     );
     return duration;
+}
+function toDouble(obj) {
+    if (obj === null || typeof obj === "undefined") {
+        return 0.0;
+    }
+    if (typeof obj === "number" || obj instanceof Number) {
+        return Number(obj);
+    }
+    var parsed = parseFloat(obj);
+    if (!isNaN(parsed)) {
+        return parsed;
+    }
+    return 0.0;
 }
