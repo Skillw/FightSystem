@@ -61,6 +61,7 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
 
     @SubscribeEvent(ignoreCancelled = false)
     fun distanceAttack(event: PlayerInteractEvent) {
+        if(!defaultEnable) return
         val player = event.player
         if (event.action != Action.LEFT_CLICK_AIR || player.gameMode == GameMode.SPECTATOR) return
         if (Pouvoir.sync)
@@ -70,7 +71,7 @@ internal object AttackDistanceRealizer : BaseRealizer("attack-distance"), Switch
 
     @SubscribeEvent
     fun cancelIfTooDistant(event: FightEvent.Pre) {
-        if (event.key != "attack-damage") return
+        if (event.key != FSConfig.defaultFightGroup) return
         if (event.fightData["projectile"].cbool) return
         val attacker = event.fightData.attacker as? Player? ?: return
         val defender = event.fightData.defender ?: return

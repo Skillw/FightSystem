@@ -3,6 +3,7 @@ package com.skillw.fightsystem.internal.feature.realizer.fight
 import com.skillw.attsystem.util.StringUtils.material
 import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.event.FightEvent
+import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
 import com.skillw.pouvoir.api.feature.realizer.BaseRealizerManager
 import com.skillw.pouvoir.api.feature.realizer.component.Awakeable
@@ -41,7 +42,7 @@ internal object DisableAttackMaterialRealizer : BaseRealizer("disable-attack-typ
     @SubscribeEvent(priority = EventPriority.MONITOR)
     fun disableMaterialAttack(event: FightEvent.Pre) {
         val attacker = event.fightData.attacker ?: return
-        if (attacker !is Player || event.fightData["projectile"] == "true" || event.key != "attack-damage") return
+        if (attacker !is Player || event.fightData["projectile"] == "true" || event.key != FSConfig.defaultFightGroup) return
         val material = attacker.inventory.itemInMainHand.type.name.material() ?: return
         if (attacker.hasPermission("as.damage_type.${material.name.lowercase()}")) return
         if (disableDamageTypes.contains(material)) {

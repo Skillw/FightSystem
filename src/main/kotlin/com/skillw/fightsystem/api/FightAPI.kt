@@ -32,12 +32,20 @@ object FightAPI {
     /**
      * 运行战斗组
      *
-     * @param key 战斗组id
+     * @param key 战斗组id列表
      * @param data 战斗数据
      * @param message 是否计算战斗消息并发送给玩具
      * @param damage 是否计算完伤害后造成伤害
      * @return
      */
+    fun runFight(key: List<String>, data: FightData, message: Boolean = true, damage: Boolean = true): Double {
+        var result = 0.0
+        key.forEach {
+            result += runFight(it, data, message, damage)
+        }
+        return result
+    }
+
     fun runFight(key: String, data: FightData, message: Boolean = true, damage: Boolean = true): Double {
         return fightGroupManager.runFight(key, data, message, damage)
     }

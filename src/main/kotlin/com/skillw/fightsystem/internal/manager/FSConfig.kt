@@ -124,6 +124,9 @@ object FSConfig : ConfigManager(FightSystem) {
 
     var isDebug = false
 
+    val defaultFightGroup: String
+        get() = this["config"].getString("options.fight.default","attack-damage")
+
     val debug: Boolean
         get() = this["config"].getBoolean("options.debug") || isDebug
 

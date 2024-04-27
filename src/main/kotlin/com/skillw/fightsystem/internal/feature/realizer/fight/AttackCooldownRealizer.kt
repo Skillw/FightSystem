@@ -4,6 +4,7 @@ import com.skillw.fightsystem.FightSystem
 import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.event.FightEvent
 import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.charged
+import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.fightsystem.util.syncTaskRun
 import com.skillw.pouvoir.api.feature.realizer.BaseRealizer
 import com.skillw.pouvoir.api.feature.realizer.BaseRealizerManager
@@ -58,7 +59,7 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
 
     @SubscribeEvent
     fun damageCharged(event: FightEvent.Pre) {
-        if (event.key != "attack-damage") return
+        if (event.key != FSConfig.defaultFightGroup) return
         val attacker = event.fightData.attacker as? Player? ?: return
         val defender = event.fightData.defender ?: return
 
@@ -93,7 +94,7 @@ internal object AttackCooldownRealizer : BaseRealizer("attack-cooldown"), Switch
     @SubscribeEvent(EventPriority.HIGHEST)
     fun cooldown(event: FightEvent.Post) {
         if (!enableCooldown) return
-        if (event.key != "attack-damage") return
+        if (event.key != FSConfig.defaultFightGroup) return
         if (event.fightData["projectile"] == true) return
         val attacker = event.fightData.attacker as? Player? ?: return
         val defender = event.fightData.defender ?: return

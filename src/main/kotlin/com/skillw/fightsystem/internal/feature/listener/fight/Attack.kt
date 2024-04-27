@@ -61,10 +61,10 @@ internal object Attack {
         //处理战斗组id
         val fightKey =
             when {
-                //是op的话就直接"attack-damage"，不参与权限计算
-                attacker.isOp -> "attack-damage"
+
+                attacker.isOp -> FSConfig.defaultFightGroup
                 else -> attackFightKeyMap.filterKeys { attacker.hasPermission(it) }.values.firstOrNull()
-                    ?: "attack-damage"
+                    ?: FSConfig.defaultFightGroup
             }
 
         debug { FightSystem.debug("FightKey: $fightKey") }

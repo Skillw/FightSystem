@@ -73,22 +73,14 @@ object AttackV {
                 it.cache.setData(cacheData)
         }
 
-        val result = run<Double> {
-            var result = 0.0
-            groups.forEach { fg ->
-                val calc = FightAPI.runFight(fg, data.also {
-                    //往里塞参数
-                    it["origin"] = origin
-                    it["event"] = event
-                    it["projectile"] = isProjectile.toString()
-                    it["ActiveMob"] = mob!!
-                    it["MobType"] = mob.type!!
-                    it["fightData"] = data
-                }, damage = false)
-                result += calc
-            }
-            return@run result
-        }
+        val result = FightAPI.runFight(groups, data.also {
+            it["origin"] = origin
+            it["projectile"] = isProjectile.toString()
+            it["event"] = event
+            it["ActiveMob"] = mob
+            it["MobType"] = mob.type!!
+            it["fightData"] = data
+        }, damage = false)
 
         if (result <= 0.0){
             FSConfig.debug { FightSystem.debug("Cancelled because Result <= 0") }
