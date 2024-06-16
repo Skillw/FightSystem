@@ -8,6 +8,8 @@ import io.lumine.mythic.api.skills.SkillMetadata
 import io.lumine.mythic.api.skills.SkillResult
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString
 import io.lumine.mythic.core.logging.MythicLogger
+import io.lumine.mythic.core.skills.SkillMechanic
+import io.lumine.mythic.core.skills.mechanics.CustomMechanic
 import org.bukkit.entity.LivingEntity
 import taboolib.platform.util.getMeta
 import taboolib.platform.util.setMeta
@@ -18,8 +20,10 @@ import taboolib.platform.util.setMeta
  * @author Glom
  * @date 2023年1月21日 8:14 Copyright 2022 user. All rights reserved.
  */
-internal class AttributeCacheV(val config: MythicLineConfig) :
-    ITargetedEntitySkill {
+internal class AttributeCacheV(
+    cm: CustomMechanic,
+    config: MythicLineConfig
+) : SkillMechanic(cm.manager, cm.file, config.line, config), ITargetedEntitySkill {
     val key: PlaceholderString =
         PlaceholderString.of(config.getString(arrayOf("key", "k"), "null"))
     val type: PlaceholderString =

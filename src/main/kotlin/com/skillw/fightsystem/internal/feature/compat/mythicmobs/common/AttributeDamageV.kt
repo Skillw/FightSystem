@@ -5,22 +5,19 @@ import com.skillw.fightsystem.api.fight.DataCache
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.util.syncTaskRun
 import io.lumine.mythic.api.adapters.AbstractEntity
-import io.lumine.mythic.api.adapters.SkillAdapter
 import io.lumine.mythic.api.config.MythicLineConfig
 import io.lumine.mythic.api.mobs.GenericCaster
 import io.lumine.mythic.api.skills.ITargetedEntitySkill
 import io.lumine.mythic.api.skills.SkillMetadata
 import io.lumine.mythic.api.skills.SkillResult
-import io.lumine.mythic.api.skills.damage.DamageMetadata
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.core.logging.MythicLogger
+import io.lumine.mythic.core.skills.damage.DamagingMechanic
+import io.lumine.mythic.core.skills.mechanics.CustomMechanic
 import org.bukkit.Bukkit
 import org.bukkit.entity.LivingEntity
-import org.bukkit.event.entity.EntityDamageEvent
 import taboolib.platform.util.getMetaFirstOrNull
-import taboolib.platform.util.removeMeta
-import taboolib.platform.util.setMeta
 
 /**
  * @className AttributeDamageV
@@ -28,28 +25,16 @@ import taboolib.platform.util.setMeta
  * @author Glom
  * @date 2022/7/11 17:14 Copyright 2022 user. All rights reserved.
  */
-internal class AttributeDamageV(private val config: MythicLineConfig) :
-    ITargetedEntitySkill {
+internal class AttributeDamageV(
+    cm: CustomMechanic,
+    mlc: MythicLineConfig
+) : DamagingMechanic(cm.manager, cm.file, mlc.line, mlc), ITargetedEntitySkill {
 
-    val key: PlaceholderString =
-        PlaceholderString.of(config.getString(arrayOf("key", "k"), "null"))
-    val cache: PlaceholderString =
-        PlaceholderString.of(config.getString(arrayOf("cache", "c"), "null"))
-    val attacker: PlaceholderString =
-        PlaceholderString.of(config.getString(arrayOf("attacker", "a"), "null"))
-    private var ignoresArmor = config.getBoolean(arrayOf("ignorearmor", "ia", "i"), false) // 无视互加
-    private var preventImmunity = config.getBoolean(arrayOf("preventimmunity", "pi"), false) // 无视 无敌帧
-    private var preventKnockback = config.getBoolean(arrayOf("preventknockback", "pkb", "pk"), false) // 不击退
-    private var ignoresEnchantments = config.getBoolean(arrayOf("ignoreenchantments", "ignoreenchants", "ie"), false) // 无视保护附魔
-    private var noAnger = config.getBoolean(arrayOf("noAnger", "na"), false) // 无仇恨
-    private var ignoreInvulnerability = config.getBoolean(arrayOf("ignoreinvulnerability", "ignoreInvul", "ii"), false) // 无视无敌
-    private var ignoreShield = config.getBoolean(arrayOf("ignoreshield", "is"), false) // 无视盾牌
-    private var damagesHelmet = config.getBoolean(arrayOf("damageshelmet", "dh"), false) // 是否损害头盔耐久
-    private var tags = config.getString(arrayOf("tags", "tag"), null)?.toString()?.split(",")?.map { it.replace(" ","").uppercase() }// 标签
-    private var element: PlaceholderString? =
-        PlaceholderString.of(config.getString(arrayOf("element", "e", "damagetype", "type"), null))
-    private var cause: PlaceholderString =
-        PlaceholderString.of(config.getString(arrayOf("damagecause", "dc", "cause"), "ENTITY_ATTACK"))
+    private val key: PlaceholderString = config.getPlaceholderString(arrayOf("key", "k"), "null")
+
+    private val cache: PlaceholderString = config.getPlaceholderString(arrayOf("cache", "c"), "null")
+
+    private val attacker: PlaceholderString = config.getPlaceholderString(arrayOf("attacker", "a"), "null")
 
     override fun castAtEntity(data: SkillMetadata, targetAE: AbstractEntity): SkillResult {
         val caster = data.caster.entity.bukkitEntity
@@ -62,7 +47,8 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
             }
         }
         val attacker =
-            if (attackerName == "null") caster else Bukkit.getPlayer(attackerName) ?: return SkillResult.INVALID_TARGET
+            if (attackerName == "null") caster else Bukkit.getPlayerExact(attackerName)
+                ?: return SkillResult.INVALID_TARGET
         val originCaster = data.caster
         data.caster = GenericCaster(BukkitAdapter.adapt(attacker))
         val cache = if (cacheKey == "null") null else attacker.getMetaFirstOrNull(cacheKey)
@@ -75,7 +61,12 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
                 it["power"] = data.power.toDouble()
                 it.putAll(params)
             }
-            val damage = doDamage(data, targetAE, fightData)
+
+            val damage = FightAPI.runFight(key.get(data, targetAE), fightData, damage = false)
+            syncTaskRun {
+                super.doDamage(data, targetAE, damage)
+            }
+
             MythicLogger.debug(
                 MythicLogger.DebugLevel.MECHANIC,
                 "+ AttributeDamageMechanic fired for {0} with {1} power",
@@ -85,30 +76,5 @@ internal class AttributeDamageV(private val config: MythicLineConfig) :
         data.caster = originCaster
         return SkillResult.SUCCESS
     }
-
-    private fun doDamage(data: SkillMetadata, target: AbstractEntity?, fightData: FightData): Double {
-        val caster = data.caster
-        target?.bukkitEntity?.setMeta("skill-damage", true)
-        val damage = FightAPI.runFight(key.get(data, target), fightData, damage = false)
-        target?.bukkitEntity?.removeMeta("skill-damage")
-        val meta = DamageMetadata(
-            caster, damage, HashMap(),
-            element?.get(data, target), 1.0,ignoresArmor, preventImmunity, preventKnockback, ignoresEnchantments,
-            EntityDamageEvent.DamageCause.valueOf(cause.get(data, target))
-        )
-        meta.putBoolean("no_anger", noAnger)
-        meta.putBoolean("ignore_shield", ignoreShield)
-        meta.putBoolean("ignore_invulnerability", ignoreInvulnerability)
-        meta.putBoolean("damages_helmet", damagesHelmet)
-        if (element != null) {
-            meta.putTag(element?.get(data, target))
-        }
-        tags?.forEach(meta::putTag)
-        syncTaskRun {
-            SkillAdapter.get().doDamage(meta, target)
-        }
-        return damage
-    }
-
 
 }
