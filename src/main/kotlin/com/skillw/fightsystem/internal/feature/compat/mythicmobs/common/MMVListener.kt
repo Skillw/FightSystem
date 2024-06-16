@@ -22,11 +22,11 @@ internal object MMVListener {
     fun onMythicMechanicLoad(event: MythicMechanicLoadEvent) {
         when (event.mechanicName.lowercase()) {
             in listOf("att-damage", "attdamage") -> {
-                event.register(AttributeDamageV(event.config))
+                event.register(AttributeDamageV(event.container, event.config))
             }
 
             in listOf("att-cache", "attcache") -> {
-                event.register(AttributeCacheV(event.config))
+                event.register(AttributeCacheV(event.container, event.config))
             }
         }
     }
