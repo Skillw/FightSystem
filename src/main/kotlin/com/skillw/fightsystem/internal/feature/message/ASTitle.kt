@@ -5,6 +5,7 @@ import com.skillw.fightsystem.api.fight.message.Message
 import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.api.PouvoirAPI.placeholder
 import com.skillw.pouvoir.util.sendTitle
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import taboolib.module.chat.colored
 
@@ -34,6 +35,12 @@ class ASTitle(
         return this.appendTitle(message.title, type).appendSubtitle(message.subTitle, type)
     }
 
+    companion object {
+        val adyIsEnable by lazy {
+            return@lazy Bukkit.getPluginManager().getPlugin("Adyeshach") != null
+        }
+    }
+
     override fun sendTo(vararg players: Player) {
         val section = FSConfig["message"].getConfigurationSection("fight-message.title")
         players.forEach { player ->
@@ -41,8 +48,17 @@ class ASTitle(
             val subTitleStr = this.subTitle.toString().placeholder(player)
             val title: String? = if (titleStr != "null") titleStr else null
             val subTitle: String? = if (subTitleStr != "null") subTitleStr else null
-            sendTitle(
-                player,
+            if (adyIsEnable) {
+                sendTitle(
+                    player,
+                    title?.colored() ?: "",
+                    subTitle?.colored() ?: "",
+                    section?.getInt("fade-in") ?: 0,
+                    section?.getInt("stay") ?: 20,
+                    section?.getInt("fade-out") ?: 0
+                )
+            }
+            player.sendTitle(
                 title?.colored() ?: "",
                 subTitle?.colored() ?: "",
                 section?.getInt("fade-in") ?: 0,
