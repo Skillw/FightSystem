@@ -13,14 +13,14 @@ import com.skillw.pouvoir.api.plugin.map.component.Registrable
  */
 interface MessageBuilder : Registrable<String> {
     fun build(
-        damageType: com.skillw.fightsystem.api.fight.DamageType,
+        damageType: DamageType,
         fightData: FightData,
         first: Boolean,
         type: Message.Type,
     ): Message
 
     override fun register() {
-        com.skillw.fightsystem.FightSystem.messageBuilderManager.attack.register(this)
-        com.skillw.fightsystem.FightSystem.messageBuilderManager.defend.register(this)
+        FightSystem.messageBuilderManager.attack.register(this)
+        FightSystem.messageBuilderManager.defend.register(this)
     }
 }
