@@ -11,6 +11,7 @@ $dokka.location:com.skillw.fightsystem.api.event/MechanicRunEvent.Post///Pointin
 $dokka.location:com.skillw.fightsystem.api.event/MechanicRunEvent.Pre///PointingToDeclaration/com/skillw/fightsystem/api/event/MechanicRunEvent.Pre.html
 $dokka.location:com.skillw.fightsystem.api.fight.message/Message.Companion///PointingToDeclaration/com/skillw/fightsystem/api/fight/message/Message.Companion.html
 $dokka.location:com.skillw.fightsystem.api.fight.message/Message.Type///PointingToDeclaration/com/skillw/fightsystem/api/fight/message/Message.Type.html
+$dokka.location:com.skillw.fightsystem.internal.feature.message/ASTitle.Companion///PointingToDeclaration/com/skillw/fightsystem/internal/feature/message/ASTitle.Companion.html
 $dokka.location:com.skillw.fightsystem.util.nms/NMS.Companion///PointingToDeclaration/com/skillw/fightsystem/util/nms/NMS.Companion.html
 $dokka.location:com.skillw.pouvoir.util.legacy/Mirror.MirrorCollect///PointingToDeclaration/com/skillw/pouvoir/util/legacy/Mirror.MirrorCollect.html
 $dokka.location:com.skillw.pouvoir.util.legacy/Mirror.MirrorData///PointingToDeclaration/com/skillw/pouvoir/util/legacy/Mirror.MirrorData.html
