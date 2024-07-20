@@ -2,13 +2,16 @@ package com.skillw.fightsystem.internal.core.fight
 
 import com.skillw.asahi.api.member.context.AsahiContext
 import com.skillw.fightsystem.FightSystem
+import com.skillw.fightsystem.api.event.MechanicLoadEvent
 import com.skillw.fightsystem.api.fight.DamageType
 import com.skillw.fightsystem.api.fight.FightData
+import com.skillw.fightsystem.api.fight.mechanic.Mechanic
 import com.skillw.pouvoir.api.plugin.map.component.Keyable
 import com.skillw.pouvoir.util.toMap
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import taboolib.common.platform.function.console
 import taboolib.module.lang.sendLang
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Mechanic data
@@ -25,6 +28,11 @@ class MechanicDataCompound private constructor(
     val process = ArrayList<MechanicData>()
 
     companion object {
+        private fun loadMechanicEvent(key:String): Mechanic? {
+            val event = MechanicLoadEvent(key)
+            event.call()
+            return event.mechanic.getOrNull()?.apply { register() }
+        }
 
         @JvmStatic
         fun deserialize(section: org.bukkit.configuration.ConfigurationSection): MechanicDataCompound? {
@@ -39,7 +47,7 @@ class MechanicDataCompound private constructor(
                 for (context in mechanics) {
                     context as? MutableMap<String, Any>? ?: continue
                     val key = context["mechanic"].toString()
-                    val machine = FightSystem.mechanicManager[key]
+                    val machine = FightSystem.mechanicManager[key] ?: loadMechanicEvent(key)
                     if (machine == null) {
                         console().sendLang("invalid-mechanic", "${section.currentPath}.$key")
                         continue
