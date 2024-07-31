@@ -272,7 +272,21 @@ class FightData(attacker: LivingEntity?, defender: LivingEntity?, vararg namespa
         val value = formula.run {
             when {
                 startsWith("!") -> substring(1)
-
+                // File::Path::function::Aparms
+                startsWith("File::") -> {
+                    val new = substring(6)
+                    val array = new.split("::")
+                    val path = array[0]
+                    val function = array[1]
+                    val arguments = this@FightData
+                    Pouvoir.scriptManager.invoke<Any>(
+                        path,
+                        function,
+                        arguments,
+                        null,
+                        this@FightData
+                    ).toString()
+                }
                 else -> asahi(
                     namespaces = namespaceNames(),
                     context = this@FightData

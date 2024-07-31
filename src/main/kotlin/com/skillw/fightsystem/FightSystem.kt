@@ -5,6 +5,7 @@ import com.skillw.fightsystem.internal.manager.FSConfig
 import com.skillw.pouvoir.api.manager.ManagerData
 import com.skillw.pouvoir.api.plugin.SubPouvoir
 import com.skillw.pouvoir.api.plugin.annotation.PouManager
+import org.apache.logging.log4j.core.util.Loader
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.function.console
 import taboolib.module.chat.colored
@@ -71,8 +72,16 @@ object FightSystem : Plugin(), SubPouvoir {
         load()
     }
 
+    //给forgeMod兼容留的位置
+    private val forge by lazy {
+        Loader.isClassAvailable("net.minecraftforge.eventbus.api.SubscribeEvent")
+    }
+
     override fun onEnable() {
         enable()
+        if (forge) {
+            //.....一些MinecraftForge的操作
+        }
     }
 
     override fun onActive() {

@@ -74,7 +74,7 @@ taboolib {
             isSkipKotlinRelocate =true
             isSkipKotlin = true
         }
-        taboolib = "6.1.1-beta17"
+        taboolib = "6.1.2-beta11"
     }
 }
 
@@ -83,6 +83,7 @@ repositories {
     mavenCentral()
     maven(url = "https://mvn.lumine.io/repository/maven-public/")
     maven("https://repo.tabooproject.org/repository/releases")
+    maven("https://maven.mohistmc.com/")
 }
 dependencies {
     dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.7.20")
