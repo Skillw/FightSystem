@@ -26,7 +26,6 @@ internal object FightStatusRealizer : BaseRealizer("fight-status"), Switchable, 
 
     @SubscribeEvent
     fun fighting(event: FightEvent.Pre) {
-        if (isDisable()) return
         event.fightData.attacker?.intoFighting()
         event.fightData.defender?.intoFighting()
     }

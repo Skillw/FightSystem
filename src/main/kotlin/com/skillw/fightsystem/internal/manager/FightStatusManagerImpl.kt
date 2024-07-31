@@ -40,6 +40,7 @@ object FightStatusManagerImpl : FightStatusManager() {
     }
 
     override fun intoFighting(entity: LivingEntity) {
+        if (FightStatusRealizer.isDisable()) return
         val uuid = entity.uniqueId
         val event = EntityFightStatusEvent.In(entity as? Player? ?: return)
         event.call()
