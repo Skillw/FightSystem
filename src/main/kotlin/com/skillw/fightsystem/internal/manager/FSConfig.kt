@@ -44,13 +44,14 @@ object FSConfig : ConfigManager(FightSystem) {
         )
         createIfNotExists(
             "attributes",
-            "Fight/Physical.yml",
-            "Fight/Magic.yml",
-            "Fight/Other.yml",
-            "Mechanic/Vampire.yml",
-            "Mechanic/Mechanic.yml",
-            "Other/Other.yml",
-            "shield.yml"
+            "其他.yml",
+            "readme.txt",
+            "吸血.yml",
+            "机制.yml",
+            "物理.yml",
+            "特殊.yml",
+            "盾牌.yml",
+            "魔法.yml"
         )
         createIfNotExists(
             "dispatchers", "custom-trigger.yml"
