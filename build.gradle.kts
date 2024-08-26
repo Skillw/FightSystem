@@ -59,8 +59,8 @@ taboolib {
             name("Pouvoir")
             name("AttributeSystem")
             name("SkillAPI").optional(true)
-            name("MythicMobs").optional(true)
             name("Magic").optional(true)
+            name("MythicMobs").optional(true)
         }
     }
     env {
@@ -74,15 +74,15 @@ taboolib {
             isSkipKotlinRelocate =true
             isSkipKotlin = true
         }
-        taboolib = "6.1.2-beta11"
+        taboolib = "6.1.2-beta10"
     }
 }
 
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://repo.spongepowered.org/maven") }
     maven(url = "https://mvn.lumine.io/repository/maven-public/")
-    maven("https://repo.tabooproject.org/repository/releases")
     maven("https://maven.mohistmc.com/")
 }
 dependencies {
@@ -90,10 +90,10 @@ dependencies {
 //    compileOnly("me.deecaad:mechanicscore:2.4.9")
 //    compileOnly("me.deecaad:weaponmechanics:2.6.1")
 //   compileOnly("io.lumine:Mythic-Dist:5.4.1")
-    compileOnly("ink.ptms.core:v11901:11901-minimize:mapped")
+    compileOnly("ink.ptms.core:v12004:12004:universal")
     compileOnly("ink.ptms:nms-all:1.0.0")
-    compileOnly(fileTree("libs"))
     compileOnly(kotlin("stdlib"))
+    compileOnly(fileTree("libs"))
 }
 
 tasks.withType<JavaCompile> {

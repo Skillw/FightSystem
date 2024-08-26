@@ -5,6 +5,7 @@ import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.cache
 import com.skillw.fightsystem.internal.manager.FSConfig
+import com.skillw.fightsystem.internal.manager.FSConfig.isVanillaArmor
 import com.skillw.pouvoir.util.isAlive
 import io.lumine.mythic.bukkit.MythicBukkit
 import org.bukkit.entity.ArmorStand
@@ -63,6 +64,7 @@ object AttackV {
         val entity = event.entity as LivingEntity
         if (!FSConfig.isVanillaArmor) {
             event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0)
+            event.setDamage(EntityDamageEvent.DamageModifier.RESISTANCE,0.0)
         }
         val isProjectile = event.cause == EntityDamageEvent.DamageCause.PROJECTILE
         val origin = event.finalDamage
@@ -88,6 +90,9 @@ object AttackV {
             return
         }
 
-        event.damage = result
+        if (isVanillaArmor)
+            event.damage = result
+        else
+            event.setDamage(EntityDamageEvent.DamageModifier.BASE, result)
     }
 }

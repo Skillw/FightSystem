@@ -10,6 +10,7 @@ import com.skillw.fightsystem.internal.manager.FSConfig.attackFightKeyMap
 import com.skillw.fightsystem.internal.manager.FSConfig.debug
 import com.skillw.fightsystem.internal.manager.FSConfig.eveFightCal
 import com.skillw.fightsystem.internal.manager.FSConfig.isFightEnable
+import com.skillw.fightsystem.internal.manager.FSConfig.isVanillaArmor
 import com.skillw.pouvoir.util.isAlive
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.LivingEntity
@@ -18,6 +19,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.platform.util.attacker
 
 internal object Attack {
@@ -50,8 +52,9 @@ internal object Attack {
             it(attacker, defender)
         }) return
         //处理原版护甲
-        if (!FSConfig.isVanillaArmor) {
+        if (!isVanillaArmor) {
             event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0)
+            event.setDamage(EntityDamageEvent.DamageModifier.RESISTANCE, 0.0)
         }
         //原伤害
         val originDamage = event.finalDamage
@@ -70,8 +73,12 @@ internal object Attack {
         debug { FightSystem.debug("FightKey: $fightKey") }
         val cacheData = event.damager.cache()
         val data = FightData(attacker, defender).also {
-            if (FSConfig.projectileCache && cacheData != null)
+            if (FSConfig.projectileCache && cacheData != null){
+                debug {
+                    println("Use cache")
+                }
                 it.cache.setData(cacheData)
+            }
         }
 
         //运行战斗组并返回结果
@@ -90,10 +97,11 @@ internal object Attack {
             event.isCancelled = true
             return
         }
-
-
         //设置伤害
-        event.damage = result
+        if (isVanillaArmor)
+             event.damage = result
+        else
+            event.setDamage(EntityDamageEvent.DamageModifier.BASE, result)
     }
 
 }

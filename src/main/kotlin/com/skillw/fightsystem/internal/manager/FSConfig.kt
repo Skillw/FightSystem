@@ -56,9 +56,9 @@ object FSConfig : ConfigManager(FightSystem) {
         createIfNotExists(
             "dispatchers", "custom-trigger.yml"
         )
-        createIfNotExists(
-            "handlers", "on-attack.yml"
-        )
+//        createIfNotExists(
+//            "handlers", "on-attack.yml"
+//        )
         //兼容1.4.3及之前的脚本
         mapOf(
             "com.skillw.fightsystem.internal.fight" to "com.skillw.fightsystem.internal.core.fight",
