@@ -28,6 +28,7 @@ internal object Damage {
         if (result > 0.0) {
             if (!FSConfig.isVanillaArmor && attacker?.type != EntityType.ARMOR_STAND) {
                 event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0)
+                event.setDamage(EntityDamageEvent.DamageModifier.RESISTANCE,0.0)
             }
             event.setDamage(EntityDamageEvent.DamageModifier.BASE, result)
             attacker?.intoFighting()

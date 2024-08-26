@@ -5,6 +5,7 @@ import com.skillw.fightsystem.api.FightAPI
 import com.skillw.fightsystem.api.fight.FightData
 import com.skillw.fightsystem.internal.feature.realizer.fight.ProjectileRealizer.cache
 import com.skillw.fightsystem.internal.manager.FSConfig
+import com.skillw.fightsystem.internal.manager.FSConfig.isVanillaArmor
 import com.skillw.pouvoir.util.isAlive
 import io.lumine.xikage.mythicmobs.MythicMobs
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob
@@ -65,6 +66,7 @@ object AttackIV {
 
         if (!FSConfig.isVanillaArmor) {
             event.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0)
+            event.setDamage(EntityDamageEvent.DamageModifier.RESISTANCE,0.0)
         }
         val entity = event.entity as LivingEntity
         val ids = mob.type.config.getStringList("fightGroup")
@@ -92,6 +94,9 @@ object AttackIV {
             return
         }
 
-        event.damage = result
+        if (isVanillaArmor)
+            event.damage = result
+        else
+            event.setDamage(EntityDamageEvent.DamageModifier.BASE, result)
     }
 }

@@ -76,6 +76,7 @@ object FightGroupManagerImpl : FightGroupManager() {
         val before = FightEvent.Pre(key, fightData)
         before.call()
         var eventFightData = before.fightData
+        println("Pre Cancelled : ${before.isCancelled}")
         if (before.isCancelled || eventFightData.event?.isCancelled == true) return -0.1
         val result = mirrorNow("fight-$key-cal") {
             FightSystem.fightGroupManager[key]!!.run(eventFightData)
