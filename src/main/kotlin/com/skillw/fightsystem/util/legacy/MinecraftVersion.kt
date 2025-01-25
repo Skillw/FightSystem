@@ -26,7 +26,5 @@ object Version {
     @JvmStatic
     val minor = MinecraftVersion.minor
 
-    @JvmStatic
-    val mapping = MinecraftVersion.mapping
 
 }
