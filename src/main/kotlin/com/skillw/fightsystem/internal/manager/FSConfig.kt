@@ -37,10 +37,7 @@ object FSConfig : ConfigManager(FightSystem) {
             "mechanics/basic.js",
             "mechanics/mechanics.js",
             "mechanics/mythicskill.js",
-            "mechanics/runner.js",
             "mechanics/shield.js",
-            "conditions/fighting.js",
-            "listeners/arrow.js"
         )
         createIfNotExists(
             "attributes",
