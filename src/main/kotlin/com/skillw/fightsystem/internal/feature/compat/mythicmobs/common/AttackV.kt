@@ -18,6 +18,7 @@ import taboolib.common.platform.Awake
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.platform.util.attacker
+import taboolib.platform.util.hasMeta
 
 object AttackV {
 
@@ -51,6 +52,7 @@ object AttackV {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     fun event(event: EntityDamageByEntityEvent) {
         if (event.isCancelled) return
+        if (event.entity.hasMeta("skill-damage")) return
         if (!isMythMobV) return
         if (!FSConfig.isFightEnable) return
         if (!event.attacker?.isMythicMob()!!) return
